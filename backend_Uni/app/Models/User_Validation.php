@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User_Session extends Model
+class User_Validation extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'ip_address',
-        'user_agent',
-        'payload',
-        'last_activity'
+        'validUntil',
+        'approvedAt',
+        'approved',
+        'token',
     ];
     public function users(){
         return $this->belongsTo(UniUser::class);

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Calendar;
-use App\Http\Requests\StoreCalendarRequest;
-use App\Http\Requests\UpdateCalendarRequest;
+use App\Models\UniUser;
+use App\Http\Requests\StoreUniUserRequest;
+use App\Http\Requests\UpdateUniUserRequest;
 
-class CalendarController extends Controller
+class UniUserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -19,7 +20,7 @@ class CalendarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCalendarRequest $request)
+    public function store(StoreUniUserRequest $request)
     {
         //
     }
@@ -27,7 +28,7 @@ class CalendarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Calendar $calendar)
+    public function show(UniUser $uniUser)
     {
         //
     }
@@ -35,7 +36,7 @@ class CalendarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCalendarRequest $request, Calendar $calendar)
+    public function update(UpdateUniUserRequest $request, UniUser $uniUser)
     {
         //
     }
@@ -43,7 +44,7 @@ class CalendarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Calendar $calendar)
+    public function destroy(UniUser $uniUser)
     {
         //
     }

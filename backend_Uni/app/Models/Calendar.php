@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Todo extends Model
+class Calendar extends Model
 {
-    /** @use HasFactory<\Database\Factories\TodoFactory> */
+    /** @use HasFactory<\Database\Factories\CalendarFactory> */
     use HasFactory;
+
     protected $fillable = [
         'title',
         'body',
         'user_id',
-        'status'
+        'event_type',
+        'dateofevent'
     ];
     public function users(){
         return $this->belongsTo(UniUser::class);
