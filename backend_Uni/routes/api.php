@@ -16,11 +16,14 @@ Route::get('/user', function (Request $request) {
 
 Route::middleware([StartSession::class])->group(function () {
     Route::post('login', [LoginController::class, 'login']); //ez a route bárki számára használható
+
     Route::post('register', [LoginController::class, 'register']); //ez a route csak admin-ok számára használható
 });
 
 
 Route::middleware('auth:sanctum')->group(function(){
+    Route::post('logout', [LoginController::class, 'logout']); //ez a route bárki számára használható aki be van jelentkezve
+
     Route::apiResource('users/{user}/personalCalendar', CalendarController::class); // ez a route minden tag számára elérhető (controller ellenőrzi hogy saját maga vagy admin)
     Route::apiResource('users/{user}/personalTodos', TodoController::class); // ez a route minden tag számára elérhető (controller ellenőrzi hogy saját maga vagy admin)
     Route::apiResource('uniCalendar', PublicCalendarController::class, ['except' => 'index']); // ez a route vegyesen érhető el, a get minden tag számára elérhető, a post,put,delete az csak Admin vagy oktató számára érhető el.

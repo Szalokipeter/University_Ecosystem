@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User_Validation extends Model
+class Role extends Model
 {
+    /** @use HasFactory<\Database\Factories\RoleFactory> */
     use HasFactory;
     public $timestamps = false;
     protected $fillable = [
-        'validUntil',
-        'approvedAt',
-        'approved',
-        'token',
+        'name',
     ];
     public function users(){
-        return $this->belongsTo(UniUser::class);
+        return $this->hasMany(UniUser::class);
     }
 }

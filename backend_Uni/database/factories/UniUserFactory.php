@@ -17,7 +17,13 @@ class UniUserFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "username" => $this->faker->userName,
+            "email" => $this->faker->unique()->safeEmail,
+            "password" => bcrypt($this->faker->word()),
+            "roles_id" => $this->faker->numberBetween(1, 3),
+            "sessions_id" => $this->faker->numberBetween(1, 2),
+            "validations_id" => $this->faker->numberBetween(1, 2),
+            "remember_token" => null,
         ];
     }
 }

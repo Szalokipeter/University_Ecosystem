@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('username');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('rolename');
-            $table->unsignedBigInteger('session_id');
+            $table->unsignedBigInteger('roles_id');
+            $table->foreign('roles_id')->references('id')->on('roles');
+            $table->unsignedBigInteger('sessions_id');
             $table->unsignedBigInteger('validations_id');
-            $table->foreign('session_id')->references('id')->on('user__sessions');
+            $table->foreign('sessions_id')->references('id')->on('user__sessions');
             $table->foreign('validations_id')->references('id')->on('user__validations');
             $table->rememberToken();
             $table->timestamps();
