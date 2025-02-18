@@ -17,7 +17,10 @@ class CalendarFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "title" => $this->faker->sentence,
+            "body" => $this->faker->paragraph,
+            "event_type" => $this->faker->randomElement(["exam", "homework", "quiz", "project"]),
+            "dateofevent" => $this->faker->dateTimeBetween("+1 month", "+2 month"),
         ];
     }
 }

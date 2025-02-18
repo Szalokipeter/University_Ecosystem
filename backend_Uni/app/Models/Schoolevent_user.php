@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Schoolevent_user extends Model
 {
+    use HasFactory;
     public $timestamps = false;
+    protected $table = "schoolevent_user";
     protected $fillable = [
         'user_id',
         'publicCalendar_id',

@@ -2,9 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Calendar;
 use App\Models\Role;
 use App\Models\UniUser;
 use App\Models\User;
+use App\Models\News;
+use App\Models\PublicCalendar;
+use App\Models\Schoolevent_user;
+use App\Models\Todo;
 use App\Models\User_Session;
 use App\Models\User_Validation;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -73,6 +78,27 @@ class DatabaseSeeder extends Seeder
 
 
         UniUser::factory(4)->create();
+
+        News::factory(10)->create();
+
+        Calendar::factory(4)->create(["user_id" => 1]);
+        Calendar::factory(4)->create(["user_id" => 2]);
+        Calendar::factory(4)->create(["user_id" => 3]);
+
+        Todo::factory(4)->create(["user_id" => 1]);
+        Todo::factory(4)->create(["user_id" => 2]);
+        Todo::factory(4)->create(["user_id" => 3]);
+
+        PublicCalendar::factory(10)->create();
+
+        Schoolevent_user::factory()->create(["user_id" => 1, "schoolevent_id" => 1]);
+        Schoolevent_user::factory()->create(["user_id" => 2, "schoolevent_id" => 1]);
+        Schoolevent_user::factory()->create(["user_id" => 4, "schoolevent_id" => 2]);
+        Schoolevent_user::factory()->create(["user_id" => 2, "schoolevent_id" => 2]);
+        Schoolevent_user::factory()->create(["user_id" => 3, "schoolevent_id" => 3]);
+        Schoolevent_user::factory()->create(["user_id" => 2, "schoolevent_id" => 3]);
+
+
 
         User::factory()->create([
             'name' => 'Test User',

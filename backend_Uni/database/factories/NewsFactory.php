@@ -17,7 +17,10 @@ class NewsFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'body' => $this->faker->paragraph,
+            'created_at' => $this->faker->dateTime,
+            'updated_at' => now(),
         ];
     }
 }

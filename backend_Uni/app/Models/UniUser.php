@@ -16,9 +16,13 @@ class UniUser extends Authenticatable
         'username',
         'email',
         'password',
+        'roles_id', // e miatt az editnél meg a register-nél is extra ellerőrző lépések szükségesek
         'sessions_id',
         'validations_id'
     ];
+    public function isAdmin(){
+        return $this->roles->name == 'admin';
+    }
     public function sessions(){
         return $this->hasMany(User_Session::class);
     }
@@ -28,14 +32,14 @@ class UniUser extends Authenticatable
     public function todos(){
         return $this->hasMany(Todo::class);
     }
-    public function schoolEventUsers(){
-        return $this->hasMany(Schoolevent_user::class);
+    public function publicCalendar(){
+        return $this->belongsToMany(PublicCalendar::class);
     }
     public function Calendars(){
         return $this->hasMany(Calendar::class);
     }
     public function roles(){
-        return $this->hasOne(Role::class);
+        return $this->belongsTo(Role::class);
     }
 
 }

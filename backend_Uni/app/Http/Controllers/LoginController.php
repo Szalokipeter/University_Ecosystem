@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\UniUser; // Use your custom UniUser model
+use App\Models\UniUser;
 use Laravel\Sanctum\HasApiTokens;
 
 class LoginController extends Controller
@@ -13,38 +14,31 @@ class LoginController extends Controller
     use HasApiTokens;
     public function login(Request $request)
     {
-        // Validate the request
         $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Attempt to authenticate the user
         if (Auth::attempt($validated)) {
-            // Get the authenticated user
 
             /** @var UniUser $user */
             $user = Auth::user();
 
-            // Create a Sanctum token for the user
             $token = $user->createToken('auth_token', ['*'], now()->addMinutes(15))->plainTextToken;
 
-            // Return the token in the response
             return response()->json([
                 'message' => 'Login successful',
-                'token' => $token, // Include the token in the response
-                'user' => $user, // Optionally include user details
+                'token' => $token,
+                'user' => $user,
             ], 200);
         }
 
-        // If authentication fails
         return response()->json([
             'message' => 'Login failed: Invalid credentials',
         ], 401);
     }
     public function logout(Request $request)
     {
-        // Revoke the user's current token
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
@@ -52,30 +46,70 @@ class LoginController extends Controller
         ], 200);
     }
 
+    public function editUser(Request $request, UniUser $uniUser){ // requestben meg kell adni a password_confirmation-t is
+        /** @var UniUser $user */
+        $user = Auth::user();
+        if(!$user->isAdmin())
+        {
+            if($uniUser->id != $user->id){
+                return response()->json(['message' =>"You are not Authorized."], 403);
+            }
+        }
+        $validated = $request->validate([
+            'username' => 'required|unique:uni_users,username',
+            'email' => 'required|email|unique:uni_users,email',
+            'password' => 'required|min:4',
+        ]);
+        if($request->password != $request->password_confirmation){
+            return response()->json(['message' =>"Passwords do not match."], 400);
+        }
+
+        $validated['password'] = Hash::make($validated['password']);
+        try {
+            $user->update($validated);
+            $user->tokens()->delete();
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'message' => 'Update successful',
+                'token' => $token,
+                'user' => $user,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Update failed: ' . $e->getMessage(),
+            ], 400);
+        }
+    }
 
     public function register(Request $request)
     {
-        // Validate the request
+        /** @var UniUser $user */
+        $user = Auth::user();
+        if(!$user->isAdmin())
+        {
+            return response()->json(['message' =>"You are not Authorized."], 403);
+        }
+
         $validated = $request->validate([
-            'username' => 'required|unique:uni_users,username', // Use your table name
-            'email' => 'required|email|unique:uni_users,email', // Use your table name
-            'password' => 'required|min:8',
+            'username' => 'required|unique:uni_users,username',
+            'email' => 'required|email|unique:uni_users,email',
+            'password' => 'required|min:4',
         ]);
 
-        // Hash the password
+        $validated['roles_id'] = Role::where("name", "user")->first()->id;
         $validated['password'] = Hash::make($validated['password']);
 
-        // Create the user
+        // dd($validated);
+
         try {
             $user = UniUser::create($validated);
-
-            // Optionally log the user in and return a token
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'message' => 'Registration successful',
-                'token' => $token, // Include the token in the response
-                'user' => $user, // Optionally include user details
+                'token' => $token,
+                'user' => $user,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([

@@ -18,10 +18,8 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedBigInteger('roles_id');
             $table->foreign('roles_id')->references('id')->on('roles');
-            $table->unsignedBigInteger('sessions_id');
-            $table->unsignedBigInteger('validations_id');
-            $table->foreign('sessions_id')->references('id')->on('user__sessions');
-            $table->foreign('validations_id')->references('id')->on('user__validations');
+            $table->foreignId('sessions_id')->nullable()->references('id')->on('user__sessions');
+            $table->foreignId('validations_id')->nullable()->references('id')->on('user__validations');
             $table->rememberToken();
             $table->timestamps();
         });

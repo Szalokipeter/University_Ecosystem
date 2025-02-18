@@ -17,7 +17,10 @@ class PublicCalendarFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "title" => $this->faker->sentence,
+            "body" => $this->faker->paragraph,
+            "event_type" => $this->faker->randomElement(["Student Affairs", "Open to Public", "Registration Required", "Family Affairs"]),
+            "dateofevent" => $this->faker->dateTimeBetween("+1 day", "+2 month"),
         ];
     }
 }
