@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
+use Illuminate\Support\Facades\Auth;
 
 class NewsController extends Controller
 {
@@ -13,7 +14,10 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
+        if(($news = News::all())->isEmpty()) {
+            return response()->json(['message' => 'No news found.'], 404);
+        }
+        return response()->json($news);
     }
 
     /**
@@ -21,7 +25,20 @@ class NewsController extends Controller
      */
     public function store(StoreNewsRequest $request)
     {
-        //
+        /** @var UniUser $user */
+        $user = Auth::user();
+        if(!$user->isAdmin() && !$user->isTeacher())
+        {
+            return response()->json(['message' =>"You are not Authorized."], 403);
+        }
+        try {
+            $news = News::create($request->validated());
+            return response()->json($news, 201);
+        }
+        catch (\Throwable $th) {
+            return response()->json(['message' => 'News could not be created.'], 500);
+        }
+
     }
 
     /**
@@ -29,7 +46,10 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        //
+        if(!$news) {
+            return response()->json(['message' => 'News not found.'], 404);
+        }
+        return response()->json($news);
     }
 
     /**
@@ -37,7 +57,18 @@ class NewsController extends Controller
      */
     public function update(UpdateNewsRequest $request, News $news)
     {
-        //
+        /** @var UniUser $user */
+        $user = Auth::user();
+        if(!$user->isAdmin() && !$user->isTeacher())
+        {
+            return response()->json(['message' =>"You are not Authorized."], 403);
+        }
+
+        if(!$news->update($request->validated())){
+            return response()->json(["message"=>"News could not be updated."], 500);
+        }
+        return response()->json($news);
+
     }
 
     /**
@@ -45,6 +76,10 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+        if(!$news) {
+            return response()->json(['message' => 'News not found.'], 404);
+        }
+        $news->delete();
+        return response()->json(['message' => 'News deleted.'], 200);
     }
 }

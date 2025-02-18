@@ -23,6 +23,9 @@ class UniUser extends Authenticatable
     public function isAdmin(){
         return $this->roles->name == 'admin';
     }
+    public function isTeacher(){
+        return $this->roles->name == 'teacher';
+    }
     public function sessions(){
         return $this->hasMany(User_Session::class);
     }

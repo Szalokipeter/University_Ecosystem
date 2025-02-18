@@ -103,13 +103,11 @@ class LoginController extends Controller
         // dd($validated);
 
         try {
-            $user = UniUser::create($validated);
-            $token = $user->createToken('auth_token')->plainTextToken;
+            $newuser = UniUser::create($validated);
 
             return response()->json([
                 'message' => 'Registration successful',
-                'token' => $token,
-                'user' => $user,
+                'user' => $newuser,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([

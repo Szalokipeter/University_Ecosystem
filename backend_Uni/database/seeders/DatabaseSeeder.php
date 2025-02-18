@@ -66,6 +66,14 @@ class DatabaseSeeder extends Seeder
             'sessions_id' => 1,
             'validations_id' => 1,
         ]);
+        UniUser::factory()->create([
+            'username' => 'teacher',
+            'email' => 'teacher@teacher.com',
+            'password' => bcrypt('teacher'),
+            'roles_id' => 1,
+            'sessions_id' => 1,
+            'validations_id' => 1,
+        ]);
 
         UniUser::factory()->create([
             'username' => 'user',
