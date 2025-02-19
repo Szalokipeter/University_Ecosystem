@@ -12,7 +12,7 @@ class Todo extends Model
     protected $fillable = [
         'title',
         'body',
-        'user_id',
+        'uni_user_id',
         'status'
     ];
     public function users(){

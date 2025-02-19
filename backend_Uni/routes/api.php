@@ -34,3 +34,4 @@ Route::middleware('auth:sanctum')->group(function(){
 
 Route::apiResource("uniCalendar", PublicCalendarController::class)->only(['index', 'show']);
 Route::apiResource("news", NewsController::class)->only(['index', 'show']);
+

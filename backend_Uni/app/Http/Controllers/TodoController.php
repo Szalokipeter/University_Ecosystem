@@ -26,15 +26,34 @@ class TodoController extends Controller
      */
     public function store(StoreTodoRequest $request)
     {
-        //
+        /** @var UniUser $user */
+        $validateduser = Auth::user();
+        try {
+            $data = $request->validated();
+            $data['status'] = "todo";
+            $data['uni_user_id'] = $validateduser->id;
+            // dd($data);
+            $todo = Todo::create($data);
+            return response()->json($todo, 201);
+        }
+        catch (\Throwable $th) {
+            return response()->json(['message' => 'Todo could not be created.'], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Todo $todo)
+    public function show($id)
     {
-        //
+        $todo = Todo::find($id);
+        /** @var UniUser $user */
+        $validateduser = Auth::user();
+        // if ($validateduser->id !== $todo->uni_user_id || !$validateduser->isAdmin()) {
+        //     return response()->json(['message' => 'Unauthorized'], 403);
+        // }
+        return response()->json($todo);
+
     }
 
     /**
