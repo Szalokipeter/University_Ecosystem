@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('schoolevent_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('schoolevent_id')->references('id')->on('public_calendars')->onDelete('cascade');
-            $table->foreignId('user_id')->references('id')->on('uni_users')->onDelete('cascade');
+            $table->foreignId('uni_user_id')->references('id')->on('uni_users')->onDelete('cascade');
             //$table->timestamps();
         });
     }

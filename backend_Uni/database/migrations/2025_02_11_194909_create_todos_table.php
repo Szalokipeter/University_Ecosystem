@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('body');
             $table->string('status');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('uni_users')->onDelete('cascade');
+            $table->unsignedBigInteger('uni_user_id');
+            $table->foreign('uni_user_id')->references('id')->on('uni_users')->onDelete('cascade');
             $table->timestamps();
         });
     }

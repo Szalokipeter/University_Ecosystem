@@ -89,22 +89,22 @@ class DatabaseSeeder extends Seeder
 
         News::factory(10)->create();
 
-        Calendar::factory(4)->create(["user_id" => 1]);
-        Calendar::factory(4)->create(["user_id" => 2]);
-        Calendar::factory(4)->create(["user_id" => 3]);
+        Calendar::factory(4)->create(["uni_user_id" => 1]);
+        Calendar::factory(4)->create(["uni_user_id" => 2]);
+        Calendar::factory(4)->create(["uni_user_id" => 3]);
 
-        Todo::factory(4)->create(["user_id" => 1]);
-        Todo::factory(4)->create(["user_id" => 2]);
-        Todo::factory(4)->create(["user_id" => 3]);
+        Todo::factory(4)->create(["uni_user_id" => 1]);
+        Todo::factory(4)->create(["uni_user_id" => 2]);
+        Todo::factory(4)->create(["uni_user_id" => 3]);
 
         PublicCalendar::factory(10)->create();
 
-        Schoolevent_user::factory()->create(["user_id" => 1, "schoolevent_id" => 1]);
-        Schoolevent_user::factory()->create(["user_id" => 2, "schoolevent_id" => 1]);
-        Schoolevent_user::factory()->create(["user_id" => 4, "schoolevent_id" => 2]);
-        Schoolevent_user::factory()->create(["user_id" => 2, "schoolevent_id" => 2]);
-        Schoolevent_user::factory()->create(["user_id" => 3, "schoolevent_id" => 3]);
-        Schoolevent_user::factory()->create(["user_id" => 2, "schoolevent_id" => 3]);
+        Schoolevent_user::factory()->create(["uni_user_id" => 1, "schoolevent_id" => 1]);
+        Schoolevent_user::factory()->create(["uni_user_id" => 2, "schoolevent_id" => 1]);
+        Schoolevent_user::factory()->create(["uni_user_id" => 4, "schoolevent_id" => 2]);
+        Schoolevent_user::factory()->create(["uni_user_id" => 2, "schoolevent_id" => 2]);
+        Schoolevent_user::factory()->create(["uni_user_id" => 3, "schoolevent_id" => 3]);
+        Schoolevent_user::factory()->create(["uni_user_id" => 2, "schoolevent_id" => 3]);
 
 
 

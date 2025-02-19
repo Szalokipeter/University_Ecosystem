@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use App\Models\UniUser;
+use Illuminate\Support\Facades\Auth;
 
 class TodoController extends Controller
 {
@@ -13,7 +15,10 @@ class TodoController extends Controller
      */
     public function index()
     {
-        //
+        /** @var UniUser $user */
+        $validateduser = Auth::user();
+        return $validateduser->todos;
+
     }
 
     /**
