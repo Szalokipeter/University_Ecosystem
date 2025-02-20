@@ -17,21 +17,33 @@ class CalendarController extends Controller
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if(!$validateduser->isAdmin() && $validateduser->id !== $user->id){
+        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         $events = Calendar::where('uni_user_id', $user->id)->get();
         return response()->json($events);
-
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCalendarRequest $request)
+    public function store(UniUser $user, StoreCalendarRequest $request)
     {
-        //
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        try {
+            $data = $request->validated();
+            $data['uni_user_id'] = $user->id;
+            // dd($data);
+            $event = Calendar::create($data);
+            return response()->json($event, 201);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => "Could not create Personal Calendar Event."], 500);
+        }
     }
 
     /**
