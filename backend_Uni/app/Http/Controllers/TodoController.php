@@ -13,15 +13,15 @@ class TodoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Uniuser $User)
+    public function index(Uniuser $user)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if(!$validateduser->isAdmin() && $validateduser->id !== $User->id){
+        if(!$validateduser->isAdmin() && $validateduser->id !== $user->id){
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $todos = Todo::where('uni_user_id', $User->id)->get();
+        $todos = Todo::where('uni_user_id', $user->id)->get();
         return response()->json($todos);
 
     }
@@ -29,18 +29,18 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UniUser $User, StoreTodoRequest $request)
+    public function store(UniUser $user, StoreTodoRequest $request)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if(!$validateduser->isAdmin() && $validateduser->id != $User->id){
+        if(!$validateduser->isAdmin() && $validateduser->id != $user->id){
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         try {
             $data = $request->validated();
             $data['status'] = "todo";
-            $data['uni_user_id'] = $User->id;
+            $data['uni_user_id'] = $user->id;
 
             // dd($data);
             $todo = Todo::create($data);
@@ -54,53 +54,46 @@ class TodoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UniUser $User, $todo)
+    public function show( UniUser $user, Todo $personalTodo)
     {
-        // $todo = Todo::find($todo->id);
         /** @var UniUser $validateduser */
-        dd([$User, $todo]);
         $validateduser = Auth::user();
-         if ($validateduser->id !== $User->id && !$validateduser->isAdmin()) {
+         if ($validateduser->id !== $user->id && !$validateduser->isAdmin()) {
              return response()->json(['message' => 'Unauthorized'], 403);
          }
 
-        return response()->json($todo);
+        return response()->json($personalTodo);
 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UniUser $User, Todo $todo, UpdateTodoRequest $request )
+    public function update(UniUser $user, Todo $personalTodo, UpdateTodoRequest $request )
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if ($validateduser->id !== $User->id && !$validateduser->isAdmin()) {
+        if ($validateduser->id !== $user->id && !$validateduser->isAdmin()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-        try {
-            //code...
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-        if(!$todo->update($request->validated())){
+        if(!$personalTodo->update($request->validated())){
             return response()->json(["message"=>"Todo could not be updated."], 500);
         }
-        return response()->json($todo);
+        return response()->json($personalTodo);
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UniUser $User, Todo $todo)
+    public function destroy(UniUser $user, Todo $personalTodo)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if ($validateduser->id !== $todo->uni_user_id && !$validateduser->isAdmin()) {
+        if ($validateduser->id !== $personalTodo->uni_user_id && !$validateduser->isAdmin()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-        if(!$todo->delete()){
+        if(!$personalTodo->delete()){
             return response()->json(["message"=>"Todo could not be deleted."], 500);
         }
         return response()->json(["message"=>"Todo was deleted."]);
