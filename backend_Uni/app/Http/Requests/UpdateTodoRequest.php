@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTodoRequest extends FormRequest
 {
@@ -22,7 +23,9 @@ class UpdateTodoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "title"=>['required', "string", "max:255"],
+            "body" => ["required", "string"],
+            "status" => ["required", "string", Rule::in(["todo", "done", "in-progress"])],
         ];
     }
 }
