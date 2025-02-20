@@ -49,24 +49,49 @@ class CalendarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Calendar $calendar)
+    public function show(UniUser $user, Calendar $personalCalendar)
     {
-        //
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        return response()->json($personalCalendar);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCalendarRequest $request, Calendar $calendar)
+    public function update(UniUser $user,  Calendar $personalCalendar, UpdateCalendarRequest $request)
     {
-        //
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        try {
+            $data = $request->validated();
+            $personalCalendar->update($data);
+            return response()->json(["message"=> "Personal Calendar Event Updated."]);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => "Could not update Personal Calendar Event."], 500);
+        }
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Calendar $calendar)
+    public function destroy(UniUser $user, Calendar $personalCalendar)
     {
-        //
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if ($validateduser->id !== $personalCalendar->uni_user_id && !$validateduser->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        if(!$personalCalendar->delete()){
+            return response()->json(["message"=>"Todo could not be deleted."], 500);
+        }
+        return response()->json(["message"=>"Todo was deleted."]);
     }
 }
