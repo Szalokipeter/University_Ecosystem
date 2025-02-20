@@ -72,7 +72,7 @@ class CalendarController extends Controller
         try {
             $data = $request->validated();
             $personalCalendar->update($data);
-            return response()->json(["message"=> "Personal Calendar Event Updated."]);
+            return response()->json($personalCalendar);
         } catch (\Throwable $th) {
             return response()->json(["message" => "Could not update Personal Calendar Event."], 500);
         }
