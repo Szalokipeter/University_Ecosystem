@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PublicCalendar;
 use App\Http\Requests\StorePublicCalendarRequest;
 use App\Http\Requests\UpdatePublicCalendarRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PublicCalendarController extends Controller
 {
@@ -13,15 +14,20 @@ class PublicCalendarController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePublicCalendarRequest $request)
+    public function store(PublicCalendar $uniCalendar, StorePublicCalendarRequest $request)
     {
-        //
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if (!$validateduser->isAdmin() && ! !$validateduser->isTeacher()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
     }
 
     /**

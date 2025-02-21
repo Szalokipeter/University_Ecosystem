@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePublicCalendarRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,10 @@ class UpdatePublicCalendarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => ["required", "string", "max:255"],
-            "body" => ["required", "string"],
-            "event_type" => ["required", "string"],
-            "dateofevent" => ["required", "date"]
+            "email" => ["reqiured", "email"],
+            "password" => ["required", "string"],
+            // "ip-address" => ["required", "string"],
+            // "user_agent" => ["required", "string"]
         ];
     }
 }
