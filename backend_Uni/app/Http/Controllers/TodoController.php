@@ -17,13 +17,12 @@ class TodoController extends Controller
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if(!$validateduser->isAdmin() && $validateduser->id !== $user->id){
+        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         $todos = Todo::where('uni_user_id', $user->id)->get();
         return response()->json($todos);
-
     }
 
     /**
@@ -33,7 +32,7 @@ class TodoController extends Controller
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if(!$validateduser->isAdmin() && $validateduser->id != $user->id){
+        if (!$validateduser->isAdmin() && $validateduser->id != $user->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
@@ -45,8 +44,7 @@ class TodoController extends Controller
             // dd($data);
             $todo = Todo::create($data);
             return response()->json($todo, 201);
-        }
-        catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             return response()->json(['message' => 'Todo could not be created.'], 500);
         }
     }
@@ -54,33 +52,30 @@ class TodoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show( UniUser $user, Todo $personalTodo)
+    public function show(UniUser $user, Todo $personalTodo)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-         if ($validateduser->id !== $user->id && !$validateduser->isAdmin()) {
-             return response()->json(['message' => 'Unauthorized'], 403);
-         }
-
+        if (!$validateduser->isAdmin() &&  ($validateduser->id !== $user->id || $personalTodo->uni_user_id != $validateduser->id)){
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
         return response()->json($personalTodo);
-
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UniUser $user, Todo $personalTodo, UpdateTodoRequest $request )
+    public function update(UniUser $user, Todo $personalTodo, UpdateTodoRequest $request)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
         if ($validateduser->id !== $user->id && !$validateduser->isAdmin()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-        if(!$personalTodo->update($request->validated())){
-            return response()->json(["message"=>"Todo could not be updated."], 500);
+        if (!$personalTodo->update($request->validated())) {
+            return response()->json(["message" => "Todo could not be updated."], 500);
         }
         return response()->json($personalTodo);
-
     }
 
     /**
@@ -93,9 +88,9 @@ class TodoController extends Controller
         if ($validateduser->id !== $personalTodo->uni_user_id && !$validateduser->isAdmin()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-        if(!$personalTodo->delete()){
-            return response()->json(["message"=>"Todo could not be deleted."], 500);
+        if (!$personalTodo->delete()) {
+            return response()->json(["message" => "Todo could not be deleted."], 500);
         }
-        return response()->json(["message"=>"Todo was deleted."]);
+        return response()->json(["message" => "Todo was deleted."]);
     }
 }

@@ -53,7 +53,7 @@ class CalendarController extends Controller
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
+        if (!$validateduser->isAdmin() &&  ($validateduser->id !== $user->id || $personalCalendar->uni_user_id != $validateduser->id)){
             return response()->json(['message' => 'Unauthorized'], 403);
         }
         return response()->json($personalCalendar);
