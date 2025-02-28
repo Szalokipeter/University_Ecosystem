@@ -36,7 +36,7 @@ class UniUser extends Authenticatable
         return $this->hasMany(Todo::class);
     }
     public function publicCalendar(){
-        return $this->belongsToMany(PublicCalendar::class);
+        return $this->belongsToMany(PublicCalendar::class, "schoolevent_user", "uni_user_id", "schoolevent_id");
     }
     public function Calendars(){
         return $this->hasMany(Calendar::class);

@@ -16,6 +16,6 @@ class PublicCalendar extends Model
         'dateofevent',
     ];
     public function uniUsers(){
-        return $this->belongsToMany(UniUser::class);
+        return $this->belongsToMany(UniUser::class, "schoolevent_user", "schoolevent_id", "uni_user_id");
     }
 }
