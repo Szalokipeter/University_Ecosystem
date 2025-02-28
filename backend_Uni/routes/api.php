@@ -16,7 +16,7 @@ Route::get('/user', function (Request $request) {
 
 Route::middleware([StartSession::class])->group(function () {
     Route::post('login', [LoginController::class, 'login']); //ez a route bárki számára használható
-
+    Route::post('/qrcode/generate', [LoginController::class, 'qrcode_token_generation']);
 });
 
 
@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post("uniCalendar/{uniCalendar}/signup/{user}", [PublicCalendarController::class, "signUpForEvent"]);
 
     Route::apiResource('news', NewsController::class)->except(['index', 'show']); // ez a route vegyesen érhető el, a get minden tag számára elérhető, a post,put,delete az csak Admin vagy oktató számára érhető el.
+    Route::post('/qrcode/login', [LoginController::class, 'qrcode_login']);
 });
 
 Route::apiResource("uniCalendar", PublicCalendarController::class)->only(['index', 'show']);
