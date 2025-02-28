@@ -99,7 +99,7 @@ class PublicCalendarController extends Controller
             }
             $sub = Schoolevent_user::where("schoolevent_id", $uniCalendar->id)->where("uni_user_id", $user->id)->get();
             if(count($sub) !== 0){
-                $sub->delete();
+                $sub[0]->delete();
                 return response()->json(["message" => "Unsubscribed from event."], 200);
             }
             else {
