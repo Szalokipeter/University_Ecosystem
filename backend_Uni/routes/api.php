@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('users/{user}/personalCalendar', CalendarController::class); // ez a route minden tag számára elérhető (controller ellenőrzi hogy saját maga vagy admin)
     Route::apiResource('users/{user}/personalTodos', TodoController::class); // ez a route minden tag számára elérhető (controller ellenőrzi hogy saját maga vagy admin)
     Route::apiResource('uniCalendar', PublicCalendarController::class)->except(['index','show']); // ez a route vegyesen érhető el, a get minden tag számára elérhető, a post,put,delete az csak Admin vagy oktató számára érhető el.
+    Route::post("uniCalendar/{uniCalendar}/signup/{user}", [PublicCalendarController::class, "signUpForEvent"]);
 
     Route::apiResource('news', NewsController::class)->except(['index', 'show']); // ez a route vegyesen érhető el, a get minden tag számára elérhető, a post,put,delete az csak Admin vagy oktató számára érhető el.
 });
@@ -35,3 +36,6 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::apiResource("uniCalendar", PublicCalendarController::class)->only(['index', 'show']);
 Route::apiResource("news", NewsController::class)->only(['index', 'show']);
 
+Route::any("have-to-login", function(){
+    return response()->json(["message"=>"Has to log in to access this function."], 401);
+});

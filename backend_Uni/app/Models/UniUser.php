@@ -20,29 +20,42 @@ class UniUser extends Authenticatable
         'sessions_id',
         'validations_id'
     ];
-    public function isAdmin(){
+    protected $hidden = [
+        'password',
+        'sessions_id',
+        'validations_id',
+        'remember_token'
+    ];
+    public function isAdmin()
+    {
         return $this->roles->name == 'admin';
     }
-    public function isTeacher(){
+    public function isTeacher()
+    {
         return $this->roles->name == 'teacher';
     }
-    public function sessions(){
+    public function sessions()
+    {
         return $this->hasMany(User_Session::class);
     }
-     public function validations(){
+    public function validations()
+    {
         return $this->hasMany(User_Validation::class);
     }
-    public function todos(){
+    public function todos()
+    {
         return $this->hasMany(Todo::class);
     }
-    public function publicCalendar(){
-        return $this->belongsToMany(PublicCalendar::class);
+    public function publicCalendar()
+    {
+        return $this->belongsToMany(PublicCalendar::class, "schoolevent_user", "uni_user_id", "schoolevent_id");
     }
-    public function Calendars(){
+    public function Calendars()
+    {
         return $this->hasMany(Calendar::class);
     }
-    public function roles(){
+    public function roles()
+    {
         return $this->belongsTo(Role::class);
     }
-
 }
