@@ -113,4 +113,7 @@ class LoginController extends Controller
             ], 400);
         }
     }
+    public function qrcode_token_generation(Request $request){
+
+    }
 }
