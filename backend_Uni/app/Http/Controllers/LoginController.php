@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\QrLoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateUniUserRequest;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,43 +50,37 @@ class LoginController extends Controller
         ], 200);
     }
 
-    public function editUser(Request $request, UniUser $uniUser)
-    { // requestben meg kell adni a password_confirmation-t is
-        /** @var UniUser $user */
-        $user = Auth::user();
-        if (!$user->isAdmin()) {
+    public function editUser(UpdateUniUserRequest $request, UniUser $user)
+    {
+        /** @var UniUser $uniUser */
+        $uniUser = Auth::user();
+        if (!$uniUser->isAdmin()) {
             if ($uniUser->id != $user->id) {
                 return response()->json(['message' => "You are not Authorized."], 403);
             }
         }
-        $validated = $request->validate([
-            'username' => 'required|unique:uni_users,username',
-            'email' => 'required|email|unique:uni_users,email',
-            'password' => 'required|min:4',
-        ]);
-        if ($request->password != $request->password_confirmation) {
-            return response()->json(['message' => "Passwords do not match."], 400);
-        }
-
+        $validated = $request->validated();
         $validated['password'] = Hash::make($validated['password']);
         try {
             $user->update($validated);
             $user->tokens()->delete();
-            $token = $user->createToken('auth_token')->plainTextToken;
+            if (!$uniUser->isAdmin()) {
+                $token = $user->createToken('auth_token')->plainTextToken;
+            }
 
             return response()->json([
                 'message' => 'Update successful',
-                'token' => $token,
+                'token' => $token ?? null,
                 'user' => $user,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Update failed: ' . $e->getMessage(),
-            ], 400);
+                'message' => 'Update failed.',
+            ], 500);
         }
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
         /** @var UniUser $user */
         $user = Auth::user();
@@ -92,16 +88,10 @@ class LoginController extends Controller
             return response()->json(['message' => "You are not Authorized."], 403);
         }
 
-        $validated = $request->validate([
-            'username' => 'required|unique:uni_users,username',
-            'email' => 'required|email|unique:uni_users,email',
-            'password' => 'required|min:4',
-        ]);
+        $validated = $request->validated();
 
         $validated['roles_id'] = Role::where("name", "user")->first()->id;
         $validated['password'] = Hash::make($validated['password']);
-
-        // dd($validated);
 
         try {
             $newuser = UniUser::create($validated);
@@ -112,14 +102,14 @@ class LoginController extends Controller
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Registration failed: ' . $e->getMessage(),
+                'message' => 'Registration failed.',
             ], 400);
         }
     }
     public function qrcode_token_generation(Request $request)
     {
         $token = Str::random(32);
-        $asd = User_Validation::create([
+        User_Validation::create([
             'token' => $token,
             'validUntil' => now()->addMinutes(5),
             'approved' => 0,
@@ -129,17 +119,21 @@ class LoginController extends Controller
     public function qrcode_login(QrLoginRequest $request)
     {
         $validated = $request->validated();
-        $signInRequest = User_Validation::where('token', $validated['token'])->firstOrFail();
+        try {
+            $signInRequest = User_Validation::where('token', $validated['token'])->where('validUntil', '>', now())->where('approved', 0)->firstOrFail();
+            if (Auth::guard('web')->attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
+                /** @var UniUser $user */
+                $user = Auth::user();
+                $token = $user->createToken('auth_token', ['*'], now()->addMinutes(15))->plainTextToken;
 
-        if (Auth::attempt(['email' => $signInRequest->email, 'password' => $validated['password']])) {
-            /** @var UniUser $user */
-            $user = Auth::user();
-            $token = $user->createToken('auth_token', ['*'], now()->addMinutes(15))->plainTextToken;
-            // send a message in a Laravel Reverb WebSocket for the specific fontend.
-
-            broadcast(new \App\Events\QrLoginSuccess($user->id, $token));
-            return response()->json(['status' => 'success']);
+                // send a message in a Laravel Reverb WebSocket for the specific fontend.
+                broadcast(new \App\Events\QrLoginSuccess($user->id, $token));
+                $signInRequest->update(['approved' => 1, 'approvedAt' => now()]);
+                $user->update(['validations_id' => $signInRequest->id]);
+                return response()->json(['status' => 'success']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'failed'], 500);
         }
-        return response()->json(['status' => 'failed'], 401);
     }
 }

@@ -21,8 +21,11 @@ class UpdateUniUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        // emailt nem lehet módosítani, mert az minden felhasználónak egyedi az egyetem által kiadott email cím
         return [
-            //
+            'username' => 'required|string|max:255',
+            'password' => 'required|min:4',
+            "password_confirmation" => ["required", "string", "same:password"],
         ];
     }
 }

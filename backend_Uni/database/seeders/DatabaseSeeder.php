@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'teacher',
             'email' => 'teacher@teacher.com',
             'password' => bcrypt('teacher'),
-            'roles_id' => 1,
+            'roles_id' => 2,
             'sessions_id' => 1,
             'validations_id' => 1,
         ]);
@@ -80,8 +80,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@user.com',
             'password' => bcrypt('user'),
             'roles_id' => 3,
-            'sessions_id' => 2,
-            'validations_id' => 2,
+            'sessions_id' => 1,
+            'validations_id' => 1,
         ]);
 
 
