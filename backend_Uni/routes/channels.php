@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Broadcast;
 
-Broadcast::channel('App.Models.UniUser.{id}', function ($user, $id) {
-    return true; //(int) $user->id === (int) $id;
+Broadcast::channel('qr-login.{token}', function ($user, $token) {
+    // return $user->token === $token;
+    return true;
 });

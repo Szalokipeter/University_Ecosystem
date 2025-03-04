@@ -106,7 +106,11 @@ class DatabaseSeeder extends Seeder
         Schoolevent_user::factory()->create(["uni_user_id" => 3, "schoolevent_id" => 3]);
         Schoolevent_user::factory()->create(["uni_user_id" => 2, "schoolevent_id" => 3]);
 
-
+        User_Validation::factory()->create([
+            'validUntil' => now()->addDays(15),
+            'approved' => 0,
+            'token' => '40OlKKcLo3zZORKBLtupK5IjI8Ybh9Z1',
+        ]);
 
         User::factory()->create([
             'name' => 'Test User',

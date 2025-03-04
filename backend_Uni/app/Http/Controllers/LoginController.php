@@ -127,7 +127,11 @@ class LoginController extends Controller
                 $token = $user->createToken('auth_token', ['*'], now()->addMinutes(15))->plainTextToken;
 
                 // send a message in a Laravel Reverb WebSocket for the specific fontend.
-                broadcast(new \App\Events\QrLoginSuccess($user->id, $token));
+                try {
+                    broadcast(new \App\Events\QrLoginSuccess($user->id, $token));
+                } catch (\Throwable $th) {
+                    return response()->json(['status' => 'Error with broadcasting' . $th->getMessage()], 500);
+                }
                 $signInRequest->update(['approved' => 1, 'approvedAt' => now()]);
                 $user->update(['validations_id' => $signInRequest->id]);
                 return response()->json(['status' => 'success']);

@@ -30,10 +30,13 @@ class QrLoginSuccess implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|\Illuminate\Broadcasting\PrivateChannel|\Illuminate\Broadcasting\PresenceChannel
+     *
+     * @return array<int, \Illuminate\Broadcasting\PrivateChannel>
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('qr-login.' . $this->userId);
+        return [
+            new Channel('qr-login.40OlKKcLo3zZORKBLtupK5IjI8Ybh9Z1' ) // . $this->token
+    ];
     }
 }
