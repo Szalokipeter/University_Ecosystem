@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\QrLoginSuccess;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\QrLoginRequest;
 use App\Http\Requests\RegisterRequest;
@@ -118,6 +119,8 @@ class LoginController extends Controller
     }
     public function qrcode_login(QrLoginRequest $request)
     {
+        QrLoginSuccess::dispatch(1, 'test-token');
+        broadcast(new QrLoginSuccess(1, 'test-token'));
         $validated = $request->validated();
         try {
             $signInRequest = User_Validation::where('token', $validated['token'])->where('validUntil', '>', now())->where('approved', 0)->firstOrFail();
@@ -128,9 +131,9 @@ class LoginController extends Controller
 
                 // send a message in a Laravel Reverb WebSocket for the specific fontend.
                 try {
-                    broadcast(new \App\Events\QrLoginSuccess($user->id, $token));
+                    broadcast(new QrLoginSuccess($user->id, $token));
                 } catch (\Throwable $th) {
-                    return response()->json(['status' => 'Error with broadcasting' . $th->getMessage()], 500);
+                    return response()->json(['status' => 'Error with broadcasting: ' . $th->getMessage()], 500);
                 }
                 $signInRequest->update(['approved' => 1, 'approvedAt' => now()]);
                 $user->update(['validations_id' => $signInRequest->id]);

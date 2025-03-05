@@ -22,6 +22,9 @@ export class EchoListenerComponent implements OnInit, OnDestroy {
       console.log('Üzenet érkezett:', data);
       this.messages.push(JSON.stringify(data));
     });
+    this.channel.error((error: any) => {
+      console.error('Channel error:', error);
+    });
   }
 
   ngOnDestroy(): void {

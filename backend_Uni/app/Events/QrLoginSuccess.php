@@ -8,6 +8,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class QrLoginSuccess implements ShouldBroadcast
 {
@@ -36,7 +37,19 @@ class QrLoginSuccess implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            new Channel('qr-login.40OlKKcLo3zZORKBLtupK5IjI8Ybh9Z1' ) // . $this->token
-    ];
+            new Channel('qr-login.40OlKKcLo3zZORKBLtupK5IjI8Ybh9Z1') // . $this->token
+        ];
+    }
+    public function broadcastWith(): array
+    {
+        Log::info('Broadcasting event:', ['data' => ['userId' => $this->userId, 'token' => $this->token]]);
+        return [
+            'userId' => $this->userId,
+            'token' => $this->token
+        ];
+    }
+    public function broadcastAs()
+    {
+        return 'qr-login-success';
     }
 }
