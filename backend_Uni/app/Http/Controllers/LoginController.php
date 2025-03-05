@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\UniUser;
 use App\Models\User_Validation;
 use Laravel\Sanctum\HasApiTokens;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 
 class LoginController extends Controller
@@ -119,28 +118,28 @@ class LoginController extends Controller
     }
     public function qrcode_login(QrLoginRequest $request)
     {
-        QrLoginSuccess::dispatch(1, 'test-token');
-        broadcast(new QrLoginSuccess(1, 'test-token'));
         $validated = $request->validated();
         try {
-            $signInRequest = User_Validation::where('token', $validated['token'])->where('validUntil', '>', now())->where('approved', 0)->firstOrFail();
+            try {
+                $signInRequest = User_Validation::where('token', $validated['token'])->where('validUntil', '>', now())->where('approved', 0)->firstOrFail();
+            } catch (\Throwable $th) {
+            return response()->json(['status' => 'failed: Invalid token'], 500);
+            }
             if (Auth::guard('web')->attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
                 /** @var UniUser $user */
                 $user = Auth::user();
                 $token = $user->createToken('auth_token', ['*'], now()->addMinutes(15))->plainTextToken;
-
-                // send a message in a Laravel Reverb WebSocket for the specific fontend.
                 try {
-                    broadcast(new QrLoginSuccess($user->id, $token));
+                    broadcast(new QrLoginSuccess($signInRequest->token, $token));
                 } catch (\Throwable $th) {
                     return response()->json(['status' => 'Error with broadcasting: ' . $th->getMessage()], 500);
                 }
                 $signInRequest->update(['approved' => 1, 'approvedAt' => now()]);
                 $user->update(['validations_id' => $signInRequest->id]);
-                return response()->json(['status' => 'success']);
+                return response()->json(['status' => 'Success']);
             }
         } catch (\Throwable $th) {
-            return response()->json(['status' => 'failed'], 500);
+            return response()->json(['status' => 'Failed'], 500);
         }
     }
 }

@@ -14,18 +14,18 @@ class QrLoginSuccess implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $userId;
-    public $token;
+    public $QRToken;
+    public $Authtoken;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($userId, $token)
+    public function __construct($QRToken, $token)
     {
-        $this->userId = $userId;
-        $this->token = $token;
+        $this->QRToken = $QRToken;
+        $this->Authtoken = $token;
     }
 
     /**
@@ -37,15 +37,14 @@ class QrLoginSuccess implements ShouldBroadcast
     public function broadcastOn()
     {
         return [
-            new Channel('qr-login.40OlKKcLo3zZORKBLtupK5IjI8Ybh9Z1') // . $this->token
+            new Channel('qr-login.' . $this->QRToken)
         ];
     }
     public function broadcastWith(): array
     {
-        Log::info('Broadcasting event:', ['data' => ['userId' => $this->userId, 'token' => $this->token]]);
         return [
-            'userId' => $this->userId,
-            'token' => $this->token
+            'QRToken' => $this->QRToken,
+            'Authtoken' => $this->Authtoken
         ];
     }
     public function broadcastAs()
