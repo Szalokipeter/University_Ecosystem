@@ -16,7 +16,7 @@ echo C:\Users\%USERNAME%\.config\herd-lite\bin\php.ini
 set "PHPINI_PATH=C:\Users\%USERNAME%\.config\herd-lite\bin\php.ini"
 powershell -Command "(Get-Content -LiteralPath '%PHPINI_PATH%') -replace 'variables_order = \"EGPCS\"', 'variables_order = \"GPCS\"' | Set-Content -LiteralPath '%PHPINI_PATH%'"
 start "npm Install" cmd /c "npm install && timeout /t 1 && exit"
-start "Composer Install" cmd /c "composer install && timeout /t 1 && exit"
+start "Composer Install" cmd /c "composer install && timeout /t 1 && php artisan migrate --seed && timeout /t 1 && exit"
 @REM start "Frontend npm Install" cmd /c "cd .. && cd laravel-echo-angular && npm install && timeout /t 1 && exit"
 
 exit
