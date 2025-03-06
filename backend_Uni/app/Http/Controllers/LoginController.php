@@ -132,11 +132,15 @@ class LoginController extends Controller
                 try {
                     broadcast(new QrLoginSuccess($signInRequest->token, $token));
                 } catch (\Throwable $th) {
-                    return response()->json(['status' => 'Error with broadcasting: ' . $th->getMessage()], 500);
+                    return response()->json(['status' => 'Failed, Error with broadcasting: ' . $th->getMessage()], 500);
                 }
                 $signInRequest->update(['approved' => 1, 'approvedAt' => now()]);
                 $user->update(['validations_id' => $signInRequest->id]);
                 return response()->json(['status' => 'Success']);
+
+            }
+            else {
+                return response()->json(['status' => 'Failed: Invalid credentials'], 500);
             }
         } catch (\Throwable $th) {
             return response()->json(['status' => 'Failed'], 500);
