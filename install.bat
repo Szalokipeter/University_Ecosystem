@@ -9,14 +9,15 @@ cd backend_uni
 echo Backend Directory: %cd%
 echo .
 
-echo Installing Backend in 3 seconds...
+echo installing backend in 3 seconds...
 timeout /t 3 >nul
-powershell "# Run as administrator... Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.4'))"
-echo C:\Users\%USERNAME%\.config\herd-lite\bin\php.ini
-set "PHPINI_PATH=C:\Users\%USERNAME%\.config\herd-lite\bin\php.ini"
-powershell -Command "(Get-Content -LiteralPath '%PHPINI_PATH%') -replace 'variables_order = \"EGPCS\"', 'variables_order = \"GPCS\"' | Set-Content -LiteralPath '%PHPINI_PATH%'"
-start "npm Install" cmd /c "npm install && timeout /t 1 && exit"
-start "Composer Install" cmd /c "composer install && timeout /t 1 && php artisan migrate --seed && timeout /t 1 && exit"
-@REM start "Frontend npm Install" cmd /c "cd .. && cd laravel-echo-angular && npm install && timeout /t 1 && exit"
+powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.4'))"
 
-exit
+echo C:\Users\%USERNAME%\.config\herd-lite\bin\php.ini
+set "PHPINI_FOLDER=C:\Users\%USERNAME%\.config\herd-lite\bin"
+set "PHPINI_PATH=%PHPINI_FOLDER%\php.ini"
+powershell -Command "(Get-Content -LiteralPath '%PHPINI_PATH%') -replace 'variables_order = \"EGPCS\"', 'variables_order = \"GPCS\"' | Set-Content -LiteralPath '%PHPINI_PATH%'"
+set "PATH=%PATH%;%PHPINI_FOLDER%"
+start "npm Install" cmd /c "npm i -g concurrently && npm install"
+composer install
+php artisan migrate --seed
