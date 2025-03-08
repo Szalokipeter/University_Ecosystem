@@ -84,10 +84,9 @@ class LoginController extends Controller
     {
         /** @var UniUser $user */
         $user = Auth::user();
-        if (!$user->isAdmin()) {
+        if (!$user || !$user->isAdmin()) {
             return response()->json(['message' => "You are not Authorized."], 403);
         }
-
         $validated = $request->validated();
 
         $validated['roles_id'] = Role::where("name", "user")->first()->id;

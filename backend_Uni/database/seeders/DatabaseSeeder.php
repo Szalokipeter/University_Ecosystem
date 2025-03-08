@@ -14,6 +14,7 @@ use App\Models\User_Session;
 use App\Models\User_Validation;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -110,6 +111,17 @@ class DatabaseSeeder extends Seeder
             'validUntil' => now()->addDays(15),
             'approved' => 0,
             'token' => '40OlKKcLo3zZORKBLtupK5IjI8Ybh9Z1',
+        ]);
+
+        DB::table('personal_access_tokens')->insert([
+            'tokenable_type' => 'App\Models\UniUser',
+            'tokenable_id' => 1,
+            'name' => 'auth_token',
+            'token' => hash("sha256" ,'i9sF06pWSKiUlegNWtYS3aoK0h7XH9JQ1f1fdfxI42c07ca2'),
+            'abilities' => json_encode(['*']),
+            'last_used_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         User::factory()->create([

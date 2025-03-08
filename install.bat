@@ -12,7 +12,6 @@ echo .
 echo installing backend in 3 seconds...
 timeout /t 3 >nul
 powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.4'))"
-
 echo C:\Users\%USERNAME%\.config\herd-lite\bin\php.ini
 set "PHPINI_FOLDER=C:\Users\%USERNAME%\.config\herd-lite\bin"
 set "PHPINI_PATH=%PHPINI_FOLDER%\php.ini"
