@@ -54,7 +54,7 @@ class UserTest extends TestCase
         $response->assertStatus(201);
         $response->assertJson(["message" => "Registration successful"]);
     }
-    public function test_register_error_for_admin_when_not_sending_the_querry_body_correctly(): void
+    public function test_register_gives_422_when_not_all_required_fields_are_provided(): void
     {
         $user = UniUser::find(1);
         $userCredentials = [
@@ -91,13 +91,62 @@ class UserTest extends TestCase
     public function test_edit_user_works_for_admin(): void
     {
         $user = UniUser::find(1);
-        $newUserCredentials = [
+        $editCredentials = [
             "username" => 'asdf',
             "password" => "asdf",
             "password_confirmation" => "asdf"
         ];
-        $response = $this->actingAs($user)->putJson('/api/users/' . 4, $newUserCredentials);
+        $response = $this->actingAs($user)->putJson('/api/users/4', $editCredentials);
         $response->assertStatus(200);
         $response->assertJson(["message" => "Update successful"]);
+    }
+    public function test_edit_user_works_for_user_aka_the_user_can_edit_himself(): void
+    {
+        $user = UniUser::find(3);
+        $editCredentials = [
+            "username" => 'asdf',
+            "password" => "asdf",
+            "password_confirmation" => "asdf"
+        ];
+        $response = $this->actingAs($user)->putJson('/api/users/3', $editCredentials);
+        $response->assertStatus(200);
+        $response->assertJson(["message" => "Update successful"]);
+    }
+    public function test_edit_user_gives_422_when_not_all_required_fields_are_provided(): void
+    {
+        $user = UniUser::find(4);
+        $editCredentials = [
+            "username" => 'asdf',
+            "password" => "asdf",
+        ];
+        $response = $this->actingAs($user)->putJson('/api/users/4', $editCredentials);
+        $response->assertStatus(422);
+    }
+    public function test_edit_user_gives_422_for_admin_when_not_all_required_fields_are_provided(): void
+    {
+        $user = UniUser::find(1);
+        $editCredentials = [
+            "username" => 'asdf',
+            "password" => "asdf",
+        ];
+        $response = $this->actingAs($user)->putJson('/api/users/4', $editCredentials);
+        $response->assertStatus(422);
+    }
+    public function test_edit_user_unathorized_for_someone_that_isnt_logged_in(): void
+    {
+        $editCredentials = [
+            'email' => "asda@asda.com",
+            'username' => 'asda',
+            "password" => "asd"
+        ];
+        $response = $this->putJson('/api/users/3', $editCredentials);
+        $response->assertStatus(401);
+        $response->assertJson(["message" => "Unauthenticated."]);
+    }
+    public function test_qr_code_generation_works(): void
+    {
+        $response = $this->postJson('/api/qrcode/generate');
+        $response->assertStatus(200);
+        $response->assertJsonCount(1);
     }
 }

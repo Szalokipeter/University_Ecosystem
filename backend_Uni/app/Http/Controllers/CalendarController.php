@@ -32,13 +32,12 @@ class CalendarController extends Controller
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
+        if ($validateduser->id !== $user->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
         try {
             $data = $request->validated();
             $data['uni_user_id'] = $user->id;
-            // dd($data);
             $event = Calendar::create($data);
             return response()->json($event, 201);
         } catch (\Throwable $th) {
@@ -66,7 +65,7 @@ class CalendarController extends Controller
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
+        if ($validateduser->id !== $user->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
         try {
@@ -86,7 +85,7 @@ class CalendarController extends Controller
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if ($validateduser->id !== $personalCalendar->uni_user_id && !$validateduser->isAdmin()) {
+        if ($validateduser->id !== $personalCalendar->uni_user_id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
         if(!$personalCalendar->delete()){

@@ -94,7 +94,7 @@ class PublicCalendarController extends Controller
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
         try {
-            if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
+            if ($validateduser->id !== $user->id) {
                 return response()->json(['message' => 'Unauthorized'], 403);
             }
             $sub = Schoolevent_user::where("schoolevent_id", $uniCalendar->id)->where("uni_user_id", $user->id)->get();

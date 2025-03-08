@@ -11,7 +11,7 @@ use Tests\TestCase;
 class NewsTest extends TestCase
 {
     use RefreshDatabase;
-    public function test_get_all_news_endpoint_works(): void
+    public function test_get_all_news_endpoint_works_for_anyone(): void
     {
         $news = News::all();
         $response = $this->getJson('/api/news');
@@ -20,7 +20,7 @@ class NewsTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson($news->toArray());
     }
-    public function test_get_a_single_news_endpoint_works(): void
+    public function test_get_a_single_news_endpoint_works_for_anyone(): void
     {
         $news = News::findOrFail(1);
         $response = $this->getJson('/api/news/1');
@@ -29,7 +29,7 @@ class NewsTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson($news->toArray());
     }
-    public function test_create_news_endpoint_works(): void
+    public function test_create_news_endpoint_works_for_admin(): void
     {
         $news = News::factory()->make();
         $user = UniUser::findOrFail(1);
@@ -47,7 +47,7 @@ class NewsTest extends TestCase
 
         $response->assertJson($newsData);
     }
-    public function test_put_news_endpoint_works(): void
+    public function test_put_news_endpoint_works_for_admin(): void
     {
         $news = News::findOrFail(1);
         $newsData = $news->toArray();
@@ -66,13 +66,11 @@ class NewsTest extends TestCase
         ]);
         $response->assertJson($newsData);
     }
-    public function test_delete_news_endpoint_works(): void
+    public function test_delete_news_endpoint_works_for_admin(): void
     {
         $news = News::findOrFail(1);
         $user = UniUser::findOrFail(1);
         $response = $this->actingAs($user)->deleteJson('/api/news/' . $news->id, $news->toArray());
-        //$newsCount = News::count();
-        //$response->assertJsonCount($newsCount-1);
         $this->assertDatabaseMissing('news', $news->toArray());
         $response->assertStatus(200);
     }

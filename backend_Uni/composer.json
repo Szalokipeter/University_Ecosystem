@@ -11,12 +11,12 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.31",
-        "laravel/pulse": "^1.4",
         "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9"
     },
     "require-dev": {
+        "laravel/pulse": "^1.4",
         "dedoc/scramble": "^0.12.10",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.1",
