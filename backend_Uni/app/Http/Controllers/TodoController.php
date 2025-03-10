@@ -13,33 +13,25 @@ class TodoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Uniuser $user)
+    public function index()
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $todos = Todo::where('uni_user_id', $user->id)->get();
+        $todos = Todo::where('uni_user_id', $validateduser->id)->get();
         return response()->json($todos);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UniUser $user, StoreTodoRequest $request)
+    public function store(StoreTodoRequest $request)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if ($validateduser->id != $user->id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
         try {
             $data = $request->validated();
             $data['status'] = "todo";
-            $data['uni_user_id'] = $user->id;
+            $data['uni_user_id'] = $validateduser->id;
 
             $todo = Todo::create($data);
             return response()->json($todo, 201);
@@ -51,11 +43,11 @@ class TodoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UniUser $user, Todo $personalTodo)
+    public function show(Todo $personalTodo)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if (!$validateduser->isAdmin() &&  ($validateduser->id !== $user->id || $personalTodo->uni_user_id != $validateduser->id)){
+        if ( $personalTodo->uni_user_id != $validateduser->id){
             return response()->json(['message' => 'Unauthorized'], 403);
         }
         return response()->json($personalTodo);
@@ -64,11 +56,11 @@ class TodoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UniUser $user, Todo $personalTodo, UpdateTodoRequest $request)
+    public function update( Todo $personalTodo, UpdateTodoRequest $request)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if ($validateduser->id !== $user->id) {
+        if ($validateduser->id !== $personalTodo->uni_user_id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
         if (!$personalTodo->update($request->validated())) {
@@ -80,7 +72,7 @@ class TodoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UniUser $user, Todo $personalTodo)
+    public function destroy(Todo $personalTodo)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
@@ -91,5 +83,29 @@ class TodoController extends Controller
             return response()->json(["message" => "Todo could not be deleted."], 500);
         }
         return response()->json(["message" => "Todo was deleted."]);
+    }
+
+    public function admin_index(Uniuser $user)
+    {
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if (!$validateduser->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        $todos = Todo::where('uni_user_id', $user->id)->get();
+        return response()->json($todos);
+    }
+
+    public function admin_show(UniUser $user, Todo $personalTodo)
+    {
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if (!$validateduser->isAdmin()){
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        if($user->id !== $personalTodo->uni_user_id){
+            return response()->json(['message' => 'Mismatch in the id given, and the id of the person the Todo belongst to'], 500);
+        }
+        return response()->json($personalTodo);
     }
 }

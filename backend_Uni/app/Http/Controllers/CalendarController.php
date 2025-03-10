@@ -13,31 +13,24 @@ class CalendarController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(UniUser $user)
+    public function index()
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $events = Calendar::where('uni_user_id', $user->id)->get();
+        $events = Calendar::where('uni_user_id', $validateduser->id)->get();
         return response()->json($events);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UniUser $user, StoreCalendarRequest $request)
+    public function store(StoreCalendarRequest $request)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if ($validateduser->id !== $user->id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
         try {
             $data = $request->validated();
-            $data['uni_user_id'] = $user->id;
+            $data['uni_user_id'] = $validateduser->id;
             $event = Calendar::create($data);
             return response()->json($event, 201);
         } catch (\Throwable $th) {
@@ -48,11 +41,11 @@ class CalendarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UniUser $user, Calendar $personalCalendar)
+    public function show(Calendar $personalCalendar)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if (!$validateduser->isAdmin() &&  ($validateduser->id !== $user->id || $personalCalendar->uni_user_id != $validateduser->id)){
+        if (!$validateduser->isAdmin() &&  $personalCalendar->uni_user_id != $validateduser->id){
             return response()->json(['message' => 'Unauthorized'], 403);
         }
         return response()->json($personalCalendar);
@@ -61,11 +54,11 @@ class CalendarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UniUser $user,  Calendar $personalCalendar, UpdateCalendarRequest $request)
+    public function update(Calendar $personalCalendar, UpdateCalendarRequest $request)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
-        if ($validateduser->id !== $user->id) {
+        if ($validateduser->id !== $personalCalendar->uni_user_id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
         try {
@@ -81,7 +74,7 @@ class CalendarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UniUser $user, Calendar $personalCalendar)
+    public function destroy(Calendar $personalCalendar)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
@@ -89,8 +82,32 @@ class CalendarController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
         if(!$personalCalendar->delete()){
-            return response()->json(["message"=>"Todo could not be deleted."], 500);
+            return response()->json(["message"=>"Event could not be deleted."], 500);
         }
-        return response()->json(["message"=>"Todo was deleted."]);
+        return response()->json(["message"=>"Event was deleted."]);
+    }
+
+    public function admin_index(Uniuser $user)
+    {
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if (!$validateduser->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        $events = Calendar::where('uni_user_id', $user->id)->get();
+        return response()->json($events);
+    }
+
+    public function admin_show(UniUser $user, Calendar $personalCalendar)
+    {
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if (!$validateduser->isAdmin()){
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        if($user->id !== $personalCalendar->uni_user_id){
+            return response()->json(['message' => 'Mismatch in the id given, and the id of the person the Event belongst to'], 500);
+        }
+        return response()->json($personalCalendar);
     }
 }

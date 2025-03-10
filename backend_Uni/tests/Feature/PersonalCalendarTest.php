@@ -18,7 +18,7 @@ class PersonalCalendarTest extends TestCase
     {
         $user = UniUser::findOrFail(3);
         $events = Calendar::where("uni_user_id", $user->id)->get();
-        $response = $this->actingAs($user)->getJson('/api/users/' . $user->id . '/personalCalendar');
+        $response = $this->actingAs($user)->getJson('/api/personalCalendar');
         $this->assertNotEmpty($events);
         $response->assertJson($events->toArray());
         $response->assertStatus(200);
@@ -27,7 +27,7 @@ class PersonalCalendarTest extends TestCase
     {
         $user = UniUser::findOrFail(3);
         $event = Calendar::where("uni_user_id", $user->id)->firstOrFail();
-        $response = $this->actingAs($user)->getJson('/api/users/' . $user->id . '/personalCalendar/' . $event->id);
+        $response = $this->actingAs($user)->getJson('/api/personalCalendar/' . $event->id);
         $response->assertStatus(200);
         $this->assertNotEmpty($event);
         $response->assertJson($event->toArray());
@@ -35,36 +35,25 @@ class PersonalCalendarTest extends TestCase
     public function test_cant_get_a_event_of_different_user_as_not_admin(): void
     {
         $user = UniUser::findOrFail(3);
-        $response = $this->actingAs($user)->getJson('/api/users/' . $user->id . '/personalCalendar/4');
+        $response = $this->actingAs($user)->getJson('/api/personalCalendar/4');
         $response->assertStatus(403);
     }
     public function test_get_all_events_of_different_user_as_admin(): void
     {
         $user = UniUser::findOrFail(1);
-        $response = $this->actingAs($user)->getJson('/api/users/3/personalCalendar');
+        $events = Calendar::where($user->id, 'uni_user_id')->get();
+        $response = $this->actingAs($user)->getJson('/api/personalCalendar');
         $response->assertStatus(200);
-        $response->assertJsonIsArray();
+        $response->assertJson($events->toArray());
     }
     public function test_get_a_event_of_different_user_as_admin(): void
     {
         $user = UniUser::findOrFail(1);
         $event = Calendar::where("id", 9)->firstOrFail();
-        $response = $this->actingAs($user)->getJson('/api/users/' . $user->id . '/personalCalendar/9');
+        $response = $this->actingAs($user)->getJson('/api/personalCalendar/9');
         $response->assertStatus(200);
         $this->assertNotEmpty($event);
         $response->assertJson($event->toArray());
-    }
-    public function test_cant_create_an_event_for_a_different_user_even_as_admin(): void
-    {
-        $user = UniUser::findOrFail(1);
-        $eventData = [
-            'title'=> "test",
-            'body' => "test",
-            'event_type' => "test",
-            "dateofevent" => now()
-    ];
-        $response = $this->actingAs($user)->postJson('/api/users/3/personalCalendar', $eventData);
-        $response->assertStatus(403);
     }
     public function test_cant_edit_an_event_of_different_user_even_as_admin(): void
     {
@@ -72,14 +61,14 @@ class PersonalCalendarTest extends TestCase
         $event = Calendar::where("uni_user_id", 3)->firstOrFail();
         $event["title"] = 'test';
         unset($event['created_at'], $event['updated_at']);
-        $response = $this->actingAs($user)->putJson('/api/users/' . $event->uni_user_id . '/personalCalendar/9', $event->toArray());
+        $response = $this->actingAs($user)->putJson('/api/personalCalendar/9', $event->toArray());
         $response->assertStatus(403);
     }
     public function test_cant_delete_an_event_of_a_different_user_even_as_admin(): void
     {
         $user = UniUser::findOrFail(1);
         $event = Calendar::where("uni_user_id", 3)->firstOrFail();
-        $response = $this->actingAs($user)->deleteJson('/api/users/3/personalCalendar/' . $event->id);
+        $response = $this->actingAs($user)->deleteJson('/api/personalCalendar/' . $event->id);
         $response->assertStatus(403);
     }
     public function test_user_create_an_event_for_himself_successfully(): void
@@ -88,7 +77,7 @@ class PersonalCalendarTest extends TestCase
         $user = UniUser::findOrFail(3);
         $eventData = $event->toArray();
         $eventData['dateofevent'] = now();
-        $response = $this->actingAs($user)->postJson('/api/users/' . $user->id . '/personalCalendar', $eventData);
+        $response = $this->actingAs($user)->postJson('/api/personalCalendar', $eventData);
         $response->assertStatus(201);
         unset($eventData['created_at'], $eventData['updated_at']);
         $response->assertJsonFragment($eventData);
@@ -99,7 +88,7 @@ class PersonalCalendarTest extends TestCase
         $event = Calendar::where("uni_user_id", 3)->firstOrFail();
         $event["title"] = 'test';
         unset($event['created_at'], $event['updated_at']);
-        $response = $this->actingAs($user)->putJson('/api/users/' . $event->uni_user_id . '/personalCalendar/' . $event->id, $event->toArray());
+        $response = $this->actingAs($user)->putJson('/api/personalCalendar/' . $event->id, $event->toArray());
         $response->assertStatus(200);
         $response->assertJsonFragment($event->toArray());
     }
@@ -107,7 +96,7 @@ class PersonalCalendarTest extends TestCase
     {
         $user = UniUser::findOrFail(3);
         $event = Calendar::where("uni_user_id", 3)->firstOrFail();
-        $response = $this->actingAs($user)->deleteJson('/api/users/' . $event->uni_user_id . '/personalCalendar/' . $event->id, $event->toArray());
+        $response = $this->actingAs($user)->deleteJson('/api/personalCalendar/' . $event->id, $event->toArray());
         $this->assertDatabaseMissing('calendars', $event->toArray());
         $response->assertStatus(200);
     }
