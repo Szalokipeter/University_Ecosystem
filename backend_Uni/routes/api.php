@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('personalCalendar', CalendarController::class); // ez a route minden tag számára elérhető (controller ellenőrzi hogy saját maga vagy admin)
     Route::apiResource('personalTodos', TodoController::class); // ez a route minden tag számára elérhető (controller ellenőrzi hogy saját maga vagy admin)
     Route::apiResource('uniCalendar', PublicCalendarController::class)->except(['index','show']); // ez a route vegyesen érhető el, a get minden tag számára elérhető, a post,put,delete az csak Admin vagy oktató számára érhető el.
-    Route::post("uniCalendar/{uniCalendar}/signup/{user}", [PublicCalendarController::class, "signUpForEvent"]); // ez a route minden tag számára elérhető
+    Route::post("uniCalendar/{uniCalendar}/signup", [PublicCalendarController::class, "signUpForEvent"]); // ez a route minden tag számára elérhető
 
     Route::get('admin/users/{user}/personalTodos', [TodoController::class, 'admin_index']);
     Route::get('admin/users/{user}/personalTodos/{personalTodo}', [TodoController::class, 'admin_show']);
