@@ -23,7 +23,7 @@ Route::middleware([StartSession::class])->group(function () {
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('logout', [LoginController::class, 'logout']); //ez a route bárki számára használható aki be van jelentkezve
     Route::put('users/{user}', [LoginController::class, 'editUser']); //ez a route csak admin-ok vagy a saját user számára használható
-    Route::post('register', [LoginController::class, 'register']); //ez a route csak admin-ok számára használható
+    Route::post('admin/register', [LoginController::class, 'register']); //ez a route csak admin-ok számára használható
 
     Route::apiResource('personalCalendar', CalendarController::class); // ez a route minden tag számára elérhető (controller ellenőrzi hogy saját maga vagy admin)
     Route::apiResource('personalTodos', TodoController::class); // ez a route minden tag számára elérhető (controller ellenőrzi hogy saját maga vagy admin)

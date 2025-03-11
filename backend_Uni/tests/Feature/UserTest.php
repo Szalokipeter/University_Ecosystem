@@ -50,7 +50,7 @@ class UserTest extends TestCase
             "username" => 'asdf',
             "password" => "asdf"
         ];
-        $response = $this->actingAs($user)->postJson('/api/register', $userCredentials);
+        $response = $this->actingAs($user)->postJson('/api/admin/register', $userCredentials);
         $response->assertStatus(201);
         $response->assertJson(["message" => "Registration successful"]);
     }
@@ -62,7 +62,7 @@ class UserTest extends TestCase
             "username" => 'asd',
             "password" => "asd"
         ];
-        $response = $this->actingAs($user)->postJson('/api/register', $userCredentials);
+        $response = $this->actingAs($user)->postJson('/api/admin/register', $userCredentials);
         $response->assertStatus(422);
     }
     public function test_register_unathorized_for_students(): void
@@ -73,7 +73,7 @@ class UserTest extends TestCase
             'username' => 'asda',
             "password" => "asda"
         ];
-        $response = $this->actingAs($user)->postJson('/api/register', $registerCredentials);
+        $response = $this->actingAs($user)->postJson('/api/admin/register', $registerCredentials);
         $response->assertStatus(403);
         $response->assertJson(["message" => "You are not Authorized."]);
     }
@@ -84,7 +84,7 @@ class UserTest extends TestCase
             'username' => 'asda',
             "password" => "asd"
         ];
-        $response = $this->postJson('/api/register', $registerCredentials);
+        $response = $this->postJson('/api/admin/register', $registerCredentials);
         $response->assertStatus(401);
         $response->assertJson(["message" => "Unauthenticated."]);
     }
