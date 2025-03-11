@@ -74,5 +74,29 @@ class NewsTest extends TestCase
         $this->assertDatabaseMissing('news', $news->toArray());
         $response->assertStatus(200);
     }
-
+    public function test_create_news_endpoint_dosent_work_for_user(): void
+    {
+        $news = News::factory()->make();
+        $user = UniUser::findOrFail(3);
+        $response = $this->actingAs($user)->postJson('/api/news', $news->toArray());
+        $response->assertStatus(403);
+    }
+    public function test_update_news_endpoint_dosent_work_for_user(): void
+    {
+        $news = News::findOrFail(1);
+        $newsData = $news->toArray();
+        unset($newsData['created_at'], $newsData['updated_at']);
+        $newsData['title'] = 'test';
+        $newsData['body'] = 'test';
+        $user = UniUser::findOrFail(3);
+        $response = $this->actingAs($user)->putJson('/api/news/' . $news->id, $news->toArray());
+        $response->assertStatus(403);
+    }
+    public function test_delete_news_endpoint_dosent_work_for_user(): void
+    {
+        $news = News::findOrFail(1);
+        $user = UniUser::findOrFail(3);
+        $response = $this->actingAs($user)->deleteJson('/api/news/' . $news->id);
+        $response->assertStatus(403);
+    }
 }
