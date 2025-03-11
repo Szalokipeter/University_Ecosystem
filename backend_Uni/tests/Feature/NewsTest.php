@@ -80,6 +80,7 @@ class NewsTest extends TestCase
         $user = UniUser::findOrFail(3);
         $response = $this->actingAs($user)->postJson('/api/news', $news->toArray());
         $response->assertStatus(403);
+        $this->assertDatabaseMissing('news', $news->toArray());
     }
     public function test_update_news_endpoint_dosent_work_for_user(): void
     {
