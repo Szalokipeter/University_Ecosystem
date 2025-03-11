@@ -17,6 +17,6 @@ set "PHPINI_FOLDER=C:\Users\%USERNAME%\.config\herd-lite\bin"
 set "PHPINI_PATH=%PHPINI_FOLDER%\php.ini"
 powershell -Command "(Get-Content -LiteralPath '%PHPINI_PATH%') -replace 'variables_order = \"EGPCS\"', 'variables_order = \"GPCS\"' | Set-Content -LiteralPath '%PHPINI_PATH%'"
 set "PATH=%PATH%;%PHPINI_FOLDER%"
-start "npm Install" cmd /c "npm i -g concurrently && npm install"
+start "npm Install" cmd /c "npm i concurrently dotenv-cli && npm install"
 composer install
 php artisan migrate --seed
