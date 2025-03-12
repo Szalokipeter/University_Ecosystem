@@ -1,0 +1,19 @@
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# Ignore package manager lock files (optional, if not using a monorepo approach)
+package-lock.json
+yarn.lock
+
+# Ignore .env files at the root level
+.env
+.env.local
+.env.test
+.env.production
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,10 +1,27 @@
-Day 2
-Fixed npm vulnerability for no real reason other that its existence bothered me
-Customized vsc for ease of work with angular, also syncing with git profile
-Set up jest for unit testing but kept jasmine and karma in case I need to test real browser behaviours like browser APIs and whatnot (window.localStorage, CanvasRenderingContext2D...)
-Realized the header needs no unit testing since the only real functionality within the comonent ts will be a defferable view for the email prompt, desplaying it on an if clicked trigger. Not sure if this is at all necceserry btw I just like the idea of it and should make things load just a little bit faster, though this (considering the prompt whiel a component of its own is a mere form) will likely be a minescule change. Still fun though.
+# Day 2  
 
-Sarted working on the actual header comp
-We have a header... doing nothing for now whiel only being a line of text but hey all setup is working
-Having async problems with the e2e... I think -> second describe cant seem to access variables
-So global variables work a little differently than I thought. No matter we are now using cy.env for environment variables. Also had to rewrite checkInViewport a little. Onto rewriting the get logic.
+### ✅ Fixed npm Vulnerability  
+- Resolved an npm vulnerability—no real reason other than its existence bothering me.  
+
+### 🎨 Customized VS Code  
+- Configured VS Code for easier Angular development.  
+- Synced settings with my Git profile.  
+
+### 🧪 Set Up Jest for Unit Testing  
+- Installed **Jest** for unit testing.  
+- Kept **Jasmine & Karma** for testing real browser behaviors (e.g., `window.localStorage`, `CanvasRenderingContext2D`).  
+
+### 🤔 Realization: No Need for Header Unit Tests  
+- The header's **only functionality** is a **deferred email prompt view** triggered by a click.  
+- Not strictly necessary, but should slightly improve load performance.  
+- Still fun to implement!  
+
+### 🏗️ Started Working on the Header Component  
+- We have a **header!** …doing nothing for now, just a line of text.  
+- But hey, all setups are working! 🚀  
+
+### 🐛 Debugging E2E Async Issues  
+- **Second `describe` block** couldn't access variables—thought it was an async issue.  
+- Turns out **global variables** work differently than expected.  
+- Switched to `cy.env` for environment variables.  
+- Rewrote `checkInViewport`, now onto **rewriting the get logic**!  

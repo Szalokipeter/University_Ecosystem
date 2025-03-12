@@ -1,0 +1,15 @@
+{
+    "name": "uni-project",
+    "private": true,
+    "scripts": {
+      "install-all": "npm install --prefix backend_Uni && npm install --prefix frontend_Uni && composer install --working-dir=backend_Uni",
+      "start-backend": "cd backend_Uni && php artisan serve",
+      "start-frontend": "cd frontend_Uni && npm start",
+      "seed-db": "cd backend_Uni && php artisan migrate:fresh --seed",
+      "test-cypress": "cd frontend_Uni && npx cypress run",
+      "start-all": "concurrently \"npm run start-backend\" \"npm run start-frontend\" \"npm run test-cypress || exit 0\""
+    },
+    "devDependencies": {
+      "concurrently": "^8.2.0"
+    }
+  }
