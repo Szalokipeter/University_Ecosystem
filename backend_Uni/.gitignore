@@ -7,6 +7,8 @@
 /storage/pail
 /vendor
 .env
+.env.test
+.env.cypress
 .env.backup
 .env.production
 .phpactor.json

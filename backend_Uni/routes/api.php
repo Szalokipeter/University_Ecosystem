@@ -8,6 +8,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PublicCalendarController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -45,3 +46,14 @@ Route::apiResource("news", NewsController::class)->only(['index', 'show']); // e
 Route::any("have-to-login", function(){
     return response()->json(["message"=>"Has to log in to access this function."], 401);
 });
+
+if (app()->environment('cypress')) {
+    Route::post('/test/reset-database', function () {
+        try {
+            Artisan::call('migrate:fresh --seed');
+            return response()->json(['status' => 'success']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'error', 'message' => $th->getMessage()]);
+        }
+    });
+}

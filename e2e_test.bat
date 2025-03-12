@@ -1,11 +1,6 @@
 @echo off
 title Tesing Environment
-cd backend_uni
-start "Migrating DB..." cmd /c dotenv -e .env.test -- php artisan migrate:fresh --seed
-echo dotenv loading...
-echo Press Enter to Continue
-pause >nul
-cd ..
+
 cd laravel-echo-angular
-npx concurrently "dotenv -e .env.test -- ng serve" "dotenv -e .env.test -- npx cypress open" "cd .. && cd backend_uni && php artisan serve" "cd ../backend_uni && php artisan reverb:start"
+npx concurrently "dotenv -e .env.cypress -- ng serve --host 127.0.0.1" "npx cypress open --config baseUrl=http://127.0.0.1:4200" "cd .. && cd backend_uni && php artisan serve --env=cypress --port=8000" "cd ../backend_uni && php artisan reverb:start"
 pause >nul
