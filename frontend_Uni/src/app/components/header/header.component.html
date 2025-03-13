@@ -24,11 +24,23 @@
           <a href="#majors" data-cy="services-link">Majors</a>
         </li>
         <li>
+          @if (!this.authService.loggedInUser) {
+          <a routerLink="login" routerLinkActive="selected">Login</a>
+          } @else {
+           <div class="user-menu" > <!--onclick="toggleDropdown()" -->
+            <a>{{ this.authService.loggedInUser.username }}</a>
+            <div class="dropdown" id="dropdownMenu">
+              <a href="#" (click)="this.authService.logout()">Kijelentkezés</a>
+            </div>
+          </div>
+          }
+        </li>
+        <!-- <li>
           <a href="/student" data-cy="contact-link">For Students</a>
         </li>
         <li>
           <a href="/teacher" data-cy="contact-link">For Teachers</a>
-        </li>
+        </li> -->
       </ul>
     </div>
   </div>

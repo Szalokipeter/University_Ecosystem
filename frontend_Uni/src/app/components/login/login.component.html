@@ -1,0 +1,22 @@
+<div class="modal">
+  <div class="container">
+    <div class="login-container">
+        <h2>Bejelentkezés</h2>
+        <input type="email" name="email" id="email" placeholder="Email" [(ngModel)]="model.email">
+        <input type="password" name="password" id="password" placeholder="Jelszó" [(ngModel)]="model.password">
+        <button (click)="login()">Belépés</button>
+        <button (click)="showQrCode()">Qr kód mutatása</button>
+
+        @if (this.errorMessage) {
+            <div class="error-message" id="error-msg">{{errorMessage}}</div>
+        }
+    </div>
+  </div>
+  @if(this.qrtoken){
+    {{this.qrtoken}}
+          <img [src]="this.qrtoken" alt="asd">
+        }
+        @else{
+          asdadasdasd
+        }
+</div>
