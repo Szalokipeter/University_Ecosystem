@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { LaravelEchoService } from '../../services/laravel-echo.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -16,7 +18,8 @@ export class LoginComponent {
   };
   qrtoken : string | undefined = undefined;
   errorMessage = '';
-  constructor(private authService: AuthService, private router: Router) {}
+  private channel : any;
+  constructor(private authService: AuthService, private echoService: LaravelEchoService ,private router: Router) {}
 
   login() {
     if (!this.model.email || !this.model.password) {
@@ -44,10 +47,18 @@ export class LoginComponent {
     this.authService.generateQrCode().subscribe({
       next: (response) => {
         if (response) {
-          console.log(`response: ${response}`);
+          console.log(`qrcode-token: ${response}`);
           let baseuri = `https://api.qrserver.com/v1/create-qr-code/?data=${response}&size=300x300`;
           this.qrtoken = baseuri;
-
+          this.channel = this.echoService.getChannel(`qr-login.${response}`);
+          console.log(this.channel);
+          this.channel.listen('.qr-login-success', (data: any) => {
+            console.log('Üzenet érkezett:', data);
+            // marker for frontend
+          });
+          this.channel.error((error: any) => {
+            console.error('Channel error:', error);
+          });
         } else {
           this.errorMessage = 'Hiba.';
         }
@@ -56,5 +67,10 @@ export class LoginComponent {
         this.errorMessage = error.error.message ?? error.message;
       },
     });
+  }
+  ngOnDestroy(): void {
+    if (this.channel) {
+      this.channel.stopListening('.qr-login-success');
+    }
   }
 }
