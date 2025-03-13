@@ -89,15 +89,12 @@ class PublicCalendarController extends Controller
             return response()->json(["message" => "Could not delete Public Calendar Event."], 500);
         }
     }
-    public function signUpForEvent(PublicCalendar $uniCalendar, UniUser $user)
+    public function signUpForEvent(PublicCalendar $uniCalendar)
     {
         /** @var UniUser $validateduser */
         $validateduser = Auth::user();
         try {
-            if (!$validateduser->isAdmin() && $validateduser->id !== $user->id) {
-                return response()->json(['message' => 'Unauthorized'], 403);
-            }
-            $sub = Schoolevent_user::where("schoolevent_id", $uniCalendar->id)->where("uni_user_id", $user->id)->get();
+            $sub = Schoolevent_user::where("schoolevent_id", $uniCalendar->id)->where("uni_user_id", $validateduser->id)->get();
             if(count($sub) !== 0){
                 $sub[0]->delete();
                 return response()->json(["message" => "Unsubscribed from event."], 200);
@@ -105,7 +102,7 @@ class PublicCalendarController extends Controller
             else {
                 $data = new Schoolevent_user();
                 $data->schoolevent_id = $uniCalendar->id;
-                $data->uni_user_id = $user->id;
+                $data->uni_user_id = $validateduser->id;
                 $data->save(); // Tried doing it the usual way, only this worked.
                 return response()->json(["message" => "Subscribed to event."], 201);
             }

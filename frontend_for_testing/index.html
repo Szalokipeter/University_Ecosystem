@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel Echo with Reverb</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #messages {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/laravel-echo/dist/echo.iife.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/7.0.3/pusher.min.js"></script>
+
+    <h1>Laravel Echo with Reverb</h1>
+    <p>Beérkező üzenetek:</p>
+    <div id="messages"></div>
+
+    <script>
+        const messagesDiv = document.getElementById('messages');
+
+        // Fontos: Ellenőrizd, hogy az Echo szkript betöltődött-e!
+        if (typeof Echo === "undefined") {
+            console.error("Hiba: Az Echo szkript nincs betöltve!");
+        } else {
+            // Inicializáld az Echo-t
+            window.Echo = new Echo({
+                broadcaster: 'reverb',
+                key: 'zlzpfxhovyobija8w1il', // 🠖 IDE ÍRD A .env-beli REVERB_APP_KEY értékét!
+                wsHost: 'localhost',
+                wsPort: 8080,  // 🠖 Alapértelmezett Reverb port
+                wssPort: 443,
+                forceTLS: false,
+                enabledTransports: ['ws', 'wss'],
+            });
+        }
+
+        // Csatlakozás a csatornához
+        window.Echo.channel('qr-login.40OlKKcLo3zZORKBLtupK5IjI8Ybh9Z1')
+            .listen('.qr-login-success', (data) => {
+                console.log('Üzenet érkezett:', data);
+                addMessage(JSON.stringify(data));
+            });
+    </script>
+</body>
+
+</html>

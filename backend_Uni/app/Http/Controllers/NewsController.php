@@ -76,6 +76,12 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
+        /** @var UniUser $user */
+        $user = Auth::user();
+        if(!$user->isAdmin() && !$user->isTeacher())
+        {
+            return response()->json(['message' =>"You are not Authorized."], 403);
+        }
         if(!$news) {
             return response()->json(['message' => 'News not found.'], 404);
         }

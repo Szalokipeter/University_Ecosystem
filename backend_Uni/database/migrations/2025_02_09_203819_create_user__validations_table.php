@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user__validations', function (Blueprint $table) {
             $table->id();
             $table->date('validUntil');
-            $table->date('approvedAt');
+            $table->date('approvedAt')->nullable();
             $table->boolean('approved');
             $table->string('token');
             //$table->timestamps();
