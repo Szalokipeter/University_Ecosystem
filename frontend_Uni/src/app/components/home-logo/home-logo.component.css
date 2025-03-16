@@ -1,21 +1,34 @@
 img {
-  width: 80px;
-  height: auto;
-  margin-right: 1rem;
+  height: 95px;
+  width: 95px;
 }
 
-div > div {
+div:first-of-type {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: fit-content;
+}
+
+div.logo-text {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
-h1 {
+h1 {  
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 31px;  
+  line-height: 49px;
+  font-family: 'Lora', serif;
+  color: var(--secondary-color);
 }
 
 p {
-  margin: 0;
-  font-size: 1rem;
-  color: #555;
+  font-size: 15px;
+  line-height: 26px;
+  font-family: 'Lora', serif;
+  color: var(--secondary-color);
 }

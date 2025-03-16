@@ -1,47 +1,27 @@
-<Header data-cy="header">
-  <div class="wrapper">
-    <a href="/" data-cy="home-link">
-      <app-home-logo data-cy="home-logo"></app-home-logo>
-    </a>
-  </div>
-  <div class="wrapper" data-cy="menu">
-    <div>
-      <div class="social-links" data-cy="social-links">...</div>
-      <div class="btn-wrapper">
-        <button class="primarry">Mobile App</button>
+<header data-cy="header">
+  <div class="header">
+    <app-home-logo></app-home-logo>
+
+    <div class="menu">
+      <nav class="nav nav--secondary">
+        <div class="social-icons">
+          <img src="/social/email.png" alt="Facebook" />
+          <img src="/social/twitter.png" alt="Twitter" />
+          <img src="/social/instagram.png" alt="LinkedIn" />
+        </div>
+        <a id="app-btn" class="btn btn-primary btn--square">Mobile App</a>
+      </nav>
+
+      <div class="separator">
+        <div class="bookmark"></div>
       </div>
-    </div>
-    <hr />
-    <div class="nav">
-      <ul class="nav-links">
-        <li>
-          <a href="#news" data-cy="about-link">News</a>
-        </li>
-        <li>
-          <a href="#about" data-cy="about-link">About</a>
-        </li>
-        <li>
-          <a href="#majors" data-cy="services-link">Majors</a>
-        </li>
-        <li>
-          @if (!this.authService.loggedInUser) {
-          <a routerLink="login" routerLinkActive="selected">Login</a>
-          } @else {
-           <div class="user-menu" > <!--onclick="toggleDropdown()" -->
-            <a>{{ this.authService.loggedInUser.username }}</a>
-            <div class="dropdown" id="dropdownMenu">
-              <a href="#" (click)="this.authService.logout()">Kijelentkezés</a>
-            </div>
-          </div>
-          }
-        </li>
-        <!-- <li>
-          <a href="/student" data-cy="contact-link">For Students</a>
-        </li>
-        <li>
-          <a href="/teacher" data-cy="contact-link">For Teachers</a>
-        </li> -->
-      </ul>
+
+      <nav class="nav nav--primary">
+        <a href="#">News</a>
+        <a href="#">About us</a>
+        <a href="#">Courses</a>
+        <a href="#">Login</a>
+      </nav>
     </div>
   </div>
-</Header>
+</header>
