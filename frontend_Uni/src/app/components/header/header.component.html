@@ -1,4 +1,4 @@
-<header data-cy="header">
+<!-- <header data-cy="header">
   <div class="header">
     <app-home-logo></app-home-logo>
 
@@ -23,5 +23,42 @@
         <a href="#">Login</a>
       </nav>
     </div>
+  </div>
+</header> -->
+
+<header class="header" data-cy="header">
+  <div class="contain contain--xl" style="background-color: red">
+    <a href="/" class="header__logo">
+      <app-home-logo></app-home-logo>
+    </a>
+  </div>
+  <div class="header__menus">
+    <nav class="nav nav--primary">
+      <ul class="nav__menu nav__menu--level-0">
+        <li
+          class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
+        >
+          <a class="nav__menu-link" href="#news">News</a>
+        </li>
+        <li
+          class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
+        >
+          <a class="nav__menu-link" href="#about">About us</a>
+        </li>
+        <li
+          class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
+        >
+          <a class="nav__menu-link" href="#courses">Courses</a>
+        </li>
+        <li
+          class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
+        >
+          <a class="nav__menu-link" href="/login">Login</a>
+        </li>
+      </ul>
+    </nav>
+    <nav class="nav nav--secondary">
+      <a class="btn btn--primary btn--square" href="/login">Mobile App</a>
+    </nav>
   </div>
 </header>
