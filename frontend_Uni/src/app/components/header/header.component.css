@@ -5,14 +5,12 @@
   z-index: 100;
   background: transparent;
   height: 77px;
-  transform: translate3d(0, 0, 0);
 }
 
 .contain {
   max-width: 1315px;
   padding: 0 20px;
-  width: 100%;
-  margin: auto;
+  margin: 0 auto;
 }
 
 .header > .contain {
@@ -64,7 +62,7 @@
 .nav__menu-link {
   display: block;
   padding: 24px 80px 24px 30px;
-  font-size: 1.1875rem;
+  font-size: var(--font-size-medium);
   color: #000;
   text-decoration: none;
   position: relative;
@@ -89,7 +87,7 @@
     margin: 0;
   }
   .header__menus {
-    position: static;
+    position: relative;
     visibility: visible;
     height: auto;
     overflow: visible;
@@ -138,7 +136,7 @@
     content: "/";
     position: absolute;
     right: 0;
-    font-size: 1rem;
+    font-size: var(--font-size-medium);
     color: var(--secondary-color);
     opacity: 0.75;
     pointer-events: none;
@@ -154,7 +152,7 @@
     font-family: "poppins", sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: 1rem;
+    font-size: var(--font-size-medium);
     font-weight: bold;
   }
   .nav__menu-link {
@@ -169,8 +167,8 @@
   }
   .nav--secondary .nav__menu--level-0 {
     position: absolute;
-    top: 2.5px;
-    right: 200px;
+    bottom: -3.5px;
+    right: 180px;
     pointer-events: none;
     z-index: 2;
   }
@@ -178,6 +176,19 @@
     padding: 15px;
     height: 30px;
     width: 30px;
+  }
+
+  .header:not(.header--extended) .header__logo {
+    width: 235px;
+  }
+  
+  .nav--secondary {
+    right: 15px;
+  }
+  
+  .header:not(.header--extended) .nav--secondary {
+    top: calc(-100% - 20px);
+    pointer-events: initial;
   }
 }
 
@@ -191,13 +202,13 @@
     padding-bottom: 15px;
   }
   .header:not(.header--extended) .header__logo {
-    width: 250px;
+    width: 310px;
   }
   .header:not(.header--extended) .header__menus::before {
     content: "";
     position: absolute;
     right: 0;
-    width: calc(100% - 320px);
+    width: calc(100% - 330px);
     height: 1px;
     background-color: #dfdfdf;
     opacity: 0.7;
@@ -215,9 +226,11 @@
   .header:not(.header--extended) .header__menus li {
     pointer-events: initial;
   }
+  .contain {
+    width: calc(100% - 40px);
+  }
   .header:not(.header--extended) .nav--secondary {
-    top: calc(-100% - 15px);
-    pointer-events: initial;
+    top: calc(-100% - 12px);
   }
 }
 
@@ -229,11 +242,17 @@
   .header:not(.header--extended) .header__logo {
     width: 310px;
   }
+  .header:not(.header--extended) .header__menus::before {
+    width: calc(100% - 310px);
+  }
   .header__menus {
     padding-left: 0;
     padding-right: 0;
   }
   .nav--secondary {
     right: 0;
+  }
+  .contain {
+    width: 100%;
   }
 }

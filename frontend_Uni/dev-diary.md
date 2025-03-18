@@ -37,3 +37,20 @@
 
 ### I get it! I finally get it, I know how to make the header now!!! It will be beautiful! Exectly the same but just like so much better!!!!!!!!!!
 I may or may not have been toying around with pseudo elements the whole weekend...
+
+# Day 4 (not really)
+
+### Started working on header responsibility:
+States done:
+- 1640px base state therefore minimal changes
+- 1400px
+    - fixed overflow issue
+    - set font sizes as global variables and reset accordingly
+    - changed font size in menu -> changed btn absolute coordinates -> properly centered social imgs (To be noted is that this centering contains a -3.6px. I do not no where this 3.6px comes from but is neccessery)
+    - adjusted .btn global settings
+    - set 'poppin' as base font for 'p' tags (rule is to be expanded during development)
+    - added some general touchups throughout header.component.css (will likely have to move some further settings around as I expand on the rules)
+- 1024px
+    - moved logo up above separator
+    - moved some rules back a layer from 1400
+    - .nav--secondary also got moved up by a 7px, no major changes overall
