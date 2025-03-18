@@ -169,9 +169,10 @@
   }
   .nav--secondary .nav__menu--level-0 {
     position: absolute;
-    bottom: 50%;
-    transform: translateY(50%);
+    top: 2.5px;
     right: 200px;
+    pointer-events: none;
+    z-index: 2;
   }
   .nav__menu--level-0 .nav__menu-item img {
     padding: 15px;
