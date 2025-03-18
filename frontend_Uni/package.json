@@ -58,7 +58,8 @@
     "typescript": "~5.7.2"
   },
   "overrides": {
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "@babel/runtime": "^7.26.10"
   },
   "jest": {
     "preset": "jest-preset-angular",
