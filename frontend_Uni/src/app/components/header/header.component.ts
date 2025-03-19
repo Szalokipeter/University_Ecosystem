@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { HomeLogoComponent } from '../home-logo/home-logo.component';
 import { AuthService } from '../../services/auth.service';
 import { RouterModule } from '@angular/router';
@@ -14,10 +14,17 @@ export class HeaderComponent {
 
   toggle_menu(event: MouseEvent) {
     const button = event.target as HTMLButtonElement;    
-    if (button.classList.contains('header__toggle-menu--active')) {
-      button.classList.remove('header__toggle-menu--active')  
-    } else {
-      button.classList.add('header__toggle-menu--active');
+    button.classList.toggle('header__toggle-menu--active');
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    if (window.innerWidth >= 1024) {
+      const toggleButton = document.querySelector('.header__toggle-btn');
+
+      if (toggleButton) {
+        toggleButton.classList.remove('header__toggle-menu--active');
+      }
     }
   }
 }
