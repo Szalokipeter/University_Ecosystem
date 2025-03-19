@@ -3,7 +3,7 @@
     <a href="/" class="header__logo">
       <app-home-logo></app-home-logo>
     </a>
-    <button class="header__toggle-btn header__toggle-btn--menu">
+    <button class="header__toggle-btn header__toggle-btn--menu" (click)="toggle_menu($event)">
       <img src="/icons/menu-open.png" alt="Open Menu" class="menu-icon open">
       <img src="/icons/menu-close.png" alt="Close Menu" class="menu-icon close">
     </button>

@@ -11,4 +11,13 @@ import { RouterModule } from '@angular/router';
 })
 export class HeaderComponent {
   constructor(public authService: AuthService) {}
+
+  toggle_menu(event: MouseEvent) {
+    const button = event.target as HTMLButtonElement;    
+    if (button.classList.contains('header__toggle-menu--active')) {
+      button.classList.remove('header__toggle-menu--active')  
+    } else {
+      button.classList.add('header__toggle-menu--active');
+    }
+  }
 }
