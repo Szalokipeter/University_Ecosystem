@@ -13,12 +13,17 @@
   color: var(--secondary-color);
 }
 
-.logo-text h1 {
+.component__holder .logo-text h1 {
   margin: 0;
+  font-size: var(--font-size-large);
 }
-
-.logo-text p {
+.component__holder .logo-text p {
   margin: 0;
+  font-size: var(--font-size-small);
+}
+.logo__img {
+  height: 55px;
+  width: 44px;
 }
 
 .logo-text p span {
@@ -34,20 +39,6 @@
   font-style: italic;
   padding: 0 3px;
 }
-
-@media (min-width: 768px) {
-  .component__holder .logo-text h1 {
-    font-size: var(--font-size-large);
-  }
-  .component__holder .logo-text p {
-    font-size: var(--font-size-small);
-  }
-  .logo__img {
-    height: 55px;
-    width: 44px;
-  }
-}
-
 
 @media (min-width: 1400px) {
   .component__holder .logo-text h1 {

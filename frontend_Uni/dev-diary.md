@@ -54,3 +54,7 @@ States done:
     - moved logo up above separator
     - moved some rules back a layer from 1400
     - .nav--secondary also got moved up by a 7px, no major changes overall
+
+# Day 5
+Ladies and Gentelman we have a header! The hamburger will still need some further styling but overall I'm quite happy with it.
+It was quite the struggle what with the last issue #26 being quite irritating to figure out, but the fix was quite easy overall.

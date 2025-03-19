@@ -28,6 +28,15 @@ html body {
   padding: 0;
 }
 
+/* Toggled by header's  header__toggle-btn, and part of settings affecting hamburger menu*/
+.menu-opened {
+  overflow-y: hidden;
+}
+.menu-opened .header__menus {
+  visibility: visible !important;
+  height: auto !important;
+}
+
 .btn {
   border: none;
   border-radius: 32px;
@@ -78,4 +87,11 @@ button {
   border-radius: 0;
   min-width: 0;
   padding: 20px;
+}
+
+@media (max-width: 1023px) {
+  .menu-opened .header {
+    height: 100% !important;
+    overflow-y: auto !important;
+  }
 }
