@@ -35,7 +35,7 @@
   padding: 0 3px;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .component__holder .logo-text h1 {
     font-size: var(--font-size-large);
   }
@@ -47,6 +47,7 @@
     width: 44px;
   }
 }
+
 
 @media (min-width: 1400px) {
   .component__holder .logo-text h1 {

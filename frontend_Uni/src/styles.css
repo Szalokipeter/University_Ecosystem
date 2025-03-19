@@ -53,6 +53,14 @@ a, input[type="button"], input[type="submit"], input[type="reset"], button {
   text-decoration: none;
 }
 
+button {
+  appearance: none;
+  border: 0;
+  font-family: "Poppins",sans-serif;
+  background: none;
+  padding: 0;
+}
+
 .nav--secondary .btn {
   margin: 30px 0 30px 30px;
 }
