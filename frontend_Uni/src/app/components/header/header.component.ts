@@ -1,11 +1,11 @@
 import { Component, HostListener, Renderer2 } from '@angular/core';
 import { HomeLogoComponent } from '../home-logo/home-logo.component';
 import { AuthService } from '../../services/auth.service';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [HomeLogoComponent, RouterModule],
+  imports: [HomeLogoComponent, RouterModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })

@@ -1,22 +1,38 @@
-<div class="modal">
-  <div class="container">
-    <div class="login-container">
-        <h2>Bejelentkezés</h2>
-        <input type="email" name="email" id="email" placeholder="Email" [(ngModel)]="model.email">
-        <input type="password" name="password" id="password" placeholder="Jelszó" [(ngModel)]="model.password">
-        <button (click)="login()">Belépés</button>
-        <button (click)="showQrCode()">Qr kód mutatása</button>
+<div class="login-wrapper">
+  <div class="login-container">
+    <h2>Login</h2>
+    <form (ngSubmit)="login()">
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Enter your email address"
+          [(ngModel)]="model.email"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Enter your password"
+          [(ngModel)]="model.password"
+          required
+        />
+      </div>
+      <button type="submit" class="btn-primary">Login</button>
+    </form>
+    <button (click)="showQrCode()" class="btn-secondary">Show QR Code</button>
 
-        @if (this.errorMessage) {
-            <div class="error-message" id="error-msg">{{errorMessage}}</div>
-        }
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <div *ngIf="qrtoken" class="qr-container">
+      <p>Scan this QR code:</p>
+      <img [src]="qrtoken" alt="QR Code" />
     </div>
   </div>
-  @if(this.qrtoken){
-    {{this.qrtoken}}
-          <img [src]="this.qrtoken" alt="asd">
-        }
-        @else{
-          asdadasdasd
-        }
 </div>
