@@ -24,15 +24,46 @@
           required
         />
       </div>
-      <button type="submit" class="btn-primary">Login</button>
+      <button type="submit" class="btn btn-primary">Login</button>
     </form>
-    <button (click)="showQrCode()" class="btn-secondary">Show QR Code</button>
+    <button (click)="showQrCode()" class="btn btn-secondary">Show QR Code</button>
 
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
     <div *ngIf="qrtoken" class="qr-container">
       <p>Scan this QR code:</p>
       <img [src]="qrtoken" alt="QR Code" />
+    </div>
+    <div class="close__img-wrapper">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="close__img"
+        [routerLink]="['']"
+        routerLinkActive="router-link-active"
+      >
+        <line
+          x1="5"
+          y1="5"
+          x2="19"
+          y2="19"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="19"
+          y1="5"
+          x2="5"
+          y2="19"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
     </div>
   </div>
 </div>
