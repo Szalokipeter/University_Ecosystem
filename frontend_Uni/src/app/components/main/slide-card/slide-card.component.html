@@ -1,0 +1,10 @@
+<div
+  class="card"
+  [ngStyle]="{
+        'background': 'linear-gradient(to top, rgba(102, 2, 60, 0.7), rgba(102, 2, 60, 0)), url(' + background + ') center center no-repeat',
+        'background-size': 'cover',
+        'background-position': 'center center'
+    }"
+>
+  <h1 [attr.data-topic]="topic">{{ title }}</h1>
+</div>

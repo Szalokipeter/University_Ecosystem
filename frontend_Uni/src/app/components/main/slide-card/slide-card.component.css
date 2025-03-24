@@ -1,0 +1,48 @@
+.card {
+  position: relative;
+  width: calc(100% - 40px);
+  height: 800px;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  color: var(--secondary-color);
+  transition: transform 0.5s ease-in-out;
+}
+
+.card h1 {
+  position: absolute;
+  right: 24px;
+  max-width: 500px;
+  bottom: 130px;
+  font-size: 24px;
+  margin: 0;
+  padding: 10px;
+}
+
+.card h1::before {
+  content: attr(data-topic);
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  color: var(--secondary-color);
+  opacity: 0.8;
+  display: block;
+}
+
+.card h1::after {
+  content: "";
+  display: block;
+  width: 35px;
+  height: 3px;
+  background: var(--secondary-color);
+  opacity: 55%;
+  margin-top: 5px;
+}
+
+@media screen and (min-width: 1640px) {
+  .card h1 {
+    right: calc((100% - 1600px) / 2);
+  }
+}

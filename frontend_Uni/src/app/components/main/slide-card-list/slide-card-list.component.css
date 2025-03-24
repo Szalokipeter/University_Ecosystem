@@ -1,0 +1,44 @@
+.list-wrapper {
+  width: 100%;
+  position: relative; 
+}
+
+.slider-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 300%;
+}
+
+.slide {
+  width: 100%;
+}
+
+.nav-dots {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-dots span {
+  width: 135px;
+  height: 10px;
+  margin: 0 5px;
+  border-radius: 3px;
+  background: var(--secondary-color);
+  opacity: 0.55;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.nav-dots .active {
+  opacity: 0.8;
+}

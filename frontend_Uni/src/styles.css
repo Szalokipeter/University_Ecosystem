@@ -1,5 +1,6 @@
 :root {
   --primary-color: #66023C;
+  --primary-color-rgb: 102, 2, 60;
   --secondary-color: #fff4e9;
   --secondary-color-rgb: 255, 244, 233;
   --primary-action-color: #E38946;
@@ -24,7 +25,7 @@ p {
 }
 
 html body {
-  background-color: #000;  
+  background-color: var(--secondary-color);  
   margin: 0;
   padding: 0;
 }
@@ -36,6 +37,11 @@ html body {
 .menu-opened .header__menus {
   visibility: visible !important;
   height: auto !important;
+}
+
+main .view--wrapper {
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .btn {

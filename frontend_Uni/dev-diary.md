@@ -58,3 +58,10 @@ States done:
 # Day 5
 Ladies and Gentelman we have a header! The hamburger will still need some further styling but overall I'm quite happy with it.
 It was quite the struggle what with the last issue #26 being quite irritating to figure out, but the fix was quite easy overall.
+
+# Day x
+So how the general layout is going to work is like so:
+- All views will have a div.view--wrapper as top element
+- In style.css as general style the main .view--wrapper will get the max-width: 1600px and margin: 0 auto;
+- Further views/main top element will also have a .view__main--wrapper. We will have no specific rules, for this class only the lac of it. So .view--wrapper:not(.view__main--wrapper), allowing us to set as general style rule the top shifts required so the view compoents don't collide with the header. This is unnecessery in the case of view/main as we start with slidcards that start from the top almost granting a background for the header.
+- This later point of giving background to the header will mean a small issue when turning to the other views as the lack of it will mean all text will blend with the page background of same color. Will likely use the same solution as for the scrolling header (sticky).

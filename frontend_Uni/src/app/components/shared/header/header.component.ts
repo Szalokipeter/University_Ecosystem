@@ -1,6 +1,6 @@
 import { Component, HostListener, Renderer2 } from '@angular/core';
 import { HomeLogoComponent } from '../home-logo/home-logo.component';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
