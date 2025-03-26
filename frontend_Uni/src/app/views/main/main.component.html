@@ -1,3 +1,23 @@
 <div class="view--wrapper view__main--wrapper">
-    <app-slide-card-list></app-slide-card-list>
+  <app-slide-card-list></app-slide-card-list>
+
+  <div class="news-wrapper">
+    <h1>News</h1>
+    <div class="news-container">
+      <app-news-card
+        *ngFor="let news of newsList"
+        [news]="news"
+      ></app-news-card>
+    </div>
+
+    <div class="pagination-controls">
+      <button (click)="prevPage()" [disabled]="currentPage === 1">
+        Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+        Next
+      </button>
+    </div>
+  </div>
 </div>
