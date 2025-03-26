@@ -1,39 +1,44 @@
 <div class="login-wrapper">
   <div class="login-container">
-    <h2>Login</h2>
-    <form (ngSubmit)="login()">
-      <div class="input-group">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Enter your email address"
-          [(ngModel)]="model.email"
-          required
-        />
-      </div>
-      <div class="input-group">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Enter your password"
-          [(ngModel)]="model.password"
-          required
-        />
-      </div>
-      <button type="submit" class="btn btn-primary">Login</button>
-    </form>
-    <button (click)="showQrCode()" class="btn btn-secondary">Show QR Code</button>
+    <div>
+      <h2>Login</h2>
+      <form (ngSubmit)="login()">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Enter your email address"
+            [(ngModel)]="model.email"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter your password"
+            [(ngModel)]="model.password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+      <button (click)="showQrCode()" class="btn btn-secondary">
+        Show QR Code
+      </button>
 
-    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    </div>
 
     <div *ngIf="qrtoken" class="qr-container">
-      <p>Scan this QR code:</p>
       <img [src]="qrtoken" alt="QR Code" />
+      <p>Use the PanMobile app to sign in via QR code</p>
     </div>
+
     <div class="close__img-wrapper">
       <svg
         width="24"
