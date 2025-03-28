@@ -13,8 +13,8 @@
 
   <app-news-focus    
     *ngIf="activeNews"
+    [newsList]="newsList"
     [activeNews]="activeNews"
-    [otherNews]="otherNews"
     (closeFocus)="closeFocus()"
     (cardClicked)="onCardClick($event)"
   >

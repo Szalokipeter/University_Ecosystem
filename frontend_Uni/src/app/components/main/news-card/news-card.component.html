@@ -1,5 +1,5 @@
 <div class="news-card">
-  <h3 class="news-title">{{ news.title }}</h3>
-  <p class="news-body">{{ news.body }}</p>
-  <p class="news-date">Published: {{ formattedDate }}</p>
+  <h3 class="news-title">{{ news.title }}</h3>  
+  <p class="news-body" *ngIf="!isSmallCard">{{ news.body }}</p>
+  <p class="news-date" *ngIf="!isSmallCard">Published: {{ formattedDate }}</p>
 </div>

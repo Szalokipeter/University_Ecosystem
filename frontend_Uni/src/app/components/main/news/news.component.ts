@@ -75,8 +75,5 @@ export class NewsComponent {
   onCardClick(news: News) {
     this.activeNews = news;
   }
-
-  get otherNews(): News[] {
-    return this.newsList.filter((n) => n !== this.activeNews);
-  }
+  
 }
