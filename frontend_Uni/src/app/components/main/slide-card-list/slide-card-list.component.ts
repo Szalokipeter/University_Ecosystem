@@ -31,16 +31,24 @@ export class SlideCardListComponent {
   activeIndex = 0;
 
   private slideInterval!: Subscription;
+  private readonly slideIntervalTime = 8000;
 
   ngOnInit() {
-    // Start the interval to change the slide every 3 seconds (3000ms)
-    this.slideInterval = interval(8000).subscribe(() => {
+    this.startSlideInterval();
+  }
+
+  ngOnDestroy() {
+    this.clearSlideInterval();
+  }
+
+  startSlideInterval(): void {
+    this.clearSlideInterval();
+    this.slideInterval = interval(this.slideIntervalTime).subscribe(() => {
       this.nextSlide();
     });
   }
 
-  ngOnDestroy() {
-    // Clean up the subscription to prevent memory leaks
+  private clearSlideInterval(): void {
     if (this.slideInterval) {
       this.slideInterval.unsubscribe();
     }
@@ -48,13 +56,16 @@ export class SlideCardListComponent {
 
   nextSlide() {
     this.activeIndex = (this.activeIndex + 1) % this.cards.length;
+    this.startSlideInterval();
   }
 
   prevSlide() {
     this.activeIndex = (this.activeIndex - 1 + this.cards.length) % this.cards.length;
+    this.startSlideInterval();
   }
 
   setActive(index: number) {
     this.activeIndex = index;
+    this.startSlideInterval();
   }
 }
