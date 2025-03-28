@@ -18,9 +18,5 @@ export class NewsCardComponent implements OnInit {
       month: 'long',
       day: 'numeric'
     });
-
-    this.truncatedBody = this.news.body.length > 120 
-      ? this.news.body.substring(0, 120) + '...'
-      : this.news.body;
   }
 }

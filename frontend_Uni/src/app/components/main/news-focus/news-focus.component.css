@@ -1,0 +1,26 @@
+.focused-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.active-card {
+  position: absolute;
+  width: 80%;
+  height: 300px;
+  background: yellow;
+  z-index: 10;
+}
+
+.small-cards-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  margin-top: 320px;
+}
+
+.news-card.small {
+  width: 120px;
+  height: 80px;
+  flex-shrink: 0;
+}
