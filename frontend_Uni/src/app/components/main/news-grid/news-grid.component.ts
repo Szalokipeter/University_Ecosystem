@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 import { News } from '../../../models/news.model';
 import { NgFor, NgIf } from '@angular/common';
 import { NewsCardComponent } from '../news-card/news-card.component';
@@ -7,11 +13,11 @@ import { NewsCardComponent } from '../news-card/news-card.component';
   selector: 'app-news-grid',
   imports: [NgFor, NewsCardComponent, NgIf],
   templateUrl: './news-grid.component.html',
-  styleUrl: './news-grid.component.css'
+  styleUrl: './news-grid.component.css',
 })
 export class NewsGridComponent {
   @Input() newsList: News[] = [];
-  @Input() currentPage: number = 1; 
+  @Input() currentPage: number = 1;
   @Input() totalPages: number = 1;
   @Output() cardClicked = new EventEmitter<News>();
   @Output() nextPage = new EventEmitter();

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { News } from '../../../models/news.model';
 import { DataService } from '../../../services/data.service';
 import { NewsGridComponent } from '../news-grid/news-grid.component';
@@ -9,7 +9,7 @@ import { NgIf } from '@angular/common';
   selector: 'app-news',
   imports: [NewsGridComponent, NewsFocusComponent, NgIf],
   templateUrl: './news.component.html',
-  styleUrl: './news.component.css'
+  styleUrl: './news.component.css',
 })
 export class NewsComponent {
   allNewsList: News[] = [];
@@ -27,18 +27,23 @@ export class NewsComponent {
     this.dataService.getNews().subscribe({
       next: (response: News[]) => {
         this.allNewsList = response;
-        this.totalPages = Math.ceil(this.allNewsList.length / this.itemsPerPage);
+        this.totalPages = Math.ceil(
+          this.allNewsList.length / this.itemsPerPage
+        );
         this.updateNewsList();
       },
       error: (error: any) => {
         console.error(error);
-      }
+      },
     });
   }
 
   updateNewsList() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    this.newsList = this.allNewsList.slice(startIndex, startIndex + this.itemsPerPage);
+    this.newsList = this.allNewsList.slice(
+      startIndex,
+      startIndex + this.itemsPerPage
+    );
   }
 
   nextPage() {
@@ -72,6 +77,6 @@ export class NewsComponent {
   }
 
   get otherNews(): News[] {
-    return this.newsList.filter(n => n !== this.activeNews);
+    return this.newsList.filter((n) => n !== this.activeNews);
   }
 }
