@@ -2,6 +2,10 @@
   display: block; /* Important for nth-child to work */
 }
 
+:host(.active) .close-button {
+  display: block !important;
+}
+
 /* class dependent sizing for focus view */
 :host.active .news-card {
   position: absolute;
@@ -100,6 +104,13 @@
 
 .news-card:hover {
   cursor: pointer;
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
 }
 
 :host:not(.active) .news-card:hover::before {

@@ -6,6 +6,7 @@
       [class.active]="isActiveNews(news)"
       [class.small]="!isActiveNews(news)"
       (click)="onCardClick(news)"
+      (closed)="close()"
     >
     </app-news-card>
   </div>  

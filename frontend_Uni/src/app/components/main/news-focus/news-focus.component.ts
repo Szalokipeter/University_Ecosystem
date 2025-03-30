@@ -17,6 +17,7 @@ export class NewsFocusComponent {
 
   close() {
     this.closeFocus.emit();
+    console.log('close emited');
   }
 
   onCardClick(news: News) {
