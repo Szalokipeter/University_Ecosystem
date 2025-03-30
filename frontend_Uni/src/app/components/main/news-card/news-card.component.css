@@ -15,6 +15,10 @@
 :host.active .news-card::after {
   height: 0;
 }
+:host.active .news-card::before {
+  content: '';
+  background: none;
+}
 :host.active .news-card:hover {
   cursor: default;
 }

@@ -3,100 +3,6 @@
   width: 100%;
 }
 
-/* .news-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-}
-
-.news-wrapper h1 {
-  align-self: flex-start;
-  margin-left: 10px;
-}
-
-.news-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  width: 100%;
-}
-
-app-news-card {
-  flex: 1 1 calc(33.33% - 20px);
-  max-width: 350px;
-  min-width: 280px;
-  transition: transform 0.3s ease-in-out;
-  cursor: pointer;
-}
-
-.news-container.focus-mode {
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-app-news-card.focused {
-  transform: scale(1.6);
-  z-index: 2;
-  flex: 1 1 100%;
-}
-
-.news-container.focus-mode app-news-card.small {
-  flex: 1 1 calc(16.66% - 10px);
-  max-width: 180px;
-  opacity: 0.7;
-}
-
-.close-focus {
-  padding: 10px 15px;
-  border: none;
-  background-color: red;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-  width: 100px;
-  margin-bottom: 10px;
-}
-
-.close-focus:hover {
-  background-color: darkred;
-}
-
-.pagination-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.pagination-controls button {
-  padding: 10px 15px;
-  border: none;
-  background-color: var(--primary-action-color);
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-  width: 100px;
-}
-
-.pagination-controls button:disabled {
-  background-color: gray;
-  cursor: not-allowed;
-}
-
-.pagination-controls span {
-  font-size: 1.1rem;
-  font-weight: bold;
-} */
-
 .section--wrapper {
   width: 90%;
   max-width: 1400px;
@@ -107,6 +13,15 @@ app-news-card.focused {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.section--content {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
 }
 
 .section__header--container .section__header {
@@ -127,7 +42,7 @@ app-news-card.focused {
   display: flex;
   flex-direction: row;
   gap: 20px;
-  justify-content: space-between; /* Keeps them side by side */
+  justify-content: space-between;
   align-items: flex-start;
 }
 
@@ -160,7 +75,6 @@ app-news-card.focused {
   justify-content: center;
 }
 
-/* Responsive Design */
 @media screen and (max-width: 1024px) {
   .section__body--container {
     flex-direction: column;
@@ -175,7 +89,7 @@ app-news-card.focused {
 
 @media screen and (max-width: 768px) {
   .news__section--container {
-    grid-template-columns: 1fr; /* Single column for smaller screens */
+    grid-template-columns: 1fr;
   }
 
   .temp-content {
