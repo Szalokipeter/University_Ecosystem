@@ -14,22 +14,22 @@
   width: calc(100% - 48px);
   max-width: 900px;
   height: 300px;
-  border-right: none;  
+  border-right: none;
 }
 :host.active .news-card::after {
   height: 0;
 }
 :host.active .news-card::before {
-  content: '';
+  content: "";
   background: none;
 }
 :host.active .news-card:hover {
   cursor: default;
 }
-:host.active .news-card .news-title {  
+:host.active .news-card .news-title {
   font-size: var(--font-size-xl);
 }
-:host.active .news-card .news-title::after {
+:host.active .news-card .news-title::before {
   margin-top: 15px;
 }
 :host.active .news-card .news-body {
@@ -55,8 +55,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-:host.small .news-card .news-title::after {
-  position: absolute;  
+:host.small .news-card .news-title::before {
+  position: absolute;
   left: 50%;
   bottom: 15px;
   transform: translateX(-50%);
@@ -122,25 +122,29 @@
   font-weight: bold;
   margin-bottom: 0.5rem;
   color: var(--secondary-action-color);
+  position: relative;
 }
 
-.news-title::after {
+.news-title::before {
   content: "";
-  display: block;
   width: 3ch;
   height: 5px;
   background: #dfdfdf;
   opacity: 55%;
-  margin-top: 10px;
+  position: absolute;
+  bottom: 0;
 }
 
 .news-body {
   font-size: var(--font-size-medium);
   color: #555;
   margin-bottom: 1rem;
-  overflow: hidden;
   display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .news-date {
@@ -148,7 +152,7 @@
   color: #888;
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   .news-card {
     border-right: 1px solid #dfdfdf;
     max-width: 215px;
@@ -163,12 +167,45 @@
   .news-card {
     width: 275px;
     height: 225px;
-  }  
+  }
+} */
+
+@media screen and (min-width: 768px) {
 }
 
-@media (min-width: 1400px) {
+@media screen and (min-width: 1024px) {
+}
+
+@media screen and (min-width: 1400px) {
   .news-card {
     max-width: 320px;
     height: 275px;
-  }  
+  }
+  .news-card .news-title {
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .news-body {
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media screen and (min-width: 1640px) {
+  .news-card .news-title {
+    display: block;
+  }
+  .news-body {
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+  }
+
 }

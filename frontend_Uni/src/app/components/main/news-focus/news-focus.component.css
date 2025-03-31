@@ -11,7 +11,7 @@
   position: absolute;
   display: block;
   left: 0;
-  bottom: 0;  
+  bottom: 0;
   width: 1px;
   height: calc(100% - 369px);
   background: #dfdfdf;
@@ -21,8 +21,23 @@
   position: absolute;
   display: block;
   right: 0;
-  bottom: 0;  
+  bottom: 0;
   width: 1px;
   height: calc(100% - 369px);
   background: #dfdfdf;
+}
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 1024px) {
+
+}
+
+@media screen and (min-width: 1400px) {
+}
+
+@media screen and (min-width: 1640px) {
+
 }

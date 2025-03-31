@@ -1,12 +1,10 @@
 .calendar-container {
   font-family: Poppins, sans-serif;
-  max-width: 1200px;
   padding: 24px;
-  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+  width: calc(100% - 48px);
   border-radius: 8px;
 }
 
-/* Loading and Error States */
 .loading-spinner,
 .error-message {
   display: flex;
@@ -48,7 +46,6 @@
   border-radius: 4px;
   color: var(--primary-action-color);
 }
-
 /* Calendar Grid */
 .calendar-grid {
   display: flex;
@@ -168,4 +165,22 @@
 
 .calendar-event[style*="background-color:#9c27b0"] {
   background-color: #9c27b0; /* default */
+}
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 1024px) {
+
+}
+
+@media screen and (min-width: 1400px) {
+  .calendar-container {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (min-width: 1640px) {
+
 }

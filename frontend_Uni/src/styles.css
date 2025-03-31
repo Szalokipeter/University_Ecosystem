@@ -17,13 +17,14 @@
 
 h1 {
   font-family: "Lora", serif;
-  font-optical-sizing: auto;  
+  font-optical-sizing: auto;
 }
 
 .section__header {
   font-size: 44.5px;
   font-weight: 500;
-  color: var(--secondary-action-color);  
+  color: var(--secondary-action-color);
+  margin-left: 24px;
 }
 
 .section__header::after {
@@ -42,7 +43,7 @@ p {
 }
 
 html body {
-  background-color: #fff;  
+  background-color: #fff;
   margin: 0;
   padding: 0;
 }

@@ -1,10 +1,10 @@
-.view__main--wrapper {  
+.view__main--wrapper {
   max-width: unset;
   width: 100%;
 }
 
 .section--wrapper {
-  width: 90%;
+  width: 100%;
   max-width: 1400px;
   position: relative;
   top: 0;
@@ -24,75 +24,21 @@
   position: relative;
 }
 
-.section__header--container .section__header {
-  color: var(--secondary-action-color);
+@media screen and (min-width: 768px) {
+
 }
 
-.section__header--container .section__header::after {
-  content: "";
-  display: block;
-  width: 2ch;
-  height: 5px;
-  background: var(--secondary-color);
-  opacity: 55%;
-  margin-top: 5px;
+@media screen and (min-width: 768px) {
+
 }
 
-.section__body--container {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  justify-content: space-between;
-  align-items: flex-start;
+@media screen and (min-width: 1024px) {
+
 }
 
-.news__section--container {
-  background-color: blue;
-  width: 60%;
-  height: auto;
-  display: grid;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  
+@media screen and (min-width: 1400px) {
 }
 
-.calendar__section--container {
-  background-color: red;
-  width: calc(40% - 20px);
-  min-width: 280px;
-  height: calc(150px * 2 + 30px);
-}
+@media screen and (min-width: 1640px) {
 
-.temp-content {
-  height: 200px;
-  width: 300px;
-  margin: 10px;
-  background-color: green;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media screen and (max-width: 1024px) {
-  .section__body--container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .news__section--container, 
-  .calendar__section--container {
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .news__section--container {
-    grid-template-columns: 1fr;
-  }
-
-  .temp-content {
-    width: 100%;
-  }
 }

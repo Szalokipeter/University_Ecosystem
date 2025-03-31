@@ -1,3 +1,18 @@
 .news-container {
   position: relative;
 }
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 1024px) {
+
+}
+
+@media screen and (min-width: 1400px) {
+}
+
+@media screen and (min-width: 1640px) {
+
+}
