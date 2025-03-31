@@ -70,11 +70,10 @@ export class NewsComponent {
 
   closeFocus() {
     this.activeNews = null;
-    console.log(`closeFocus called, activeNews = ${this.activeNews}`);
   }
 
   onCardClick(news: News) {
     this.activeNews = news;
   }
-  
+
 }

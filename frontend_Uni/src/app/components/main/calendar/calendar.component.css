@@ -49,10 +49,6 @@
   color: var(--primary-action-color);
 }
 
-.calendar-header button:hover {
-  background-color: #f0f0f0;
-}
-
 /* Calendar Grid */
 .calendar-grid {
   display: flex;

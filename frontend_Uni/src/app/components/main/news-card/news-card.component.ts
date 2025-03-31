@@ -53,6 +53,5 @@ export class NewsCardComponent implements OnInit {
 
   closeCard() {
     this.closed.emit();
-    console.log('close card emited');
   }
 }
