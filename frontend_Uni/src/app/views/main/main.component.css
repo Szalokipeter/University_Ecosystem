@@ -4,7 +4,7 @@
 }
 
 .section--wrapper {
-  width: 100%;
+  width: calc(100% - 50px);
   max-width: 1400px;
   position: relative;
   top: 0;
@@ -13,32 +13,39 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  padding: 25px;
+  padding-bottom: 0;
 }
 
 .section--content {
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   position: relative;
 }
 
 @media screen and (min-width: 768px) {
-
+  .section--content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 @media screen and (min-width: 768px) {
-
 }
 
 @media screen and (min-width: 1024px) {
-
 }
 
 @media screen and (min-width: 1400px) {
+  .section--wrapper {
+    width: 100%;
+    padding: 0;
+  }
 }
 
 @media screen and (min-width: 1640px) {
-
 }

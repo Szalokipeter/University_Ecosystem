@@ -1,7 +1,7 @@
 .card {
   position: relative;
   width: calc(100% - 40px);
-  height: 800px;
+  height: calc(100vh - 40px);
   background-size: cover;
   background-position: center center;
   position: relative;
@@ -39,6 +39,12 @@
   background: var(--secondary-color);
   opacity: 55%;
   margin-top: 5px;
+}
+
+@media screen and (min-width: 1240px) {
+  .card {
+    max-height: 850px;
+  }
 }
 
 @media screen and (min-width: 1640px) {

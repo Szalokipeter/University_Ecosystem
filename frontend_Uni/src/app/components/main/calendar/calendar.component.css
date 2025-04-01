@@ -1,7 +1,7 @@
 .calendar-container {
   font-family: Poppins, sans-serif;
   padding: 24px;
-  width: calc(100% - 48px);
+  max-width: calc(100vw - 98px);
   border-radius: 8px;
 }
 
@@ -64,7 +64,7 @@
 
 .calendar-day-header {
   flex: 1;
-  padding: 12px 0;
+  padding: 4px 0;
   text-align: center;
   border-right: 1px solid #e0e0e0;
 }
@@ -90,7 +90,7 @@
   padding: 8px;
   border-right: 1px solid #e0e0e0;
   position: relative;
-  min-height: 75px;
+  min-height: 55px;
   width: 55px;
   background-color: white;
 }
@@ -168,7 +168,9 @@
 }
 
 @media screen and (min-width: 768px) {
-
+  .calendar-container {
+    max-width: calc(100% - 48px);
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -178,6 +180,12 @@
 @media screen and (min-width: 1400px) {
   .calendar-container {
     max-width: 1200px;
+  }
+  .calendar-day-header {
+    padding: 12px 0;
+  }
+  .calendar-day {
+    min-height: 75px;
   }
 }
 

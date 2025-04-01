@@ -7,6 +7,7 @@
   border-left: 1px solid #dfdfdf;
   border-right: 1px solid #dfdfdf;
   max-width: calc(369px + 368px);
+  margin: 0;
   margin-left: 24px;
 }
 
@@ -49,17 +50,20 @@
   background: #dfdfdf;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 768px) {
+  .news-grid {
+    justify-content: flex-start;
+  }
+}
 
+@media screen and (min-width: 769px) {
 }
 
 @media screen and (min-width: 1024px) {
-
 }
 
 @media screen and (min-width: 1400px) {
 }
 
 @media screen and (min-width: 1640px) {
-
 }

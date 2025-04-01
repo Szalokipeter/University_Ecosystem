@@ -3,10 +3,12 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnInit,
   Output,
+  Renderer2,
 } from '@angular/core';
 import { News } from '../../../models/news.model';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, NgClass } from '@angular/common';
 import { NewsCardComponent } from '../news-card/news-card.component';
 
 @Component({
@@ -15,13 +17,33 @@ import { NewsCardComponent } from '../news-card/news-card.component';
   templateUrl: './news-grid.component.html',
   styleUrl: './news-grid.component.css',
 })
-export class NewsGridComponent {
+export class NewsGridComponent implements OnInit {
   @Input() newsList: News[] = [];
   @Input() currentPage: number = 1;
   @Input() totalPages: number = 1;
   @Output() cardClicked = new EventEmitter<News>();
   @Output() nextPage = new EventEmitter();
   @Output() prevPage = new EventEmitter();
+
+  isSmall = false;
+
+  constructor(private renderer: Renderer2) {}
+
+  ngOnInit(): void {
+    this.isSmall = window.innerWidth <= 1400;
+    console.log(`Initial isSmall: ${this.isSmall}`);
+  }
+
+
+
+  @HostListener('window:resize')
+  onResize() {
+    const newIsSmall = window.innerWidth <= 1400;
+
+    if (newIsSmall !== this.isSmall) {
+      this.isSmall = newIsSmall;
+    }
+  }
 
   onCardClick(news: News) {
     this.cardClicked.emit(news);

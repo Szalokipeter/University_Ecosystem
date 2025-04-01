@@ -2,6 +2,7 @@
   <app-news-card
     *ngFor="let news of newsList"
     [news]="news"
+    [class.small]="isSmall"
     (click)="onCardClick(news)"
   >
   </app-news-card>
