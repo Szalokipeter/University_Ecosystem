@@ -1,13 +1,15 @@
 <div class="news-card">
-  <button *ngIf="showCloseButton" 
-          mat-icon-button 
-          class="close-button" 
+  <button *ngIf="showCloseButton"
+          mat-icon-button
+          class="close-button"
           (click)="closeCard()"
           aria-label="Close news card">
     <mat-icon>close</mat-icon>
   </button>
 
-  <h3 class="news-title">{{ news.title }}</h3>  
+  <h3 class="news-title">
+    <span>{{ news.title }}</span>
+  </h3>
   <p class="news-body" *ngIf="!isSmallCard">{{ news.body }}</p>
   <p class="news-date" *ngIf="!isSmallCard">Published: {{ formattedDate }}</p>
 </div>
