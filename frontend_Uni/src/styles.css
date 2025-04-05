@@ -20,6 +20,11 @@ h1 {
   font-optical-sizing: auto;
 }
 
+/* .header.headroom--not-top h1,
+.header.headroom--not-top p {
+  color: var(--primary-color);
+} */
+
 .section__header {
   font-size: 39px;
   font-weight: 500;

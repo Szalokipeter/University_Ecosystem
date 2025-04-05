@@ -7,6 +7,10 @@
   height: 77px;
 }
 
+.header.headroom--not-top {
+  background-color: var(--primary-color);
+}
+
 .contain {
   max-width: 1315px;
   padding: 0 20px;
@@ -14,7 +18,9 @@
 }
 
 .header > .contain {
-  padding-top: 20px;
+  border: 0;
+  padding-top: 40px;
+  padding-bottom: 15px;
   z-index: -1;
   position: relative;
 }
@@ -71,7 +77,6 @@
   letter-spacing: 1px;
   font-size: var(--font-size-medium);
   font-weight: bold;
-
 }
 
 .nav__menu--level-0 .nav__menu-item img {
@@ -91,9 +96,8 @@
   transform: translate(-50%, -50%);
 }
 
-.header__toggle-btn:not(.header__toggle-menu--active)
-  > img:first-of-type {
-  visibility: visible;  
+.header__toggle-btn:not(.header__toggle-menu--active) > img:first-of-type {
+  visibility: visible;
 }
 
 .header__toggle-menu--active > img:last-of-type {
@@ -136,17 +140,16 @@ img {
     padding-bottom: 10px;
   }
   .nav__menu--level-0 > .nav__menu-item:last-child .nav__menu-link {
-    border-bottom: 1px solid #DFDFDF;
+    border-bottom: 1px solid #dfdfdf;
   }
   .nav--secondary .nav__menu--level-0 {
     padding: 9px 65px 9px 15px;
-    border-bottom: 1px solid #DFDFDF;
-  }  
+    border-bottom: 1px solid #dfdfdf;
+  }
 }
 
 @media (min-width: 1024px) {
   .header {
-    position: absolute;
     height: 145px;
   }
   .header__logo {
@@ -161,6 +164,9 @@ img {
     margin: auto;
     background: none;
   }
+  .headroom--not-top .header__menus {
+    border-bottom: 2px solid rgba(223, 223, 223, 0.7);
+  }  
   .nav--primary {
     margin-top: 10px;
     border-top: 2px solid rgba(223, 223, 223, 0.65);
@@ -171,13 +177,6 @@ img {
   }
   .nav__menu--level-0 > .nav__menu-item {
     position: static;
-  }
-  .nav__menu--level-0 > .nav__menu-item > .nav__menu-link::after,
-  .nav__menu--level-0 > .nav__menu-item .nav__menu-link--children::after {
-    border: 0;
-    color: #007269;
-    text-transform: uppercase;
-    letter-spacing: 1px;
   }
   .nav__menu--level-0 > .nav__menu-item > .nav__menu-link::before,
   .nav__menu--level-0 > .nav__menu-item .nav__menu-link--children::before {
@@ -206,6 +205,13 @@ img {
     color: var(--secondary-color);
     opacity: 0.75;
     pointer-events: none;
+  }
+  .headroom--not-top
+    .nav__menu--level-0
+    > .nav__menu-item
+    > .nav__menu-link::after {
+    color: #dfdfdf;
+    opacity: 1;
   }
 
   .nav__menu--level-0 > .nav__menu-item:last-of-type > .nav__menu-link::after {
@@ -259,11 +265,6 @@ img {
 @media (min-width: 1400px) {
   .header {
     height: 130px;
-  }
-  .header:not(.headroom--not-top) > .contain {
-    border: 0;
-    padding-top: 40px;
-    padding-bottom: 15px;
   }
   .header .header__logo {
     width: 310px;

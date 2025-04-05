@@ -1,4 +1,4 @@
-import { Component, HostListener, Renderer2 } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { HomeLogoComponent } from '../home-logo/home-logo.component';
 import { AuthService } from '../../../services/auth.service';
 import { RouterLink, RouterModule } from '@angular/router';
@@ -9,8 +9,34 @@ import { RouterLink, RouterModule } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   constructor(public authService: AuthService, private renderer: Renderer2) {}
+
+  ngOnInit() {
+    this.checkScrollPosition();
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.checkScrollPosition();
+  }
+
+  private checkScrollPosition = this.debounce(() => {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 10) {
+      this.renderer.addClass(header, 'headroom--not-top');
+    } else {
+      this.renderer.removeClass(header, 'headroom--not-top');
+    }
+  }, 50);
+  
+  private debounce(func: Function, wait: number) {
+    let timeout: any;
+    return (...args: any[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
 
   toggle_menu(event: MouseEvent) {
     const button = event.target as HTMLButtonElement;
