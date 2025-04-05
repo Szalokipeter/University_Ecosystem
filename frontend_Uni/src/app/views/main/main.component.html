@@ -8,11 +8,19 @@
     </div>
   </div>
   <div class="section--wrapper">
+    <div class="color--separator"></div>
     <h1 class="section__header">Upcoming Events</h1>
     <div class="section--content section--content__events">
       <div class="upcoming-events__grid">
-        <app-event-card *ngFor="let event of upcomingEvents" [event]="event"></app-event-card>
+        <app-event-card
+          *ngFor="let event of upcomingEvents"
+          [event]="event"
+        ></app-event-card>
       </div>
     </div>
+  </div>
+  <div class="section--wrapper">
+    <h1 class="section__header">About Us</h1>
+    <div class="section--content"></div>
   </div>
 </div>
