@@ -1,11 +1,18 @@
 <div class="view--wrapper view__main--wrapper">
   <app-slide-card-list></app-slide-card-list>
-
   <div class="section--wrapper">
     <h1 class="section__header">News</h1>
     <div class="section--content">
       <app-news></app-news>
       <app-calendar></app-calendar>
+    </div>
+  </div>
+  <div class="section--wrapper">
+    <h1 class="section__header">Upcoming Events</h1>
+    <div class="section--content section--content__events">
+      <div class="upcoming-events__grid">
+        <app-event-card *ngFor="let event of upcomingEvents" [event]="event"></app-event-card>
+      </div>
     </div>
   </div>
 </div>
