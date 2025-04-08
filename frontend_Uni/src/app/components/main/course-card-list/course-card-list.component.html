@@ -1,0 +1,14 @@
+<div class="courses-container">
+  <button class="nav-button nav-button--left" (click)="scrollTo('left')">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <div #scroller class="courses-scroller">
+    <app-course-card *ngFor="let course of displayCourses" [course]="course">
+    </app-course-card>
+  </div>
+
+  <button class="nav-button nav-button--right" (click)="scrollTo('right')">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>
