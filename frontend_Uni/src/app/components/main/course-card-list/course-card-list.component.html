@@ -1,14 +1,13 @@
-<div class="courses-container">
-  <button class="nav-button nav-button--left" (click)="scrollTo('left')">
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-
-  <div #scroller class="courses-scroller">
-    <app-course-card *ngFor="let course of displayCourses" [course]="course">
-    </app-course-card>
+<div class="swiper">
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+    <div class="swiper-slide" *ngFor="let course of courses"><app-course-card [course]="course"></app-course-card></div>
   </div>
+  <!-- If we need pagination -->
+  <div class="swiper-pagination"></div>
 
-  <button class="nav-button nav-button--right" (click)="scrollTo('right')">
-    <mat-icon>chevron_right</mat-icon>
-  </button>
+  <!-- If we need navigation buttons -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
 </div>

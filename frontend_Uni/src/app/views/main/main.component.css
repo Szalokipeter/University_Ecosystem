@@ -90,7 +90,7 @@
   position: relative;
 }
 .card__title::after {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   bottom: 0;
@@ -110,9 +110,7 @@
 }
 .card__btn {
   border: 1px solid rgba(var(--secondary-color-rgb), 0.65);
-  transition: 
-    background-color 0.3s ease,
-    color 0.3s ease,
+  transition: background-color 0.3s ease, color 0.3s ease,
     border-color 0.3s ease;
 }
 .card__btn:hover {
@@ -122,26 +120,32 @@
 }
 
 .gradeient--separator {
-  background: linear-gradient(
-    -45deg,
-    var(--primary-color) 0%,
-    #fff 100%
-  );
+  background: linear-gradient(270deg, var(--primary-color) 0%, #fff 100%);
 }
 .about-section__text {
-  color: #585858;
+  color: #555;
   font-size: var(--font-size-semi-large);
   max-width: 875px;
   z-index: 1;
 }
 .about-section__image {
-  position: absolute;  
+  position: absolute;
   right: 125px;
   bottom: 50%;
   transform: translateY(calc(50% - 50px));
 }
 .about-image {
-  max-height: 350px;  
+  max-height: 350px;
+}
+
+#courses__section {
+  max-width: unset;
+}
+#courses__section .section__header {
+  max-width: 1400px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 @media screen and (min-width: 768px) {
@@ -155,7 +159,7 @@
 @media screen and (min-width: 1024px) {
   /* Responsivity is fine to this point */
   .upcoming-events__grid {
-    margin: 0 24px
+    margin: 0 24px;
   }
 }
 

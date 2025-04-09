@@ -1,17 +1,17 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CourseCardComponent } from '../course-card/course-card.component';
+import Swiper from 'swiper';
 
 @Component({
   selector: 'app-course-card-list',
   imports: [CommonModule, MatIconModule, CourseCardComponent],
   templateUrl: './course-card-list.component.html',
   styleUrl: './course-card-list.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CourseCardListComponent {
-  @ViewChild('scroller') scroller!: ElementRef;
-
   courses = [
     {
       title: 'Ancient Greek Literature',
@@ -61,39 +61,41 @@ export class CourseCardListComponent {
     },
   ];
 
-  displayCourses  = [...this.courses, ...this.courses];
-  currentIndex = this.courses.length;
+  ngAfterViewInit() {
+    new Swiper('.swiper', {
+      // Optional parameters
+      loop: true,
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      spaceBetween: 50,
+      speed: 400,
+      autoplay: false,
+      slideToClickedSlide: true,
 
-  scrollTo(direction: 'left' | 'right') {
-    const container = this.scroller.nativeElement;
-    const cardWidth = 320; // Match your CSS card width + margin
-    
-    this.currentIndex += direction === 'left' ? -1 : 1;
-    
-    // Smooth scroll to next card
-    container.scrollTo({
-      left: this.currentIndex * cardWidth,
-      behavior: 'smooth'
+      // If we need pagination
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+
+      // Navigation arrows
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+
+      breakpoints: {
+        0: {
+          slidesPerView: 1.2, // Mobile - less peeking
+          centeredSlidesBounds: true,
+        },
+        768: {
+          slidesPerView: 1.6, // Tablet - more peeking
+        },
+        1024: {
+          slidesPerView: 4.2, // Desktop - even more peeking
+        },
+      },
     });
-
-    // Silent infinite loop
-    if (this.currentIndex <= 0) {
-      this.currentIndex = this.courses.length;
-      setTimeout(() => {
-        container.scrollTo({ 
-          left: this.currentIndex * cardWidth, 
-          behavior: 'auto' 
-        });
-      }, 300);
-    } 
-    else if (this.currentIndex >= this.courses.length * 2) {
-      this.currentIndex = this.courses.length;
-      setTimeout(() => {
-        container.scrollTo({ 
-          left: this.currentIndex * cardWidth, 
-          behavior: 'auto' 
-        });
-      }, 300);
-    }
   }
 }

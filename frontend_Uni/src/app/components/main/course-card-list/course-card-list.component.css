@@ -1,68 +1,20 @@
-.courses-container {
-  position: relative;
-  width: 100%;
-  margin: 2rem 0;
-  overflow: hidden;
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
+:host {
+  display: block;
+  width: 100%;  
 }
 
-.courses-scroller {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.swiper {
+  max-width: 100%;
+  height: 300px;
   padding: 20px 0;
 }
-
-.courses-scroller::-webkit-scrollbar {
-  display: none;
+.swiper-button-prev {
+  padding-left: 20px;
 }
-
-/* Center 3 cards with peeking */
-.courses-scroller {
-  padding-left: calc(50% - 480px); /* Center cards */
-  padding-right: calc(50% - 480px);
-}
-
-app-course-card {
-  scroll-snap-align: center;
-  flex: 0 0 300px;
-  margin: 0 10px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* Peeking cards */
-app-course-card:first-child,
-app-course-card:last-child {
-  opacity: 0.5;
-  transform: scale(0.9);
-}
-
-/* Navigation buttons (positioned over peekers) */
-.nav-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.8);
-  border: 2px solid var(--secondary-color);
-  color: var(--secondary-color);
-  z-index: 10;
-  transition: all 0.3s ease;
-}
-
-.nav-button:hover {
-  background: var(--secondary-color);
-  color: var(--primary-action-color);
-}
-
-.nav-button--left {
-  left: 5%;
-}
-
-.nav-button--right {
-  right: 5%;
+.swiper-button-next {
+  padding-right: 20px;
 }

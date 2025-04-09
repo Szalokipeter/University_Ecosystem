@@ -1,3 +1,7 @@
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
 :root {
   --primary-color: #66023C;
   --primary-color-rgb: 102, 2, 60;
