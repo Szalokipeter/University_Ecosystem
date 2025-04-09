@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="UniMobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:UniMobile.Views"
+    xmlns:local="clr-namespace:UniMobile"
+    Shell.NavBarIsVisible="False"
+    Title="UniMobile">
+
+    <TabBar>
+        <ShellContent Title="Todos" Icon="todos.png" ContentTemplate="{DataTemplate views:TodosPage}" />
+        <ShellContent Title="QR Login" Icon="qr.png" ContentTemplate="{DataTemplate views:QRCodePage}" />
+        <ShellContent Title="Profile" Icon="qr.png" ContentTemplate="{DataTemplate views:ProfilePage}" />
+
+    </TabBar>
+</Shell>

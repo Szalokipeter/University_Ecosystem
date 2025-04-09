@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UniMobile.Views.TodoDetailsPage"
+             Title="TodoDetailsPage"
+             BackgroundColor="White">
+    <StackLayout Padding="10">
+        <Label Text="Title" BackgroundColor="WhiteSmoke" TextColor="Black"/>
+        <Entry x:Name="TitleEntry" BackgroundColor="WhiteSmoke" TextColor="Black"/>
+
+        <Label Text="Body" BackgroundColor="WhiteSmoke" TextColor="Black"/>
+        <Editor x:Name="BodyEditor" HeightRequest="100" BackgroundColor="WhiteSmoke" TextColor="Black"/>
+
+        <Label x:Name="lblStatus" Text="Status"/>
+        <Picker x:Name="StatusPicker">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>todo</x:String>
+                    <x:String>in-progress</x:String>
+                    <x:String>done</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+        <HorizontalStackLayout HorizontalOptions="End" Spacing="15">
+        <Button Text="Save" Clicked="OnSaveClicked" BackgroundColor="Green"/>
+            <Button Text="Delete" Clicked="OnDeleteClicked" BackgroundColor="Red"/>
+        </HorizontalStackLayout>
+    </StackLayout>
+</ContentPage>

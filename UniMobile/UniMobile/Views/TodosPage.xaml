@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UniMobile.Views.TodosPage"
+             Title="TodosPage" 
+             BackgroundColor="White">
+    <StackLayout Padding="20" Spacing="20">
+        <Button Text="Add Todo" Clicked="OnAddTodoClicked" BackgroundColor="Purple" TextColor="White"/>
+
+        <CollectionView x:Name="TodosCollectionView"
+                SelectionMode="Single"
+                SelectionChanged="OnSelectionChanged"
+                VerticalOptions="FillAndExpand">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="Delete"
+                           BackgroundColor="Red"
+                           Invoked="OnDeleteSwipeItemInvoked"
+                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Frame CornerRadius="10"
+                   Padding="10"
+                   Margin="5"
+                   HasShadow="True"
+                   BackgroundColor="#343434">
+                            <StackLayout Orientation="Vertical" Spacing="5">
+                                <Label Text="{Binding Title}"
+                       FontAttributes="Bold"
+                       FontSize="Medium" />
+                                <Label Text="{Binding Body}"
+                       FontSize="Small" />
+                                <Label Text="{Binding Status}"
+                       TextColor="Gray"
+                       FontAttributes="Italic"
+                       FontSize="Small" />
+                            </StackLayout>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
