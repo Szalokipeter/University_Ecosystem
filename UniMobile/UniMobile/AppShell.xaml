@@ -6,7 +6,9 @@
     xmlns:views="clr-namespace:UniMobile.Views"
     xmlns:local="clr-namespace:UniMobile"
     Shell.NavBarIsVisible="False"
-    Title="UniMobile">
+    Title="UniMobile"
+    BackgroundColor="White"
+    Shell.BackgroundColor="Purple">
 
     <TabBar>
         <ShellContent Title="Todos" Icon="todos.png" ContentTemplate="{DataTemplate views:TodosPage}" />

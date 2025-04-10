@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UniMobile.Views.ProfilePage"
              Title="ProfilePage"
-             BackgroundColor="White">
+             BackgroundColor="White"
+             Shell.BackgroundColor="Purple">
     <VerticalStackLayout Padding="20" Spacing="20">
         <Label Text="Profile" 
                FontSize="24" 

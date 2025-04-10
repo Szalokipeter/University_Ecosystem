@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UniMobile.Views.TodosPage"
              Title="TodosPage" 
+             Shell.BackgroundColor="Purple"
              BackgroundColor="White">
     <StackLayout Padding="20" Spacing="20">
         <Button Text="Add Todo" Clicked="OnAddTodoClicked" BackgroundColor="#E38946" TextColor="#FFF4E9"/>
