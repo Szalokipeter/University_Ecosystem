@@ -1,0 +1,18 @@
+<div class="dashboard-container">
+  <h1 class="section__header">Dashboard</h1>
+
+  <div class="dashboard-section">
+    <h2 class="dashboard-section__title">Your Timeline</h2>
+    <div class="events-swiper swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let event of upcomingEvents">
+          <app-event-card [event]="event"></app-event-card>
+        </div>
+      </div>
+
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+</div>

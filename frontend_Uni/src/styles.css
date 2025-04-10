@@ -19,9 +19,19 @@
 
 }
 
+/* * {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+} */
+
 h1 {
   font-family: "Lora", serif;
   font-optical-sizing: auto;
+}
+
+.portal-header__left h1,
+.portal-header__left p {
+  color: #555;
 }
 
 /* .header.headroom--not-top h1,
