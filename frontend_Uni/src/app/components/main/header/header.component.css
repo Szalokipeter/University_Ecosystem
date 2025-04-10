@@ -122,6 +122,83 @@ img {
   fill: #011f5b;
 }
 
+.user-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.user-badge-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-action-color);
+  color: var(--secondary-color);
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+}
+
+.dropdown-chevron {
+  transition: transform 0.2s ease-out;
+  color: var(--secondary-color);
+  opacity: 0.75;
+}
+.dropdown-chevron.open {
+  transform: rotate(-90deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  z-index: 1000;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.user-info {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.username {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+button[mat-menu-item] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  transition: background-color 0.2s ease;
+}
+button[mat-menu-item]:last-of-type {
+  background-color: #d32f2f !important;
+  color: var(--secondary-color) !important;
+}
+
+button[mat-menu-item]:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
 @media (min-width: 400px) {
   .header__logo {
     margin: 0 auto;
@@ -146,6 +223,11 @@ img {
     padding: 9px 65px 9px 15px;
     border-bottom: 1px solid #dfdfdf;
   }
+  .dropdown-menu {
+    right: auto;
+    left: 0;
+    width: 100%;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -166,7 +248,7 @@ img {
   }
   .headroom--not-top .header__menus {
     border-bottom: 2px solid rgba(223, 223, 223, 0.7);
-  }  
+  }
   .nav--primary {
     margin-top: 10px;
     border-top: 2px solid rgba(223, 223, 223, 0.65);
@@ -227,8 +309,11 @@ img {
     font-size: var(--font-size-medium);
     font-weight: bold;
   }
-  .nav__menu-link {
+  .nav__menu-link   {
     padding: 10px 20px;
+  }
+  .user-menu-container {
+    padding: 0 20px;
   }
   .nav--secondary {
     position: absolute;

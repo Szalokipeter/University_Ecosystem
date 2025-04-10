@@ -1,0 +1,98 @@
+<header class="header" data-cy="header">
+  <div class="contain contain--xl">
+    <a href="/" class="header__logo">
+      <app-home-logo></app-home-logo>
+    </a>
+    <button
+      class="header__toggle-btn header__toggle-btn--menu"
+      (click)="toggle_menu($event)"
+    >
+      <img src="/icons/menu-open.png" alt="Open Menu" class="menu-icon open" />
+      <img
+        src="/icons/menu-close.png"
+        alt="Close Menu"
+        class="menu-icon close"
+      />
+    </button>
+  </div>
+  <div class="header__menus">
+    <nav class="nav nav--primary">
+      <ul class="nav__menu nav__menu--level-0">
+        <li
+          class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
+        >
+          <a class="nav__menu-link" href="#news">News</a>
+        </li>
+        <li
+          class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
+        >
+          <a class="nav__menu-link" href="#about">About us</a>
+        </li>
+        <li
+          class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
+        >
+          <a class="nav__menu-link" href="#courses">Courses</a>
+        </li>
+        <li
+          class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
+        >
+          <!-- Updated login/portal link with dropdown -->
+          <div class="user-menu-container" *ngIf="loggedInUser; else loginLink">
+            <div class="user-badge-container" (click)="toggleDropdown()">
+              <div class="user-badge" [title]="loggedInUser?.username">
+                {{ loggedInUser?.username?.charAt(0)?.toUpperCase() ?? '' }}
+              </div>
+              <mat-icon class="dropdown-chevron" [class.open]="isDropdownOpen">
+                expand_more
+              </mat-icon>
+            </div>
+            <div
+              *ngIf="isDropdownOpen"
+              class="dropdown-menu"
+              (clickOutside)="isDropdownOpen = false"
+            >
+              <div class="dropdown-item user-info">
+                <span class="username">{{ loggedInUser?.username }}</span>
+              </div>
+              <mat-divider></mat-divider>
+              <button mat-menu-item (click)="navigateToPortal()">
+                <mat-icon>account_circle</mat-icon>
+                <span>Portal</span>
+              </button>
+              <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                <span>Log Out</span>
+              </button>
+            </div>
+          </div>
+          <ng-template #loginLink>
+            <a
+              class="nav__menu-link"
+              [routerLink]="['/login']"
+              routerLinkActive="router-link-active"
+              >Login</a
+            >
+          </ng-template>
+        </li>
+      </ul>
+    </nav>
+    <nav class="nav nav--secondary">
+      <ul class="nav__menu nav__menu--level-0">
+        <li class="nav__menu-item">
+          <img src="/social/email.png" alt="email-icon" />
+        </li>
+        <li class="nav__menu-item">
+          <a href="https://x.com/" target="_blank">
+            <img src="/social/twitter.png" alt="twitter-icon" />
+          </a>
+        </li>
+        <li class="nav__menu-item">
+          <a href="https://www.instagram.com/" target="_blank">
+            <img src="/social/instagram.png" alt="instagram-icon" />
+          </a>
+        </li>
+      </ul>
+      <a class="btn btn--primary btn--square" href="">Mobile App</a>
+    </nav>
+  </div>
+</header>

@@ -1,18 +1,40 @@
 import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
-import { HomeLogoComponent } from '../home-logo/home-logo.component';
+import { HomeLogoComponent } from '../../shared/home-logo/home-logo.component';
 import { AuthService } from '../../../services/auth.service';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
+import { UserModel } from '../../../models/user.model';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { ClickOutsideDirective } from '../../../directives/click-outside.directive';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [HomeLogoComponent, RouterModule, RouterLink],
+  imports: [
+    HomeLogoComponent,
+    RouterModule,
+    RouterLink,
+    MatIconModule,
+    MatDividerModule,
+    ClickOutsideDirective,
+    NgIf,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit {
-  constructor(public authService: AuthService, private renderer: Renderer2) {}
+  loggedInUser: UserModel | undefined = undefined;
+  isDropdownOpen = false;
+
+  constructor(
+    public authService: AuthService,
+    private renderer: Renderer2,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
+    console.log(this.loggedInUser);
     this.checkScrollPosition();
   }
 
@@ -29,13 +51,29 @@ export class HeaderComponent implements OnInit {
       this.renderer.removeClass(header, 'headroom--not-top');
     }
   }, 50);
-  
+
   private debounce(func: Function, wait: number) {
     let timeout: any;
     return (...args: any[]) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => func.apply(this, args), wait);
     };
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  navigateToPortal() {
+    this.isDropdownOpen = false;
+    this.router.navigate(['/portal']);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.isDropdownOpen = false;
+    this.loggedInUser = undefined;
+    this.router.navigate(['/']);
   }
 
   toggle_menu(event: MouseEvent) {
