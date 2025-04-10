@@ -29,7 +29,6 @@ export class AuthService {
             'loggedInUser',
             JSON.stringify(this.loggedInUser)
           );
-          console.log(this.loggedInUser);
           return true;
         })
       );

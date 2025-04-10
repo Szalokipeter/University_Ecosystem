@@ -30,9 +30,9 @@ export class LoginComponent {
       next: (response) => {
         if (response) {
           if (this.authService.loggedInUser?.roles_id == 1) {
-            this.router.navigate(['admin']);
+            this.router.navigate(['portal']);
           } else {
-            this.router.navigate(['']);
+            this.router.navigate(['portal']);
           }
         } else {
           this.errorMessage = 'Helytelen email cím vagy jelszó!';

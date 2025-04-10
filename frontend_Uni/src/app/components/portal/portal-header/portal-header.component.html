@@ -1,0 +1,53 @@
+<header class="portal-header">
+  <!-- Left Section (Logo + Nav) -->
+  <div class="portal-header__left">
+    <app-home-logo [routerLink]="['/']" routerLinkActive="router-link-active" ></app-home-logo>
+    <nav class="portal-nav">
+      <a
+        class="portal-nav__link"
+        [class.active]="activeView === 'dashboard'"
+        (click)="navigateTo('dashboard')"
+        >Dashboard</a
+      >
+      <a
+        class="portal-nav__link"
+        [class.active]="activeView === 'todos'"
+        (click)="navigateTo('todos')"
+        >Todos</a
+      >
+    </nav>
+  </div>
+
+  <!-- Right Section (User Dropdown) -->
+  <div class="portal-header__right">
+    <div class="user-badge-container" (click)="toggleDropdown()">
+      <div class="user-badge" [title]="username">
+        {{ usernameInitial }}
+      </div>
+      <mat-icon
+        [@rotateChevron]="isDropdownOpen ? 'open' : 'closed'"
+        class="dropdown-chevron"
+      >
+        expand_more
+      </mat-icon>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div
+      *ngIf="isDropdownOpen"
+      @fadeInDropdown
+      class="dropdown-menu"
+      (clickOutside)="isDropdownOpen = false"
+    >
+      <div class="dropdown-item user-info">
+        <span class="username">{{ username }}</span>
+        <!-- <span class="role"> - {{ loggedInUser?.roles_id }}</span> -->
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Log Out</span>
+      </button>
+    </div>
+  </div>
+</header>

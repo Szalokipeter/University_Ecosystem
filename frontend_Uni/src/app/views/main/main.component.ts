@@ -7,10 +7,11 @@ import { DataService } from '../../services/data.service';
 import { EventCardComponent } from '../../components/main/event-card/event-card.component';
 import { NgFor } from '@angular/common';
 import { CourseCardListComponent } from '../../components/main/course-card-list/course-card-list.component';
+import { HeaderComponent } from '../../components/main/header/header.component';
 
 @Component({
   selector: 'app-main',
-  imports: [SlideCardListComponent, NewsComponent, CalendarComponent, EventCardComponent, NgFor, CourseCardListComponent],
+  imports: [HeaderComponent, SlideCardListComponent, NewsComponent, CalendarComponent, EventCardComponent, NgFor, CourseCardListComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
 })

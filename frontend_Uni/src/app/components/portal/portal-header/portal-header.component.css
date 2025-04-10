@@ -1,0 +1,168 @@
+/* Reuse existing variables from styles.css */
+.portal-header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  padding-right: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+  background-color: transparent;
+  border-bottom: 1px solid #dfdfdf;
+  z-index: 100;
+  height: 80px;
+}
+
+.portal-header__left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+}
+.portal-header__right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+}
+
+app-home-logo {
+  scale: 0.8;
+}
+
+.portal-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.portal-nav__link {
+  position: relative;
+  font-family: "Poppins", sans-serif;
+  font-size: var(--font-size-medium);
+  color: #555;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 16px 0;
+  /* Removed transition property */
+}
+.portal-nav__link.active {
+  position: relative;
+}
+
+.portal-nav__link.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: calc(-25% + 1px);
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary-action-color);
+  z-index: 1;
+}
+
+.user-badge-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-action-color);
+  color: var(--secondary-color);
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px); /* Position below the user badge */
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  z-index: 1000;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.user-info {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.username {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.role {
+  font-size: var(--font-size-small);
+  color: rgba(var(--primary-color-rgb), 0.7);
+}
+
+/* Logout Button */
+button[mat-menu-item] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #d32f2f !important; /* Red color */
+  color: var(--secondary-color) !important;
+  transition: background-color 0.2s ease;
+}
+
+button[mat-menu-item]:hover {
+  background-color: #b71c1c !important; /* Darker red on hover */
+}
+
+button[mat-menu-item] mat-icon {
+  color: var(--secondary-color) !important;
+}
+
+/* Chevron Animation */
+.dropdown-chevron {
+  color: var(--primary-color);
+}
+
+/* Divider */
+mat-divider {
+  margin: 0 !important;
+  border-top-color: rgba(0, 0, 0, 0.1) !important;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .portal-header {
+    padding: 0 16px;
+  }
+  .portal-header__left {
+    gap: 16px;
+  }
+  .portal-nav {
+    gap: 12px;
+  }
+  .portal-nav__link {
+    font-size: var(--font-size-small);
+  }
+}
