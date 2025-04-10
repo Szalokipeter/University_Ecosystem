@@ -16,6 +16,6 @@
                 HorizontalOptions="Center"/>
         <Button Text="Sign Out" 
                 Clicked="OnSignOutClicked" 
-                HorizontalOptions="Center" BackgroundColor="Purple" TextColor="White"/>
+                HorizontalOptions="Center" BackgroundColor="#E38946" TextColor="#FFF4E9"/>
     </VerticalStackLayout>
 </ContentPage>

@@ -7,7 +7,7 @@
     <StackLayout Padding="20" Spacing="15">
         <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" BackgroundColor="WhiteSmoke"/>
         <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" BackgroundColor="WhiteSmoke"/>
-        <Button Text="Login" Clicked="OnLoginClicked" BackgroundColor="Purple" TextColor="White"/>
-        <Button x:Name="btnBiometric" Text="Login with Biometrics" Clicked="OnBiometricLoginClicked"/>
+        <Button Text="Login" Clicked="OnLoginClicked" BackgroundColor="#E38946" TextColor="#FFF4E9"/>
+        <Button x:Name="btnBiometric" Text="Login with Biometrics" Clicked="OnBiometricLoginClicked" BackgroundColor="#007269" TextColor="#FFF4E9"/>
     </StackLayout>
 </ContentPage>

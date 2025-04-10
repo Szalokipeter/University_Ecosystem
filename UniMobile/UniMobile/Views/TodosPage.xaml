@@ -5,7 +5,7 @@
              Title="TodosPage" 
              BackgroundColor="White">
     <StackLayout Padding="20" Spacing="20">
-        <Button Text="Add Todo" Clicked="OnAddTodoClicked" BackgroundColor="Purple" TextColor="White"/>
+        <Button Text="Add Todo" Clicked="OnAddTodoClicked" BackgroundColor="#E38946" TextColor="#FFF4E9"/>
 
         <CollectionView x:Name="TodosCollectionView"
                 SelectionMode="Single"

@@ -8,7 +8,9 @@
         <Label Text="Scan a QR Code to Login"
        HorizontalOptions="Center"
        FontSize="20"
-       FontAttributes="Bold" />
+       FontAttributes="Bold" 
+       
+               />
     
     <VerticalStackLayout Padding="40" Spacing="20">
 
