@@ -1,0 +1,28 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h2>{{ event?.title }}</h2>
+    <button mat-icon-button (click)="closeModal()" aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-content">
+    <div class="modal-event-meta">
+      <span
+        class="modal-event-type"
+        [style.backgroundColor]="getEventColor(event.event_type)"
+      >
+        {{ event.event_type }}
+      </span>
+      <span *ngIf="event.uni_user_id">User ID: {{ event.uni_user_id }}</span>
+    </div>
+
+    <p class="modal-event-date">
+      {{ event.dateofevent | date : "fullDate" }}
+    </p>
+
+    <div class="modal-event-description">
+      {{ event.body }}
+    </div>
+  </div>
+</div>

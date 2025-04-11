@@ -51,6 +51,7 @@
           class="calendar-event"
           [style.backgroundColor]="getEventColor(event.event_type)"
           [matTooltip]="event.title + '\n' + event.body"
+          (click)="openEventDetails(event)"
         >
           {{ event.title }}
           <span *ngIf="event.uni_user_id" class="event-user"

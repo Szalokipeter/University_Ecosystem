@@ -136,11 +136,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   background-color: #3f51b5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .calendar-event:hover {
-  opacity: 0.9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  opacity: 1 !important;
 }
 
 /* Event User ID */
@@ -165,6 +167,25 @@
 
 .calendar-event[style*="background-color:#9c27b0"] {
   background-color: #9c27b0; /* default */
+}
+
+.modal-event-type {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.modal-event-date {
+  color: var(--secondary-color);
+  margin: 8px 0;
+}
+
+.modal-event-description {
+  line-height: 1.6;
+  margin-top: 16px;
 }
 
 @media screen and (min-width: 768px) {
