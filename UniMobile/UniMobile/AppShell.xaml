@@ -7,13 +7,12 @@
     xmlns:local="clr-namespace:UniMobile"
     Shell.NavBarIsVisible="False"
     Title="UniMobile"
-    BackgroundColor="White"
-    Shell.BackgroundColor="Purple">
+    Shell.BackgroundColor="#66023C">
 
     <TabBar>
         <ShellContent Title="Todos" Icon="todos.png" ContentTemplate="{DataTemplate views:TodosPage}" />
         <ShellContent Title="QR Login" Icon="qr.png" ContentTemplate="{DataTemplate views:QRCodePage}" />
-        <ShellContent Title="Profile" Icon="qr.png" ContentTemplate="{DataTemplate views:ProfilePage}" />
+        <ShellContent Title="Profile" Icon="profilepng.png" ContentTemplate="{DataTemplate views:ProfilePage}" />
 
     </TabBar>
 </Shell>

@@ -2,12 +2,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="UniMobile.Views.LoginPage"
-             Title="LoginPage"
-             BackgroundColor="White"
-             Shell.BackgroundColor="Purple">
+             Title="">
     <StackLayout Padding="20" Spacing="15">
-        <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" BackgroundColor="WhiteSmoke" TextColor="Black"/>
-        <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" BackgroundColor="WhiteSmoke" TextColor="Black"/>
+        <Image Source="logo_2.png" HeightRequest="50" HorizontalOptions="Start"></Image>
+        <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" />
+        <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" />
         <Button Text="Login" Clicked="OnLoginClicked" BackgroundColor="#E38946" TextColor="#FFF4E9"/>
         <Button x:Name="btnBiometric" Text="Login with Biometrics" Clicked="OnBiometricLoginClicked" BackgroundColor="#007269" TextColor="#FFF4E9"/>
     </StackLayout>

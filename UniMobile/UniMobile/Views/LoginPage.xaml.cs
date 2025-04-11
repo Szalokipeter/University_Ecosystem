@@ -38,8 +38,6 @@ public partial class LoginPage : ContentPage
 
     private async void OnLoginClicked(object sender, EventArgs e)
     {
-        Application.Current.MainPage = new AppShell();
-
         var email = EmailEntry.Text;
         var password = PasswordEntry.Text;
 
@@ -53,34 +51,34 @@ public partial class LoginPage : ContentPage
         var loginData = new { email = email, password = password };
         var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
 
-        //try
-        //{
-        //    var response = await _httpClient.PostAsync(loginUrl, content);
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var responseString = await response.Content.ReadAsStringAsync();
-        //        var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseString);
-        //        var username = loginResponse!.User.Username;
-        //        var token = loginResponse.Token;
+        try
+        {
+            var response = await _httpClient.PostAsync(loginUrl, content);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(responseString);
+                var username = loginResponse!.User.Username;
+                var token = loginResponse.Token;
 
-        //        await StorageService.StoreCredentials(email, password, username, token);
+                await StorageService.StoreCredentials(email, password, username, token);
 
-        //        Application.Current.MainPage = new AppShell();
-        //    }
-        //    else
-        //    {
-        //        await DisplayAlert("Login Failed", "Invalid credentials", "OK");
-        //    }
-        //}
-        //catch (HttpRequestException httpEx)
-        //{
-        //    var statusCode = httpEx.StatusCode.HasValue ? httpEx.StatusCode.ToString() : "N/A";
-        //    await DisplayAlert("Connection Error", $"Request error: {httpEx.Message}\nStatus Code: {statusCode}", "OK");
-        //}
-        //catch (Exception ex)
-        //{
-        //    await DisplayAlert("Error", $"An unexpected error occurred: {ex.Message}", "OK");
-        //}
+                Application.Current.MainPage = new AppShell();
+            }
+            else
+            {
+                await DisplayAlert("Login Failed", "Invalid credentials", "OK");
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            var statusCode = httpEx.StatusCode.HasValue ? httpEx.StatusCode.ToString() : "N/A";
+            await DisplayAlert("Connection Error", $"Request error: {httpEx.Message}\nStatus Code: {statusCode}", "OK");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"An unexpected error occurred: {ex.Message}", "OK");
+        }
     }
 
     private async void OnBiometricLoginClicked(object sender, EventArgs e)

@@ -5,12 +5,11 @@
              x:Class="UniMobile.Views.QRCodePage"
              Title="QRCodePage">
     <VerticalStackLayout Padding="20" Spacing="20">
+        <Image Source="logo_2.png" HeightRequest="50" HorizontalOptions="Start"></Image>
         <Label Text="Scan a QR Code to Login"
        HorizontalOptions="Center"
        FontSize="20"
-       FontAttributes="Bold" 
-       
-               />
+       TextColor="#E38946" />
     
     <VerticalStackLayout Padding="40" Spacing="20">
 
