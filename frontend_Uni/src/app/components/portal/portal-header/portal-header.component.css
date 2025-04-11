@@ -10,7 +10,7 @@
   padding-right: 24px;
   max-width: 1600px;
   margin: 0 auto;
-  background-color: transparent;
+  background-color: #fff;
   border-bottom: 1px solid #dfdfdf;
   z-index: 100;
   height: 80px;
@@ -96,7 +96,7 @@ app-home-logo {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   min-width: 200px;
   z-index: 1000;
-  overflow: hidden;
+  overflow: hidden;  
   border: 1px solid #eee;
 }
 
@@ -140,7 +140,8 @@ button[mat-menu-item] mat-icon {
 
 /* Chevron Animation */
 .dropdown-chevron {
-  color: var(--primary-color);
+  color: #555;
+  opacity: 0.75;
 }
 
 /* Divider */

@@ -5,7 +5,7 @@
     <h1 class="section__header">News</h1>
     <div class="section--content">
       <app-news></app-news>
-      <app-calendar></app-calendar>
+      <app-calendar [events]="publicEvents" [loading]="loading" [error]="error"></app-calendar>
     </div>
   </div>
   <div class="section--wrapper">

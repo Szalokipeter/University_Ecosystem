@@ -28,9 +28,9 @@ export class DataService implements OnInit {
   getPublicEvents(): Observable<CalendarEvent[]> {
     return this.http.get<CalendarEvent[]>(`${this.apiUrl}/uniCalendar`);
   }
-  getPersonalEvents(): Observable<CalendarEvent[]> {
-    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
-    const token = this.loggedInUser?.token || '';
+  getPersonalEvents(): Observable<CalendarEvent[]> {    
+    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');    
+    const token = this.loggedInUser?.token || '';    
     console.log('Token:', token); // Log the token for debugging
 
     // Create headers with Authorization token

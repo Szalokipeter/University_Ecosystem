@@ -16,12 +16,34 @@ import { HeaderComponent } from '../../components/main/header/header.component';
   styleUrl: './main.component.css',
 })
 export class MainComponent implements OnInit {
+  publicEvents: CalendarEvent[] = [];
+  loading = true;
+  error: string | null = null;
   upcomingEvents: CalendarEvent[] = [];
 
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
+    this.loadEvents();
     this.loadUpcomingEvents();
+  }
+
+  loadEvents() {
+    this.loading = true;
+    this.error = null;
+    
+    this.dataService.getPublicEvents().subscribe({
+      next: (events) => {
+        this.publicEvents = events;        
+        console.log('Events:', this.publicEvents);
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading events:', err);
+        this.error = 'Failed to load events';
+        this.loading = false;
+      }
+    });
   }
 
   loadUpcomingEvents() {

@@ -31,7 +31,6 @@ export class NewsGridComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSmall = window.innerWidth <= 1400;
-    console.log(`Initial isSmall: ${this.isSmall}`);
   }
 
 

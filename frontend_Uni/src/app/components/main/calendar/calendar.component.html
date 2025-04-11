@@ -3,10 +3,10 @@
   <div *ngIf="loading" class="loading-spinner">
     <mat-spinner diameter="50" color="primary"></mat-spinner>
   </div>
-
+<!-- 
   <div *ngIf="error" class="error-message">
     {{ error }} <button (click)="loadEvents()">Retry</button>
-  </div>
+  </div> -->
 
   <!-- Calendar Header -->
   <div class="calendar-header" *ngIf="!loading && !error">

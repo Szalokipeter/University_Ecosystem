@@ -4,14 +4,18 @@ import { NgFor } from '@angular/common';
 import Swiper from 'swiper';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { DataService } from '../../../services/data.service';
+import { CalendarComponent } from '../../main/calendar/calendar.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [EventCardComponent, NgFor],
+  imports: [EventCardComponent, NgFor, CalendarComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
+  events: CalendarEvent[] = [];
+  loading = true;
+  error: string | null = null;
   upcomingEvents: CalendarEvent[] = [];
 
   constructor(private dataService: DataService) {}
@@ -49,7 +53,7 @@ export class DashboardComponent {
   }
 
   loadEvents() {
-    this.dataService.getPersonalEvents().subscribe({
+    this.dataService.getPersonalEvents().subscribe({      
       next: (events) => {
         const now = new Date();
         this.upcomingEvents = events

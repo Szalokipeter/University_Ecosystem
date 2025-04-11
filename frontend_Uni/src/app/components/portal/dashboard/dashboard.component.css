@@ -6,10 +6,11 @@
 }
 
 .dashboard-section {
-  background: white;
+  background: transparent;
+  border: 1px solid #dfdfdf;
   border-radius: 8px;
-  padding: 30px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 24px 24px 0;
 }
 
 .dashboard-section__title {

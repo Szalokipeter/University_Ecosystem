@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { DataService } from '../../../services/data.service';
@@ -15,38 +15,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './calendar.component.css',
   providers: [DatePipe]
 })
-export class CalendarComponent implements OnInit {
-  events: CalendarEvent[] = [];
+export class CalendarComponent implements OnInit{
+  @Input() events: CalendarEvent[] = [];  
+  @Input() loading = true;
+  @Input() error: string | null = null;
   currentDate: Date = new Date();
   weeks: CalendarWeekDay[][] = [];
-  loading = true;
-  error: string | null = null;
 
   constructor(
-    private dataService: DataService,
     private datePipe: DatePipe
-  ) {}
+  ) {}  
 
-  ngOnInit() {
-    this.loadEvents();
-  }
-
-  loadEvents() {
-    this.loading = true;
-    this.error = null;
-    
-    this.dataService.getPublicEvents().subscribe({
-      next: (events) => {
-        this.events = events;
-        this.generateCalendar();
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error loading events:', err);
-        this.error = 'Failed to load events';
-        this.loading = false;
-      }
-    });
+  ngOnInit(): void {
+    console.log('Events:', this.events);
+    this.generateCalendar();
   }
 
   generateCalendar() {

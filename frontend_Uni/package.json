@@ -23,7 +23,6 @@
     "@angular/router": "^19.1.0",
     "@babel/runtime": "^7.26.10",
     "laravel-echo": "^2.0.2",
-    "ng-click-outside": "^9.0.1",
     "pusher-js": "^8.4.0",
     "rxjs": "~7.8.0",
     "swiper": "^11.2.6",
