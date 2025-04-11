@@ -29,6 +29,10 @@ export class DashboardComponent {
   searchQuery: string = '';
   eventTypes: string[] = [];
 
+  calendarPublicityFilter: string = 'all';
+  calendarEventTypeFilter: string = 'all';
+  filteredCalendarEvents: CalendarEvent[] = [];
+
   private swiper?: Swiper;
 
   constructor(
@@ -81,6 +85,7 @@ export class DashboardComponent {
           ...new Set(this.events.map((event) => event.event_type)),
         ];
         this.applyFilters();
+        this.updateCalendar(); // Initialize calendar filters
         this.loading = false;
       },
       error: (err) => {
@@ -173,6 +178,31 @@ export class DashboardComponent {
         this.initSwiper(); // Reinitialize if swiper doesn't exist
       }
     });
+  }
+
+  updateCalendar() {
+    let eventsToFilter: CalendarEvent[];
+
+    // Apply publicity filter
+    switch (this.calendarPublicityFilter) {
+      case 'public':
+        eventsToFilter = this.publicEvents;
+        break;
+      case 'personal':
+        eventsToFilter = this.personalEvents;
+        break;
+      default:
+        eventsToFilter = this.events;
+    }
+
+    // Apply event type filter
+    if (this.calendarEventTypeFilter !== 'all') {
+      eventsToFilter = eventsToFilter.filter(
+        (event) => event.event_type === this.calendarEventTypeFilter
+      );
+    }
+
+    this.filteredCalendarEvents = [...eventsToFilter];
   }
 
   private isSameDate(date1: Date, date2: Date): boolean {

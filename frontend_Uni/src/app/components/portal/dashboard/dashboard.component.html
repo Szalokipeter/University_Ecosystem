@@ -67,10 +67,35 @@
   </div>
 
   <div class="dashboard-section">
-    <h1 class="dashboard-section__title">Calendar</h1>
+    <div class="calendar-header">
+      <h1 class="dashboard-section__title">Calendar</h1>
+      <div class="calendar-filters">
+        <!-- Event Type Filter -->
+        <div class="filter-group">
+          <label>Event Type</label>
+          <select [(ngModel)]="calendarPublicityFilter" (change)="updateCalendar()">
+            <option value="all">All Events</option>
+            <option value="public">Public Only</option>
+            <option value="personal">Personal Only</option>
+          </select>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <label>Category</label>
+          <select [(ngModel)]="calendarEventTypeFilter" (change)="updateCalendar()">
+            <option value="all">All Categories</option>
+            <option *ngFor="let type of eventTypes" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
     <div class="section--content">
       <app-calendar
-        [events]="events"
+        [events]="filteredCalendarEvents"
         [loading]="loading"
         [error]="error"
       ></app-calendar>

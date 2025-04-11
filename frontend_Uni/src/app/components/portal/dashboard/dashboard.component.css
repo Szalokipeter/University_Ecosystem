@@ -108,6 +108,32 @@
   width: calc(800px - 48px);
 }
 
+.calendar-header {
+  margin-bottom: 20px;
+}
+
+.calendar-filters {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-top: 15px;
+  padding: 0 24px 24px;
+  position: relative;
+}
+
+.calendar-filters::after {
+  width: calc(100% - 48px);
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  height: 1px;
+  background: #dfdfdf;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .timeline-filters {
@@ -115,6 +141,15 @@
   }
 
   .filter-group {
+    width: 100%;
+  }
+
+  .calendar-filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .calendar-filters .filter-group {
     width: 100%;
   }
 }
