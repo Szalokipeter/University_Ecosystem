@@ -2,10 +2,60 @@
   <h1 class="section__header">Dashboard</h1>
 
   <div class="dashboard-section">
-    <h1 class="dashboard-section__title">Your Timeline</h1>
+    <div class="timeline-header">
+      <h1 class="dashboard-section__title">Your Timeline</h1>
+      <div class="timeline-filters">
+        <!-- Search -->
+        <div class="filter-group search-group">
+          <label>Search</label>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (input)="applyFilters()"
+            placeholder="Search events..."
+          />
+        </div>
+        <!-- Duration Filter -->
+        <div class="filter--groups">
+          <div class="filter-group">
+            <label>Duration</label>
+            <select [(ngModel)]="durationFilter" (change)="applyFilters()">
+              <option value="today">Today</option>
+              <option value="tomorrow">Tomorrow</option>
+              <option value="7days" selected>Next 7 Days</option>
+              <option value="month">This Month</option>
+              <option value="30days">Next 30 Days</option>
+              <option value="nextMonth">Next Month</option>
+            </select>
+          </div>
+
+          <!-- Publicity Filter -->
+          <div class="filter-group">
+            <label>Event Type</label>
+            <select [(ngModel)]="publicityFilter" (change)="applyFilters()">
+              <option value="all">All Events</option>
+              <option value="public">Public Only</option>
+              <option value="personal">Personal Only</option>
+            </select>
+          </div>
+
+          <!-- Event Type Filter -->
+          <div class="filter-group">
+            <label>Category</label>
+            <select [(ngModel)]="eventTypeFilter" (change)="applyFilters()">
+              <option value="all">All Categories</option>
+              <option *ngFor="let type of eventTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="events-swiper swiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" *ngFor="let event of upcomingEvents">
+        <div class="swiper-slide" *ngFor="let event of filteredEvents">
           <app-event-card [event]="event"></app-event-card>
         </div>
       </div>
@@ -15,10 +65,15 @@
       <div class="swiper-button-next"></div>
     </div>
   </div>
+
   <div class="dashboard-section">
     <h1 class="dashboard-section__title">Calendar</h1>
     <div class="section--content">
-      <app-calendar [events]="events" [loading]="loading" [error]="error"></app-calendar>
+      <app-calendar
+        [events]="events"
+        [loading]="loading"
+        [error]="error"
+      ></app-calendar>
     </div>
   </div>
 </div>
