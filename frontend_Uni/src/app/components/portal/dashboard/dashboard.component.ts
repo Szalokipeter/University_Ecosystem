@@ -5,6 +5,7 @@ import Swiper from 'swiper';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { DataService } from '../../../services/data.service';
 import { CalendarComponent } from '../../main/calendar/calendar.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,11 +42,8 @@ export class DashboardComponent {
           slidesPerView: 1, // Mobile - less peeking
           centeredSlidesBounds: true,
         },
-        768: {
-          slidesPerView: 2, // Tablet - more peeking
-        },
         1024: {
-          slidesPerView: 3, // Desktop - even more peeking
+          slidesPerView: 2, // Desktop - even more peeking
         },
       },
     });
@@ -53,20 +51,37 @@ export class DashboardComponent {
   }
 
   loadEvents() {
-    this.dataService.getPersonalEvents().subscribe({      
-      next: (events) => {
+    this.loading = true;
+    this.error = null;
+
+    // Use forkJoin to combine both observables
+    forkJoin([
+      this.dataService.getPersonalEvents(),
+      this.dataService.getPublicEvents(),
+    ]).subscribe({
+      next: ([personalEvents, publicEvents]) => {
+        // Combine both event arrays
+        const allEvents = [...personalEvents, ...publicEvents];
+
+        // Filter and sort upcoming events
         const now = new Date();
-        this.upcomingEvents = events
+        this.upcomingEvents = allEvents
           .filter((event) => new Date(event.dateofevent) >= now)
           .sort(
             (a, b) =>
               new Date(a.dateofevent).getTime() -
               new Date(b.dateofevent).getTime()
           )
-          .slice(0, 5);
+          .slice(0, 5); // Get top 5 upcoming events
+
+        // Set the combined events for the calendar
+        this.events = allEvents;
+        this.loading = false;
       },
       error: (err) => {
         console.error('Error loading events:', err);
+        this.error = 'Failed to load events';
+        this.loading = false;
       },
     });
   }

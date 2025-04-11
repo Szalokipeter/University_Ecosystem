@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
-import { DataService } from '../../../services/data.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -15,7 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './calendar.component.css',
   providers: [DatePipe]
 })
-export class CalendarComponent implements OnInit{
+export class CalendarComponent implements OnChanges{
   @Input() events: CalendarEvent[] = [];  
   @Input() loading = true;
   @Input() error: string | null = null;
@@ -25,8 +24,7 @@ export class CalendarComponent implements OnInit{
   constructor(
     private datePipe: DatePipe
   ) {}  
-
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     console.log('Events:', this.events);
     this.generateCalendar();
   }
