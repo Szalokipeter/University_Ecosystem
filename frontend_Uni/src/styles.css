@@ -65,6 +65,7 @@ html body {
   background-color: #fff;
   margin: 0;
   padding: 0;
+  overflow-y: scroll;
 }
 
 /* Toggled by header's  header__toggle-btn, and part of settings affecting hamburger menu*/

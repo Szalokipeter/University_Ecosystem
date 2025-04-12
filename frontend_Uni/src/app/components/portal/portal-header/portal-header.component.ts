@@ -3,7 +3,7 @@ import { HomeLogoComponent } from '../../shared/home-logo/home-logo.component';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { UserModel } from '../../../models/user.model';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Router } from '@angular/router';
 import {
   animate,
@@ -25,6 +25,7 @@ import { ClickOutsideDirective } from '../../../directives/click-outside.directi
     MatIcon,
     MatDividerModule,
     ClickOutsideDirective,
+    RouterLinkActive
   ],
   templateUrl: './portal-header.component.html',
   styleUrl: './portal-header.component.css',
@@ -77,7 +78,7 @@ export class PortalHeaderComponent {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['login']);
   }
 
   navigateTo(view: 'dashboard' | 'todos') {

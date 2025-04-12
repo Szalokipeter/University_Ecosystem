@@ -1,0 +1,78 @@
+<div class="todo-list-container">
+  <div class="todo-filters">
+    <div class="filter-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()">
+          <mat-option
+            *ngFor="let status of statusOptions"
+            [value]="status.value"
+          >
+            {{ status.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="filter-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Sort By</mat-label>
+        <mat-select [(ngModel)]="sortBy" (ngModelChange)="applyFilters()">
+          <mat-option *ngFor="let sort of sortOptions" [value]="sort.value">
+            {{ sort.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="filter-group search-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Search</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="applyFilters()"
+          placeholder="Search by title"
+        />
+      </mat-form-field>
+    </div>
+
+    <button
+      mat-fab
+      color="primary"
+      class="add-button"
+      (click)="onAddTodo()"
+      aria-label="Add new todo"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <div class="todo-list">
+    <ng-container *ngIf="loading; else content">
+      <div class="loading">Loading todos...</div>
+    </ng-container>
+
+    <ng-template #content>
+      <ng-container *ngIf="error; else todosList">
+        <div class="error">{{ error }}</div>
+      </ng-container>
+
+      <ng-template #todosList>
+        <ng-container *ngIf="filteredTodos.length > 0; else empty">
+          <app-todo-card
+            *ngFor="let todo of filteredTodos"
+            [todo]="todo"
+            (edit)="onEditTodo($event)"
+            (delete)="onDeleteTodo($event)"
+          >
+          </app-todo-card>
+        </ng-container>
+
+        <ng-template #empty>
+          <div class="empty">No todos found matching your criteria</div>
+        </ng-template>
+      </ng-template>
+    </ng-template>
+  </div>
+</div>

@@ -1,18 +1,27 @@
 <header class="portal-header">
   <!-- Left Section (Logo + Nav) -->
   <div class="portal-header__left">
-    <app-home-logo [routerLink]="['/']" routerLinkActive="router-link-active" ></app-home-logo>
+    <app-home-logo
+      [routerLink]="['/']"
+      routerLinkActive="router-link-active"
+    ></app-home-logo>
     <nav class="portal-nav">
       <a
         class="portal-nav__link"
         [class.active]="activeView === 'dashboard'"
-        (click)="navigateTo('dashboard')"
+        routerLink="/portal/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         >Dashboard</a
       >
       <a
         class="portal-nav__link"
         [class.active]="activeView === 'todos'"
-        (click)="navigateTo('todos')"
+        routerLink="/portal/todos"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         >Todos</a
       >
     </nav>

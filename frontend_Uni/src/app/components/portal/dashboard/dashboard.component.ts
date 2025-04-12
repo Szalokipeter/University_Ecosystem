@@ -45,28 +45,32 @@ export class DashboardComponent {
     this.loadEvents();
   }
 
-  initSwiper() {
-    this.swiper = new Swiper('.swiper', {
-      loop: true,
-      slidesPerView: 'auto',
-      spaceBetween: 24,
-      speed: 400,
-      autoplay: false,
-      slideToClickedSlide: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-        dynamicBullets: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      breakpoints: {
-        0: { slidesPerView: 1 },
-        1024: { slidesPerView: 2 },
-      },
-    });
+  private initSwiper(): void {
+    try {
+      this.swiper = new Swiper('.swiper', {
+        loop: true,
+        slidesPerView: 'auto',
+        spaceBetween: 24,
+        speed: 400,
+        autoplay: false,
+        slideToClickedSlide: true,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+          dynamicBullets: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+          0: { slidesPerView: 1 },
+          1024: { slidesPerView: 2 },
+        },
+      });
+    } catch (err) {
+      console.error('Swiper initialization error:', err);
+    }
   }
 
   loadEvents() {
@@ -170,14 +174,15 @@ export class DashboardComponent {
       .slice(0, 5);
 
     this.cdr.detectChanges();
+
     setTimeout(() => {
-      if (this.swiper) {
+      if (this.swiper && typeof this.swiper.update === 'function') {
         this.swiper.update();
         this.swiper.slideTo(0);
       } else {
-        this.initSwiper(); // Reinitialize if swiper doesn't exist
+        this.initSwiper();
       }
-    });
+    }, 0);
   }
 
   updateCalendar() {
@@ -214,7 +219,7 @@ export class DashboardComponent {
   }
 
   ngOnDestroy() {
-    if (this.swiper) {
+    if (this.swiper && typeof this.swiper.destroy === 'function') {
       this.swiper.destroy(true, true);
     }
   }
