@@ -47,9 +47,9 @@ export class AuthService {
   }
 
   logout() {
+    this.http.post(`${this.config.apiUrl}/logout)`, {headers: this.loggedInUser?.token}).subscribe();
     this.loggedInUser = undefined;
     localStorage.removeItem('loggedInUser');
-    this.http.post(`${this.config.apiUrl}/logout)`, {}).subscribe();
   }
 
   checkUser() {
@@ -58,5 +58,9 @@ export class AuthService {
     if (user) {
       this.loggedInUser = user;
     }
+  }
+
+  isAdminOrTeacher(): boolean {
+    return this.loggedInUser?.roles_id === 1 || this.loggedInUser?.roles_id === 2;
   }
 }

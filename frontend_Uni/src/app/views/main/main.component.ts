@@ -35,7 +35,6 @@ export class MainComponent implements OnInit {
     this.dataService.getPublicEvents().subscribe({
       next: (events) => {
         this.publicEvents = events;        
-        console.log('Events:', this.publicEvents);
         this.loading = false;
       },
       error: (err) => {

@@ -5,7 +5,12 @@
     <h1 class="section__header">News</h1>
     <div class="section--content">
       <app-news></app-news>
-      <app-calendar [events]="publicEvents" [loading]="loading" [error]="error"></app-calendar>
+      <app-calendar
+        [events]="publicEvents"
+        [loading]="loading"
+        [error]="error"
+        [isInPortal]="false"
+      ></app-calendar>
     </div>
   </div>
   <div class="section--wrapper">
@@ -71,6 +76,6 @@
   </div>
   <div id="courses__section" class="section--wrapper">
     <h1 class="section__header">Courses</h1>
-    <app-course-card-list></app-course-card-list>    
+    <app-course-card-list></app-course-card-list>
   </div>
 </div>

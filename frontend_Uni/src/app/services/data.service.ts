@@ -18,54 +18,86 @@ export class DataService implements OnInit {
     this.apiUrl = this.config.apiUrl;
   }
 
-  ngOnInit(): void {    
-  }
+  ngOnInit(): void {}
 
   private getAuthHeaders(): HttpHeaders {
-    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');  
+    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
     const token = this.loggedInUser?.token || '';
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
   }
 
   getNews(): Observable<News[]> {
     return this.http.get<News[]>(`${this.apiUrl}/news`);
   }
-
+  
+  //#region Calendar Events
   getPublicEvents(): Observable<CalendarEvent[]> {
     return this.http.get<CalendarEvent[]>(`${this.apiUrl}/uniCalendar`);
   }
   getPersonalEvents(): Observable<CalendarEvent[]> {
     return this.http.get<CalendarEvent[]>(`${this.apiUrl}/personalCalendar`, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
     });
   }
+  createCalendarEvent(
+    event: Partial<CalendarEvent>,
+    isPublic: boolean
+  ): Observable<CalendarEvent> {
+    const endpoint = isPublic ? 'uniCalendar' : 'personalCalendar';
+    return this.http.post<CalendarEvent>(`${this.apiUrl}/${endpoint}`, event, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+  updateCalendarEvent(
+    id: number,
+    event: Partial<CalendarEvent>,
+    isPublic: boolean
+  ): Observable<CalendarEvent> {
+    const endpoint = isPublic ? 'uniCalendar' : 'personalCalendar';
+    return this.http.put<CalendarEvent>(
+      `${this.apiUrl}/${endpoint}/${id}`,
+      event,
+      {
+        headers: this.getAuthHeaders(),
+      }
+    );
+  }
+  deleteCalendarEvent(id: number, isPublic: boolean): Observable<void> {
+    const endpoint = isPublic ? 'uniCalendar' : 'personalCalendar';
+    return this.http.delete<void>(`${this.apiUrl}/${endpoint}/${id}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+  //#endregion
 
+  //#region Todos
   getPersonalTodos(): Observable<Todo[]> {
     return this.http.get<Todo[]>(`${this.apiUrl}/personalTodos`, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
     });
   }
   getPersonalTodo(id: number): Observable<Todo> {
     return this.http.get<Todo>(`${this.apiUrl}/personalTodos/${id}`, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
     });
   }
   createTodo(todo: Partial<Todo>): Observable<Todo> {
     return this.http.post<Todo>(`${this.apiUrl}/personalTodos`, todo, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
     });
   }
   updateTodo(id: number, todo: Partial<Todo>): Observable<Todo> {
     return this.http.put<Todo>(`${this.apiUrl}/personalTodos/${id}`, todo, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
     });
   }
   destroyTodo(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/personalTodos/${id}`, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
     });
   }
+  //#endregion
 }

@@ -1,10 +1,15 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EventModalService } from '../../../services/event-modal.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../../../services/auth.service';
+import { EventFormComponent } from '../../portal/event-form/event-form.component';
+import { EventDetailModalComponent } from '../../portal/event-detail-modal/event-detail-modal.component';
+import { DataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-calendar',
@@ -25,15 +30,23 @@ export class CalendarComponent implements OnChanges {
   @Input() events: CalendarEvent[] = [];
   @Input() loading = true;
   @Input() error: string | null = null;
+  @Input() isInPortal = false;
+  @Output() eventAction = new EventEmitter<{
+    action: 'update' | 'delete';
+    event: CalendarEvent;
+    isPublic: boolean;
+  }>();
   currentDate: Date = new Date();
   weeks: CalendarWeekDay[][] = [];
 
   constructor(
     private datePipe: DatePipe,
-    private eventModal: EventModalService
+    private eventModal: EventModalService,
+    private dialog: MatDialog,
+    private authService: AuthService,
+    private dataService: DataService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('Events:', this.events);
     this.generateCalendar();
   }
 
@@ -114,7 +127,21 @@ export class CalendarComponent implements OnChanges {
   }
 
   openEventDetails(event: CalendarEvent) {
-    this.eventModal.openEventModal(event);
+    const canEditPublic = this.authService.isAdminOrTeacher();
+    const isPublic = canEditPublic || event.uni_user_id == null;
+    const dialogRef = this.dialog.open(EventDetailModalComponent, {
+      width: '500px',
+      data: {
+        event: event,
+        isPublic: isPublic,
+        isInPortal: this.isInPortal,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.eventAction.emit(result);
+      }
+    });
   }
 }
 

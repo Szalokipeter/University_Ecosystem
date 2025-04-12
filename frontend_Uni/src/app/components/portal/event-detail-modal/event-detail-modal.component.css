@@ -24,6 +24,13 @@
   line-height: 1.6;
 }
 
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+
 /* Mobile adaptation */
 @media (max-width: 768px) {
   .modal-container {

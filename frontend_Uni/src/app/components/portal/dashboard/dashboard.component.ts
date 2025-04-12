@@ -7,10 +7,14 @@ import { DataService } from '../../../services/data.service';
 import { CalendarComponent } from '../../main/calendar/calendar.component';
 import { forkJoin } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../../../services/auth.service';
+import { EventFormComponent } from '../event-form/event-form.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [EventCardComponent, NgFor, CalendarComponent, FormsModule],
+  imports: [EventCardComponent, NgFor, CalendarComponent, FormsModule, MatIcon],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -37,7 +41,9 @@ export class DashboardComponent {
 
   constructor(
     private dataService: DataService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   ngAfterViewInit() {
@@ -89,7 +95,7 @@ export class DashboardComponent {
           ...new Set(this.events.map((event) => event.event_type)),
         ];
         this.applyFilters();
-        this.updateCalendar(); // Initialize calendar filters
+        this.updateCalendar();
         this.loading = false;
       },
       error: (err) => {
@@ -216,6 +222,102 @@ export class DashboardComponent {
       date1.getMonth() === date2.getMonth() &&
       date1.getDate() === date2.getDate()
     );
+  }
+
+  addEvent(): void {
+    const canEditPublic = this.authService.isAdminOrTeacher();
+    const isPublic = this.calendarPublicityFilter === 'public';
+    console.log('isPublic:', isPublic);
+
+    const dialogRef = this.dialog.open(EventFormComponent, {
+      width: '500px',
+      data: {
+        isEdit: false,
+        isPublic: canEditPublic && isPublic, // Only allow public if user has permission
+        canEditPublic,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const isPublicEvent =
+          canEditPublic && this.calendarPublicityFilter === 'public';
+        this.dataService.createCalendarEvent(result, isPublicEvent).subscribe({
+          next: (newEvent) => {
+            // Add to appropriate list based on publicity
+            if (isPublicEvent) {
+              this.publicEvents.push(newEvent);
+            } else {
+              this.personalEvents.push(newEvent);
+            }
+            this.updateCalendar();
+            this.applyFilters();
+          },
+          error: (err) => console.error('Error creating event:', err),
+        });
+      }
+    });
+  }
+
+  handleCalendarEventAction(actionData: {
+    action: 'update' | 'delete';
+    event: CalendarEvent;
+    isPublic: boolean;
+  }) {
+    switch (actionData.action) {
+      case 'update':
+        this.handleUpdateEvent(actionData.event, actionData.isPublic);
+        break;
+      case 'delete':
+        this.handleDeleteEvent(actionData.event, actionData.isPublic);
+        break;
+    }
+  }
+  
+  private handleUpdateEvent(event: CalendarEvent, isPublic: boolean): void {
+    const dialogRef = this.dialog.open(EventFormComponent, {
+      width: '500px',
+      data: {
+        event,
+        isEdit: true,
+        isPublic,
+        canEditPublic: this.authService.isAdminOrTeacher()
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(updatedEvent => {
+      if (updatedEvent) {
+        this.dataService.updateCalendarEvent(event.id, updatedEvent, isPublic)
+          .subscribe({
+            next: (updatedEvent) => {
+              // Update the appropriate array
+              const targetArray = isPublic ? this.publicEvents : this.personalEvents;
+              const index = targetArray.findIndex(e => e.id === updatedEvent.id);
+              if (index !== -1) {
+                targetArray[index] = updatedEvent;
+                this.applyFilters()
+              }
+            },
+            error: (err) => console.error('Error updating event:', err)
+          });
+      }
+    });
+  }
+  
+  private handleDeleteEvent(event: CalendarEvent, isPublic: boolean): void {
+    this.dataService.deleteCalendarEvent(event.id, isPublic)
+      .subscribe({
+        next: () => {
+          // Remove from the appropriate array
+          const targetArray = isPublic ? this.publicEvents : this.personalEvents;
+          const index = targetArray.findIndex(e => e.id === event.id);
+          if (index !== -1) {
+            targetArray.splice(index, 1);
+            this.applyFilters()
+          }
+        },
+        error: (err) => console.error('Error deleting event:', err)
+      });
   }
 
   ngOnDestroy() {

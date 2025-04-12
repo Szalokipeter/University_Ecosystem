@@ -73,7 +73,10 @@
         <!-- Event Type Filter -->
         <div class="filter-group">
           <label>Event Type</label>
-          <select [(ngModel)]="calendarPublicityFilter" (change)="updateCalendar()">
+          <select
+            [(ngModel)]="calendarPublicityFilter"
+            (change)="updateCalendar()"
+          >
             <option value="all">All Events</option>
             <option value="public">Public Only</option>
             <option value="personal">Personal Only</option>
@@ -83,22 +86,39 @@
         <!-- Category Filter -->
         <div class="filter-group">
           <label>Category</label>
-          <select [(ngModel)]="calendarEventTypeFilter" (change)="updateCalendar()">
+          <select
+            [(ngModel)]="calendarEventTypeFilter"
+            (change)="updateCalendar()"
+          >
             <option value="all">All Categories</option>
             <option *ngFor="let type of eventTypes" [value]="type">
               {{ type }}
             </option>
           </select>
         </div>
+
+        <!-- Add new -->
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="addEvent()"
+          class="add-event-button"
+        >
+          <mat-icon>add</mat-icon>
+          Add Event
+        </button>
       </div>
     </div>
-    
+
     <div class="section--content">
       <app-calendar
         [events]="filteredCalendarEvents"
         [loading]="loading"
         [error]="error"
-      ></app-calendar>
+        [isInPortal]="true"
+        (eventAction)="handleCalendarEventAction($event)"
+      >
+      </app-calendar>
     </div>
   </div>
 </div>

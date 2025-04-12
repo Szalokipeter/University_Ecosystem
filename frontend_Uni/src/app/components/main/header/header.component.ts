@@ -34,7 +34,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
-    console.log(this.loggedInUser);
     this.checkScrollPosition();
   }
 

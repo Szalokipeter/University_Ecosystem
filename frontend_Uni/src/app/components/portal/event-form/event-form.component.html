@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>
+  {{ data.isEdit ? "Edit" : "Add" }}
+  {{ data.canEditPublic && data.isPublic ? "Public" : "Personal" }} Event
+</h2>
+
+<div mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Title</mat-label>
+    <input matInput [(ngModel)]="event.title" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="event.body" rows="4"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Date</mat-label>
+    <input matInput type="date" [(ngModel)]="event.dateofevent" required />
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width"
+    *ngIf="data.canEditPublic"
+  >
+    <mat-label>Event Type</mat-label>
+    <mat-select [(ngModel)]="event.event_type">
+      <mat-option *ngFor="let type of eventTypes" [value]="type">
+        {{ type }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field
+    appearance="outline"
+    class="full-width"
+    *ngIf="!data.canEditPublic"
+  >
+    <mat-label>Event Type</mat-label>
+    <input matInput [(ngModel)]="event.event_type" disabled />
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    {{ data.isEdit ? "Update" : "Create" }}
+  </button>
+</div>
