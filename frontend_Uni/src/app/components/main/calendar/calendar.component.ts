@@ -128,13 +128,13 @@ export class CalendarComponent implements OnChanges {
 
   openEventDetails(event: CalendarEvent) {
     const canEditPublic = this.authService.isAdminOrTeacher();
-    const isPublic = canEditPublic || event.uni_user_id == null;
+    const canEdit = this.isInPortal && (canEditPublic || event.uni_user_id !== null); //returns true only this.isInPortal = true and either in () is true
     const dialogRef = this.dialog.open(EventDetailModalComponent, {
       width: '500px',
       data: {
         event: event,
-        isPublic: isPublic,
-        isInPortal: this.isInPortal,
+        isPublic: event.uni_user_id == null,
+        canEdit: canEdit,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {

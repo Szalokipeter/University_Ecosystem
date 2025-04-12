@@ -51,7 +51,6 @@ export class EventFormComponent {
 
   constructor() {
     this.showPublicToggle = this.data.canEditPublic;
-    console.log('showPublicToggle:', this.showPublicToggle);
     this.isPublicEvent = this.data.isPublic;
 
     this.event = this.data.event

@@ -32,24 +32,20 @@ export class EventDetailModalComponent {
   data = inject<{
     event: CalendarEvent;
     isPublic: boolean;
-    isInPortal: boolean;
+    canEdit: boolean;
   }>(MAT_DIALOG_DATA);
 
   constructor() {
-    console.log('can edit:', this.canEdit);
+    console.log('Event Detail Modal Constructor IsPublic:', this.data.isPublic);
     this.event = this.data.event;
   }
 
   get canEdit(): boolean {
-    if (!this.data.isInPortal) return false;
-    if (!this.data.isPublic) return true;
-    return (
-      this.loggedInUser?.roles_id === 1 ||
-      this.loggedInUser?.roles_id === 2
-    );
+    return this.data.canEdit;
   }
 
   onUpdate(): void {    
+    console.log('Event Detail Modal OnUpdate to be output IsPublic:', this.data.isPublic);
     this.dialogRef.close({
       action: 'update',
       event: this.data.event,
