@@ -263,7 +263,6 @@ export class DashboardComponent {
     event: CalendarEvent;
     isPublic: boolean;
   }) {
-    console.log('handleCalendarEventAction isPublic:', actionData.isPublic);
     switch (actionData.action) {
       case 'update':        
         this.handleUpdateEvent(actionData.event, actionData.isPublic);
@@ -275,7 +274,6 @@ export class DashboardComponent {
   }
 
   private handleUpdateEvent(event: CalendarEvent, isPublic: boolean): void {
-    console.log('handleUpdateEvent isPublic:', isPublic);
     const dialogRef = this.dialog.open(EventFormComponent, {
       width: '500px',
       data: {
@@ -289,31 +287,30 @@ export class DashboardComponent {
     dialogRef.afterClosed().subscribe((updatedData) => {
       if (updatedData) {
         console.log('updated IsPublic:', updatedData.isPublic, ' - as compared to:', isPublic);
+        const updatedEvent = updatedData.event;
+        
+        if (updatedData.isPublic !== isPublic) {
+          console.log('updatedEvent:', updatedEvent);
 
-        // const newIsPublic = updatedData.isPublic;
-        // const updatedEvent = {
-        //   ...updatedData,
-        //   isPublic: undefined,
-        // };
-
-        // if (newIsPublic !== isPublic) {
-        //   forkJoin([
-        //     this.dataService.deleteCalendarEvent(event.id, isPublic),
-        //     this.dataService.createCalendarEvent(updatedEvent, newIsPublic),
-        //   ]).subscribe({
-        //     next: ([_, newEvent]) => {
-        //       this.loadEvents();
-        //     },
-        //     error: (err) => console.error('Error moving event:', err),
-        //   });
-        // } else {
-        //   this.dataService
-        //     .updateCalendarEvent(event.id, updatedEvent, isPublic)
-        //     .subscribe({
-        //       next: () => this.loadEvents(),
-        //       error: (err) => console.error('Error updating event:', err),
-        //     });
-        // }
+          // forkJoin([
+          //   this.dataService.deleteCalendarEvent(event.id, isPublic),
+          //   this.dataService.createCalendarEvent(updatedEvent, updatedData.isPublic),
+          // ]).subscribe({
+          //   next: ([_, newEvent]) => {
+          //     // Add to appropriate list based on publicity
+          //     if (updatedData.isPublic) {
+          //       this.publicEvents.push(newEvent);
+          //     } else {
+          //       this.personalEvents.push(newEvent);
+          //     }
+          //     this.loadEvents();
+          //   },
+          //   error: (err) => console.error('Error moving event:', err),
+          // });
+          
+        } else {
+          console.log('updatedEvent:', updatedEvent); //currently undefined for some reason
+        }
       }
     });
   }

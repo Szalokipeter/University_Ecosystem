@@ -36,7 +36,6 @@ export class EventDetailModalComponent {
   }>(MAT_DIALOG_DATA);
 
   constructor() {
-    console.log('Event Detail Modal Constructor IsPublic:', this.data.isPublic);
     this.event = this.data.event;
   }
 
@@ -45,7 +44,6 @@ export class EventDetailModalComponent {
   }
 
   onUpdate(): void {    
-    console.log('Event Detail Modal OnUpdate to be output IsPublic:', this.data.isPublic);
     this.dialogRef.close({
       action: 'update',
       event: this.data.event,
