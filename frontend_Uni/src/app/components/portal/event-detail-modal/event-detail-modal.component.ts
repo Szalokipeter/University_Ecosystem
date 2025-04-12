@@ -26,6 +26,7 @@ import { AuthService } from '../../../services/auth.service';
 export class EventDetailModalComponent {
   @Output() closed = new EventEmitter<void>();
   event: CalendarEvent;
+  loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
 
   dialogRef = inject(MatDialogRef<EventDetailModalComponent>);
   data = inject<{
@@ -33,9 +34,9 @@ export class EventDetailModalComponent {
     isPublic: boolean;
     isInPortal: boolean;
   }>(MAT_DIALOG_DATA);
-  authService = inject(AuthService);
 
   constructor() {
+    console.log('can edit:', this.canEdit);
     this.event = this.data.event;
   }
 
@@ -43,12 +44,12 @@ export class EventDetailModalComponent {
     if (!this.data.isInPortal) return false;
     if (!this.data.isPublic) return true;
     return (
-      this.authService.loggedInUser?.roles_id === 1 ||
-      this.authService.loggedInUser?.roles_id === 2
+      this.loggedInUser?.roles_id === 1 ||
+      this.loggedInUser?.roles_id === 2
     );
   }
 
-  onUpdate(): void {
+  onUpdate(): void {    
     this.dialogRef.close({
       action: 'update',
       event: this.data.event,

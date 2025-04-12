@@ -9,7 +9,7 @@ import { map, Observable } from 'rxjs';
 })
 export class AuthService {
   loggedInUser: UserModel | undefined = undefined;
-  qrCode : string | undefined = undefined;
+  qrCode: string | undefined = undefined;
 
   constructor(private config: ConfigService, private http: HttpClient) {}
 
@@ -33,7 +33,7 @@ export class AuthService {
         })
       );
   }
-  generateQrCode():Observable<any>{
+  generateQrCode(): Observable<any> {
     return this.http
       .post<UserModel>(`${this.config.apiUrl}/qrcode/generate`, {})
       .pipe(
@@ -41,26 +41,43 @@ export class AuthService {
           this.qrCode = response.qrcode;
           return this.qrCode;
         })
-
       );
-
   }
 
   logout() {
-    this.http.post(`${this.config.apiUrl}/logout)`, {headers: this.loggedInUser?.token}).subscribe();
-    this.loggedInUser = undefined;
-    localStorage.removeItem('loggedInUser');
+    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');    
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.loggedInUser?.token}`,
+    });
+
+    this.http.post(`${this.config.apiUrl}/logout`, {}, { headers }).subscribe({
+      next: () => {
+        this.loggedInUser = undefined;
+        localStorage.removeItem('loggedInUser');
+        // Optional: Redirect to login page or handle post-logout logic
+      },
+      error: (err) => {
+        console.error('Logout failed:', err);
+        // Still clear local state even if server logout fails
+        this.loggedInUser = undefined;
+        localStorage.removeItem('loggedInUser');
+      },
+    });
   }
 
   checkUser() {
-
-    let user: UserModel = JSON.parse(localStorage.getItem('loggedInUser') || "");
+    let user: UserModel = JSON.parse(
+      localStorage.getItem('loggedInUser') || ''
+    );
     if (user) {
       this.loggedInUser = user;
     }
   }
 
   isAdminOrTeacher(): boolean {
-    return this.loggedInUser?.roles_id === 1 || this.loggedInUser?.roles_id === 2;
+    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
+    return (
+      this.loggedInUser?.roles_id === 1 || this.loggedInUser?.roles_id === 2
+    );
   }
 }

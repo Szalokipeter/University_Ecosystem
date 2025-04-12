@@ -1,7 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
-import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +7,7 @@ import { ConfigService } from './config.service';
 export class LaravelEchoService implements OnDestroy {
   private echo: any;
 
-  constructor(private configSerivce: ConfigService) {
+  constructor() {
     this.echo = new Echo({
       broadcaster: 'reverb',
       key: 'zlzpfxhovyobija8w1il',

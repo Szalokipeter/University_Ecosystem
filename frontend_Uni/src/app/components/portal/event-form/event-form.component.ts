@@ -12,6 +12,7 @@ import {
 } from '@angular/material/dialog';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { AuthService } from '../../../services/auth.service';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-event-form',
@@ -23,6 +24,7 @@ import { AuthService } from '../../../services/auth.service';
     MatSelectModule,
     MatFormFieldModule,
     MatDialogModule,
+    MatRadioModule
   ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.css',
@@ -44,8 +46,14 @@ export class EventFormComponent {
     'Student Affairs',
     'Registration Required',
   ];
+  showPublicToggle: boolean;
+  isPublicEvent: boolean;
 
   constructor() {
+    this.showPublicToggle = this.data.canEditPublic;
+    console.log('showPublicToggle:', this.showPublicToggle);
+    this.isPublicEvent = this.data.isPublic;
+
     this.event = this.data.event
       ? { ...this.data.event }
       : {
@@ -56,8 +64,18 @@ export class EventFormComponent {
         };
   }
 
+  onPublicityChange(isPublic: boolean): void {
+    this.isPublicEvent = isPublic;
+    // Reset event type when changing publicity
+    this.event.event_type = isPublic ? 'Open to Public' : 'Student Affairs';
+  }
+
   onSubmit(): void {
-    this.dialogRef.close(this.event);
+    const result = {
+      ...this.event,
+      isPublic: this.isPublicEvent
+    };
+    this.dialogRef.close(result);
   }
 
   onCancel(): void {

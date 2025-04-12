@@ -1,44 +1,45 @@
-<h2 mat-dialog-title>
-  {{ data.isEdit ? "Edit" : "Add" }}
-  {{ data.canEditPublic && data.isPublic ? "Public" : "Personal" }} Event
-</h2>
+<h2 mat-dialog-title>{{ data.isEdit ? "Edit" : "Add" }} Event</h2>
 
 <div mat-dialog-content>
+  <!-- Public/Private Toggle -->
+  <div *ngIf="showPublicToggle" class="public-toggle">
+    <mat-radio-group
+      [(ngModel)]="isPublicEvent"
+      (change)="onPublicityChange(isPublicEvent)"
+    >
+      <mat-radio-button [value]="true">Public Event</mat-radio-button>
+      <mat-radio-button [value]="false">Personal Event</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Title</mat-label>
-    <input matInput [(ngModel)]="event.title" required />
+    <input matInput [(ngModel)]="event.title" name="title" required />
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Description</mat-label>
-    <textarea matInput [(ngModel)]="event.body" rows="4"></textarea>
+    <textarea matInput [(ngModel)]="event.body" name="body" rows="4"></textarea>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Date</mat-label>
-    <input matInput type="date" [(ngModel)]="event.dateofevent" required />
+    <input
+      matInput
+      type="date"
+      [(ngModel)]="event.dateofevent"
+      name="dateofevent"
+      required
+    />
   </mat-form-field>
 
-  <mat-form-field
-    appearance="outline"
-    class="full-width"
-    *ngIf="data.canEditPublic"
-  >
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Event Type</mat-label>
-    <mat-select [(ngModel)]="event.event_type">
+    <mat-select [(ngModel)]="event.event_type" name="event_type">
       <mat-option *ngFor="let type of eventTypes" [value]="type">
         {{ type }}
       </mat-option>
     </mat-select>
-  </mat-form-field>
-
-  <mat-form-field
-    appearance="outline"
-    class="full-width"
-    *ngIf="!data.canEditPublic"
-  >
-    <mat-label>Event Type</mat-label>
-    <input matInput [(ngModel)]="event.event_type" disabled />
   </mat-form-field>
 </div>
 

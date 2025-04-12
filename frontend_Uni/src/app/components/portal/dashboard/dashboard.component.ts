@@ -250,8 +250,7 @@ export class DashboardComponent {
             } else {
               this.personalEvents.push(newEvent);
             }
-            this.updateCalendar();
-            this.applyFilters();
+            this.loadEvents();
           },
           error: (err) => console.error('Error creating event:', err),
         });
@@ -273,7 +272,7 @@ export class DashboardComponent {
         break;
     }
   }
-  
+
   private handleUpdateEvent(event: CalendarEvent, isPublic: boolean): void {
     const dialogRef = this.dialog.open(EventFormComponent, {
       width: '500px',
@@ -281,43 +280,55 @@ export class DashboardComponent {
         event,
         isEdit: true,
         isPublic,
-        canEditPublic: this.authService.isAdminOrTeacher()
-      }
+        canEditPublic: this.authService.isAdminOrTeacher(),
+      },
     });
-  
-    dialogRef.afterClosed().subscribe(updatedEvent => {
-      if (updatedEvent) {
-        this.dataService.updateCalendarEvent(event.id, updatedEvent, isPublic)
-          .subscribe({
-            next: (updatedEvent) => {
-              // Update the appropriate array
-              const targetArray = isPublic ? this.publicEvents : this.personalEvents;
-              const index = targetArray.findIndex(e => e.id === updatedEvent.id);
-              if (index !== -1) {
-                targetArray[index] = updatedEvent;
-                this.applyFilters()
-              }
+
+    dialogRef.afterClosed().subscribe((updatedData) => {
+      if (updatedData) {
+        const newIsPublic = updatedData.isPublic;
+        const updatedEvent = {
+          ...updatedData,
+          isPublic: undefined, // Remove the isPublic property before sending
+        };
+
+        if (newIsPublic !== isPublic) {
+          // Publicity changed - need to delete old and create new
+          forkJoin([
+            this.dataService.deleteCalendarEvent(event.id, isPublic),
+            this.dataService.createCalendarEvent(updatedEvent, newIsPublic),
+          ]).subscribe({
+            next: ([_, newEvent]) => {
+              this.loadEvents(); // Refresh the list
             },
-            error: (err) => console.error('Error updating event:', err)
+            error: (err) => console.error('Error moving event:', err),
           });
+        } else {
+          // Publicity stayed the same - normal update
+          this.dataService
+            .updateCalendarEvent(event.id, updatedEvent, isPublic)
+            .subscribe({
+              next: () => this.loadEvents(),
+              error: (err) => console.error('Error updating event:', err),
+            });
+        }
       }
     });
   }
-  
+
   private handleDeleteEvent(event: CalendarEvent, isPublic: boolean): void {
-    this.dataService.deleteCalendarEvent(event.id, isPublic)
-      .subscribe({
-        next: () => {
-          // Remove from the appropriate array
-          const targetArray = isPublic ? this.publicEvents : this.personalEvents;
-          const index = targetArray.findIndex(e => e.id === event.id);
-          if (index !== -1) {
-            targetArray.splice(index, 1);
-            this.applyFilters()
-          }
-        },
-        error: (err) => console.error('Error deleting event:', err)
-      });
+    this.dataService.deleteCalendarEvent(event.id, isPublic).subscribe({
+      next: () => {
+        // Remove from the appropriate array
+        const targetArray = isPublic ? this.publicEvents : this.personalEvents;
+        const index = targetArray.findIndex((e) => e.id === event.id);
+        if (index !== -1) {
+          targetArray.splice(index, 1);
+          this.loadEvents();
+        }
+      },
+      error: (err) => console.error('Error deleting event:', err),
+    });
   }
 
   ngOnDestroy() {

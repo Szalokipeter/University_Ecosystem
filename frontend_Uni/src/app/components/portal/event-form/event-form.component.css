@@ -1,0 +1,20 @@
+.public-toggle {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.public-toggle mat-radio-group {
+  display: flex;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
