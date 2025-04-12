@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>{{ data.isEdit ? "Edit Todo" : "Add New Todo" }}</h2>
+<div mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Title</mat-label>
+    <input matInput [(ngModel)]="todo.title" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="todo.body" rows="4"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Status</mat-label>
+    <mat-select [(ngModel)]="todo.status">
+      <mat-option *ngFor="let status of data.existingStatuses" [value]="status">
+        {{ status.replace("_", " ") | titlecase }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    {{ data.isEdit ? "Update" : "Create" }}
+  </button>
+</div>

@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { TodoCardComponent } from '../todo-card/todo-card.component';
 import { Todo } from '../../../models/todo.model';
 import { DataService } from '../../../services/data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { TodoFormComponent } from '../todo-form/todo-form.component';
 
 @Component({
   selector: 'app-todo-list',
@@ -34,12 +36,7 @@ export class TodoListComponent implements OnInit {
   searchQuery = '';
   sortBy = 'created_at';
 
-  statusOptions = [
-    { value: 'all', label: 'All Statuses' },
-    { value: 'pending', label: 'Pending' },
-    { value: 'in_progress', label: 'In Progress' },
-    { value: 'completed', label: 'Completed' },
-  ];
+  statusOptions: { value: string; label: string }[] = [];
 
   sortOptions = [
     { value: 'title', label: 'Title' },
@@ -47,7 +44,7 @@ export class TodoListComponent implements OnInit {
     { value: 'updated_at', label: 'Last Updated' },
   ];
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadTodos();
@@ -59,6 +56,7 @@ export class TodoListComponent implements OnInit {
     this.dataService.getPersonalTodos().subscribe({
       next: (todos) => {
         this.todos = todos;
+        this.updateStatusOptions();
         this.applyFilters();
         this.loading = false;
       },
@@ -68,6 +66,28 @@ export class TodoListComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  private updateStatusOptions(): void {
+    const uniqueStatuses = [...new Set(this.todos.map(t => t.status))];
+    
+    const options = [{ value: 'all', label: 'All Statuses' }];
+    
+    uniqueStatuses.forEach(status => {
+      options.push({
+        value: status,
+        label: this.formatStatusLabel(status)
+      });
+    });
+    
+    this.statusOptions = options;
+  }
+
+  private formatStatusLabel(status: string): string {
+    return status
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 
   applyFilters(): void {
@@ -116,11 +136,51 @@ export class TodoListComponent implements OnInit {
   }
 
   onAddTodo(): void {
-    // todo: Implement the logic with dialoge to add a new todo
-    console.log('Add new todo');
+    const existingStatuses = [...new Set(this.todos.map((t) => t.status))];
+    const dialogRef = this.dialog.open(TodoFormComponent, {
+      width: '500px',
+      data: { isEdit: false, existingStatuses }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.dataService.createTodo(result).subscribe({
+          next: (newTodo) => {
+            this.todos.unshift(newTodo);
+            this.applyFilters();
+          },
+          error: (err) => {
+            console.error('Error creating todo:', err);
+            alert('Failed to create todo');
+          },
+        });
+      }
+    });
   }
+
   onEditTodo(todo: Todo): void {
-    // todo: Implement the logic with dialoge to edit existing todo
-    console.log('Edit todo:', todo);
+    const existingStatuses = [...new Set(this.todos.map((t) => t.status))];
+    const dialogRef = this.dialog.open(TodoFormComponent, {
+      width: '500px',
+      data: { todo, isEdit: true, existingStatuses }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.dataService.updateTodo(todo.id, result).subscribe({
+          next: (updatedTodo) => {
+            const index = this.todos.findIndex((t) => t.id === updatedTodo.id);
+            if (index !== -1) {
+              this.todos[index] = updatedTodo;
+              this.applyFilters();
+            }
+          },
+          error: (err) => {
+            console.error('Error updating todo:', err);
+            alert('Failed to update todo');
+          },
+        });
+      }
+    });
   }
 }
