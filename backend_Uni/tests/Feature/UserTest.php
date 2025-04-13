@@ -48,7 +48,7 @@ class UserTest extends TestCase
         $userCredentials = [
             'email' => "asdf@asdf.com",
             "username" => 'asdf',
-            "password" => "asdf"
+            "password" => "Asdfhhhh1."
         ];
         $response = $this->actingAs($user)->postJson('/api/admin/register', $userCredentials);
         $response->assertStatus(201);
@@ -60,7 +60,7 @@ class UserTest extends TestCase
         $userCredentials = [
             'email' => "asd@asd.com",
             "username" => 'asd',
-            "password" => "asd"
+            "password" => "Asdfhhh"
         ];
         $response = $this->actingAs($user)->postJson('/api/admin/register', $userCredentials);
         $response->assertStatus(422);
@@ -71,7 +71,7 @@ class UserTest extends TestCase
         $registerCredentials = [
             'email' => "asda@asda.com",
             'username' => 'asda',
-            "password" => "asda"
+            "password" => "Asdfhhhh1."
         ];
         $response = $this->actingAs($user)->postJson('/api/admin/register', $registerCredentials);
         $response->assertStatus(403);
@@ -82,7 +82,7 @@ class UserTest extends TestCase
         $registerCredentials = [
             'email' => "asda@asda.com",
             'username' => 'asda',
-            "password" => "asd"
+            "password" => "Asdfhhhh1."
         ];
         $response = $this->postJson('/api/admin/register', $registerCredentials);
         $response->assertStatus(401);
@@ -93,8 +93,8 @@ class UserTest extends TestCase
         $user = UniUser::find(1);
         $editCredentials = [
             "username" => 'asdf',
-            "password" => "asdf",
-            "password_confirmation" => "asdf"
+            "password" => "Asdfhhhh1.",
+            "password_confirmation" => "Asdfhhhh1."
         ];
         $response = $this->actingAs($user)->putJson('/api/users/4', $editCredentials);
         $response->assertStatus(200);
@@ -105,8 +105,8 @@ class UserTest extends TestCase
         $user = UniUser::find(3);
         $editCredentials = [
             "username" => 'asdf',
-            "password" => "asdf",
-            "password_confirmation" => "asdf"
+            "password" => "Asdfhhhh1.",
+            "password_confirmation" => "Asdfhhhh1."
         ];
         $response = $this->actingAs($user)->putJson('/api/users/3', $editCredentials);
         $response->assertStatus(200);
@@ -117,7 +117,7 @@ class UserTest extends TestCase
         $user = UniUser::find(4);
         $editCredentials = [
             "username" => 'asdf',
-            "password" => "asdf",
+            "password" => "Asdfhhhh1.",
         ];
         $response = $this->actingAs($user)->putJson('/api/users/4', $editCredentials);
         $response->assertStatus(422);
@@ -127,7 +127,7 @@ class UserTest extends TestCase
         $user = UniUser::find(1);
         $editCredentials = [
             "username" => 'asdf',
-            "password" => "asdf",
+            "password" => "Asdfhhhh1.",
         ];
         $response = $this->actingAs($user)->putJson('/api/users/4', $editCredentials);
         $response->assertStatus(422);
@@ -137,7 +137,7 @@ class UserTest extends TestCase
         $editCredentials = [
             'email' => "asda@asda.com",
             'username' => 'asda',
-            "password" => "asd"
+            "password" => "Asdfhhhh1."
         ];
         $response = $this->putJson('/api/users/3', $editCredentials);
         $response->assertStatus(401);
