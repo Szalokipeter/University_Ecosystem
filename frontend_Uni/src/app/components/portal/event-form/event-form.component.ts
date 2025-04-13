@@ -71,7 +71,7 @@ export class EventFormComponent {
 
   onSubmit(): void {
     const result = {
-      ...this.event,
+      event: this.event,
       isPublic: this.isPublicEvent
     };
     this.dialogRef.close(result);

@@ -5,7 +5,7 @@ import Swiper from 'swiper';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { DataService } from '../../../services/data.service';
 import { CalendarComponent } from '../../main/calendar/calendar.component';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -38,6 +38,7 @@ export class DashboardComponent {
   filteredCalendarEvents: CalendarEvent[] = [];
 
   private swiper?: Swiper;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private dataService: DataService,
@@ -238,7 +239,9 @@ export class DashboardComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((result) => {
       if (result) {
         const isPublicEvent =
           canEditPublic && this.calendarPublicityFilter === 'public';
@@ -264,7 +267,7 @@ export class DashboardComponent {
     isPublic: boolean;
   }) {
     switch (actionData.action) {
-      case 'update':        
+      case 'update':
         this.handleUpdateEvent(actionData.event, actionData.isPublic);
         break;
       case 'delete':
@@ -284,53 +287,71 @@ export class DashboardComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe((updatedData) => {
-      if (updatedData) {
-        console.log('updated IsPublic:', updatedData.isPublic, ' - as compared to:', isPublic);
-        const updatedEvent = updatedData.event;
-        
-        if (updatedData.isPublic !== isPublic) {
-          console.log('updatedEvent:', updatedEvent);
+    dialogRef
+      .afterClosed()
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe((updatedData) => {
+        if (!updatedData) return;
+        if (updatedData) {
+          console.log(
+            'updated IsPublic:',
+            updatedData.isPublic,
+            ' - as compared to:',
+            isPublic
+          );
+          const updatedEvent = updatedData.event;
 
-          // forkJoin([
-          //   this.dataService.deleteCalendarEvent(event.id, isPublic),
-          //   this.dataService.createCalendarEvent(updatedEvent, updatedData.isPublic),
-          // ]).subscribe({
-          //   next: ([_, newEvent]) => {
-          //     // Add to appropriate list based on publicity
-          //     if (updatedData.isPublic) {
-          //       this.publicEvents.push(newEvent);
-          //     } else {
-          //       this.personalEvents.push(newEvent);
-          //     }
-          //     this.loadEvents();
-          //   },
-          //   error: (err) => console.error('Error moving event:', err),
-          // });
-          
-        } else {
-          console.log('updatedEvent:', updatedEvent); //currently undefined for some reason
+          if (updatedData.isPublic !== isPublic) {
+            console.log('updatedEvent publicity is changed:', updatedEvent);
+
+            forkJoin([
+              this.dataService.deleteCalendarEvent(event.id, isPublic),
+              this.dataService.createCalendarEvent(
+                updatedEvent,
+                updatedData.isPublic
+              ),
+            ]).subscribe({
+              next: ([_, newEvent]) => {
+                // Add to appropriate list based on publicity
+                if (updatedData.isPublic) {
+                  this.publicEvents.push(newEvent);
+                } else {
+                  this.personalEvents.push(newEvent);
+                }
+                this.loadEvents();
+              },
+              error: (err) => console.error('Error moving event:', err),
+            });
+          } else {
+            console.log('updatedEvent publicity unchanged:', updatedEvent);
+            this.dataService
+              .updateCalendarEvent(event.id, updatedEvent, isPublic)
+              .subscribe({
+                next: () => {
+                  this.loadEvents();
+                },
+                error: (err) => console.error('Error updating event:', err),
+              });
+          }
         }
-      }
-    });
+      });
   }
 
   private handleDeleteEvent(event: CalendarEvent, isPublic: boolean): void {
     this.dataService.deleteCalendarEvent(event.id, isPublic).subscribe({
       next: () => {
-        // Remove from the appropriate array
-        const targetArray = isPublic ? this.publicEvents : this.personalEvents;
-        const index = targetArray.findIndex((e) => e.id === event.id);
-        if (index !== -1) {
-          targetArray.splice(index, 1);
-          this.loadEvents();
-        }
+        this.loadEvents();
       },
       error: (err) => console.error('Error deleting event:', err),
     });
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+
     if (this.swiper && typeof this.swiper.destroy === 'function') {
       this.swiper.destroy(true, true);
     }
