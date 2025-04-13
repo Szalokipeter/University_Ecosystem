@@ -33,7 +33,12 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
+    if (localStorage.getItem('loggedInUser')) {
+      this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');      
+    } else {
+      this.loggedInUser = undefined;
+    }
+    
     this.checkScrollPosition();
   }
 
@@ -71,8 +76,6 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.isDropdownOpen = false;
-    this.loggedInUser = undefined;
-    this.router.navigate(['/']);
   }
 
   toggle_menu(event: MouseEvent) {

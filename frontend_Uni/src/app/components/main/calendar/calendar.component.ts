@@ -1,15 +1,20 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { EventModalService } from '../../../services/event-modal.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth.service';
-import { EventFormComponent } from '../../portal/event-form/event-form.component';
 import { EventDetailModalComponent } from '../../portal/event-detail-modal/event-detail-modal.component';
-import { DataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-calendar',
@@ -27,30 +32,58 @@ import { DataService } from '../../../services/data.service';
   providers: [DatePipe],
 })
 export class CalendarComponent implements OnChanges {
-  @Input() events: CalendarEvent[] = [];
+  @Input() eventsMap: Map<string, CalendarEvent[]> = new Map();
   @Input() loading = true;
   @Input() error: string | null = null;
   @Input() isInPortal = false;
+
   @Output() eventAction = new EventEmitter<{
     action: 'update' | 'delete';
     event: CalendarEvent;
     isPublic: boolean;
   }>();
+  @Output() retry = new EventEmitter<void>()
+
   currentDate: Date = new Date();
   weeks: CalendarWeekDay[][] = [];
 
   constructor(
     private datePipe: DatePipe,
-    private eventModal: EventModalService,
     private dialog: MatDialog,
     private authService: AuthService,
-    private dataService: DataService
+    private cdr: ChangeDetectorRef,
   ) {}
+
   ngOnChanges(changes: SimpleChanges): void {
+    // Always regenerate calendar when eventsMap changes
+    if (changes['eventsMap']) {
+      console.log('eventsMap changed:');
+      this.generateCalendar();
+    }
+    
+    // Handle loading/error states
+    if (changes['loading'] || changes['error']) {
+      this.cdr.markForCheck();
+    }
+  }
+  private triggerViewUpdate() {
     this.generateCalendar();
+    this.cdr.markForCheck();
+  }
+
+  trackByWeek(index: number, week: CalendarWeekDay[]): string {
+    return week[0]?.date.toISOString();
+  }
+  trackByDay(index: number, day: CalendarWeekDay): string {
+    return day.date.toISOString();
+  }
+  
+  trackByEvent(index: number, event: CalendarEvent): string {
+    return event.id.toString();
   }
 
   generateCalendar() {
+    console.log('Generating calendar...');
     const year = this.currentDate.getFullYear();
     const month = this.currentDate.getMonth();
 
@@ -89,11 +122,9 @@ export class CalendarComponent implements OnChanges {
 
   getEventsForDate(date: Date): CalendarEvent[] {
     const dateStr = this.datePipe.transform(date, 'yyyy-MM-dd') || '';
-    return this.events
-      .filter((event: CalendarEvent) => event.dateofevent.startsWith(dateStr))
-      .sort((a: CalendarEvent, b: CalendarEvent) =>
-        a.title.localeCompare(b.title)
-      );
+    return (this.eventsMap?.get(dateStr) || []).sort((a, b) =>
+      a.title.localeCompare(b.title)
+    );
   }
 
   isSameDate(date1: Date, date2: Date): boolean {
@@ -115,28 +146,30 @@ export class CalendarComponent implements OnChanges {
 
   getEventColor(eventType: string): string {
     const colorMap: Record<string, string> = {
-      'open to public': '#508484', // Green
-      'family affairs': '#9E7682', // Blue
-      'student affairs': '#F7C4A5', // Amber
-      'registration required': '#EDCB96', // Red
+      'open to public': '#508484',
+      'family affairs': '#9E7682',
+      'student affairs': '#F7C4A5',
+      'registration required': '#EDCB96',
     };
 
     const normalizedType = eventType.toLowerCase().trim();
-
     return colorMap[normalizedType] || '#9C27B0';
   }
 
   openEventDetails(event: CalendarEvent) {
     const canEditPublic = this.authService.isAdminOrTeacher();
-    const canEdit = this.isInPortal && (canEditPublic || event.uni_user_id !== null); //returns true only this.isInPortal = true and either in () is true
+    const canEdit =
+      this.isInPortal && (canEditPublic || event.uni_user_id !== null);
+
     const dialogRef = this.dialog.open(EventDetailModalComponent, {
       width: '500px',
       data: {
-        event: event,
+        event,
         isPublic: event.uni_user_id == null,
         canEdit: canEdit,
       },
     });
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.eventAction.emit(result);

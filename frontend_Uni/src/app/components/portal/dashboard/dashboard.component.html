@@ -54,6 +54,9 @@
     </div>
 
     <div class="events-swiper swiper">
+      <div *ngIf="filteredEvents.length === 0" class="no-events-msg">
+        No events match your filters.
+      </div>
       <div class="swiper-wrapper">
         <div class="swiper-slide" *ngFor="let event of filteredEvents">
           <app-event-card [event]="event"></app-event-card>
@@ -112,11 +115,12 @@
 
     <div class="section--content">
       <app-calendar
-        [events]="filteredCalendarEvents"
+        [eventsMap]="eventsByDate"
         [loading]="loading"
         [error]="error"
         [isInPortal]="true"
         (eventAction)="handleCalendarEventAction($event)"
+        (retry)="loadEvents()"
       >
       </app-calendar>
     </div>

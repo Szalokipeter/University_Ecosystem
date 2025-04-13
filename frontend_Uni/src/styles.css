@@ -34,10 +34,12 @@ h1 {
   color: #555;
 }
 
-/* .header.headroom--not-top h1,
+.header.headroom--not-top h1 {
+  color: var(--secondary-action-color);
+}
 .header.headroom--not-top p {
-  color: var(--primary-color);
-} */
+  color: #666;
+}
 
 .section__header {
   font-size: 39px;

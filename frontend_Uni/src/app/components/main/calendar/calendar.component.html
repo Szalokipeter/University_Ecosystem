@@ -3,10 +3,10 @@
   <div *ngIf="loading" class="loading-spinner">
     <mat-spinner diameter="50" color="primary"></mat-spinner>
   </div>
-<!-- 
+
   <div *ngIf="error" class="error-message">
-    {{ error }} <button (click)="loadEvents()">Retry</button>
-  </div> -->
+    {{ error }} <button (click)="retry.emit()">Retry</button>
+  </div>
 
   <!-- Calendar Header -->
   <div class="calendar-header" *ngIf="!loading && !error">
@@ -34,10 +34,10 @@
     </div>
 
     <!-- Calendar Weeks -->
-    <div *ngFor="let week of weeks" class="calendar-week">
+    <div *ngFor="let week of weeks; trackBy: trackByWeek" class="calendar-week">
       <!-- Calendar Days -->
       <div
-        *ngFor="let day of week"
+        *ngFor="let day of week; trackBy: trackByDay"
         class="calendar-day"
         [class.current-month]="day.isCurrentMonth"
         [class.other-month]="!day.isCurrentMonth"
@@ -47,7 +47,7 @@
 
         <!-- Events -->
         <div
-          *ngFor="let event of day.events"
+          *ngFor="let event of day.events; trackBy: trackByEvent"
           class="calendar-event"
           [style.backgroundColor]="getEventColor(event.event_type)"
           [matTooltip]="event.title + '\n' + event.body"

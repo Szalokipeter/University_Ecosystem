@@ -39,8 +39,8 @@
           <!-- Updated login/portal link with dropdown -->
           <div class="user-menu-container" *ngIf="loggedInUser; else loginLink">
             <div class="user-badge-container" (click)="toggleDropdown()">
-              <div class="user-badge" [title]="loggedInUser?.username">
-                {{ loggedInUser?.username?.charAt(0)?.toUpperCase() ?? '' }}
+              <div class="user-badge" [title]="loggedInUser!.username">
+                {{ loggedInUser!.username!.charAt(0)!.toUpperCase() }}
               </div>
               <mat-icon class="dropdown-chevron" [class.open]="isDropdownOpen">
                 expand_more
@@ -52,7 +52,7 @@
               (clickOutside)="isDropdownOpen = false"
             >
               <div class="dropdown-item user-info">
-                <span class="username">{{ loggedInUser?.username }}</span>
+                <span class="username">{{ loggedInUser!.username }}</span>
               </div>
               <mat-divider></mat-divider>
               <button mat-menu-item (click)="navigateToPortal()">

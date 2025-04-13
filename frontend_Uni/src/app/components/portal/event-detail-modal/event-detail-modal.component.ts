@@ -26,7 +26,6 @@ import { AuthService } from '../../../services/auth.service';
 export class EventDetailModalComponent {
   @Output() closed = new EventEmitter<void>();
   event: CalendarEvent;
-  loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
 
   dialogRef = inject(MatDialogRef<EventDetailModalComponent>);
   data = inject<{

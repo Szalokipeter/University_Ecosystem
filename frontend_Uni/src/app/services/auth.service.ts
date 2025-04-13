@@ -45,24 +45,29 @@ export class AuthService {
   }
 
   logout() {
-    this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');    
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.loggedInUser?.token}`,
-    });
-
-    this.http.post(`${this.config.apiUrl}/logout`, {}, { headers }).subscribe({
-      next: () => {
-        this.loggedInUser = undefined;
-        localStorage.removeItem('loggedInUser');
-        // Optional: Redirect to login page or handle post-logout logic
-      },
-      error: (err) => {
-        console.error('Logout failed:', err);
-        // Still clear local state even if server logout fails
-        this.loggedInUser = undefined;
-        localStorage.removeItem('loggedInUser');
-      },
-    });
+    if (localStorage.getItem('loggedInUser') === null) {
+      this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');    
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${this.loggedInUser?.token}`,
+      });
+  
+      this.http.post(`${this.config.apiUrl}/logout`, {}, { headers }).subscribe({
+        next: () => {
+          this.loggedInUser = undefined;
+          localStorage.removeItem('loggedInUser');
+          // Optional: Redirect to login page or handle post-logout logic
+        },
+        error: (err) => {
+          console.error('Logout failed:', err);
+          // Still clear local state even if server logout fails
+          this.loggedInUser = undefined;
+          localStorage.removeItem('loggedInUser');
+        },
+      });      
+    } else {
+      localStorage.removeItem('loggedInUser');
+      this.loggedInUser = undefined;
+    }
   }
 
   checkUser() {
@@ -75,6 +80,9 @@ export class AuthService {
   }
 
   isAdminOrTeacher(): boolean {
+    if (localStorage.getItem('loggedInUser') === null) {
+      return false;      
+    }
     this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
     return (
       this.loggedInUser?.roles_id === 1 || this.loggedInUser?.roles_id === 2

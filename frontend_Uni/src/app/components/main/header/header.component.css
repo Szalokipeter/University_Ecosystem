@@ -69,7 +69,7 @@
 .nav__menu-link {
   display: block;
   padding: 24px 80px 24px 30px;
-  color: #000;
+  color: var(--secondary-action-color);
   text-decoration: none;
   position: relative;
   border-top: 1px solid #dfdfdf;
@@ -299,8 +299,8 @@ button[mat-menu-item]:hover {
   .nav__menu--level-0 > .nav__menu-item:last-of-type > .nav__menu-link::after {
     content: "";
   }
-  .nav__menu--level-0 > .nav__menu-item > .nav__menu-link,
-  .nav__menu--level-0 > .nav__menu-item .nav__menu-link--children {
+  .header:not(.headroom--not-top) .nav__menu--level-0 > .nav__menu-item > .nav__menu-link,
+  .header:not(.headroom--not-top) .nav__menu--level-0 > .nav__menu-item .nav__menu-link--children {
     border: 0;
     color: var(--secondary-color);
     font-family: "poppins", sans-serif;
@@ -311,6 +311,7 @@ button[mat-menu-item]:hover {
   }
   .nav__menu-link   {
     padding: 10px 20px;
+    border: none;
   }
   .user-menu-container {
     padding: 0 20px;
