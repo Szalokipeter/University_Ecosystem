@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UpdateUniUserRequest extends FormRequest
 {
@@ -24,7 +25,14 @@ class UpdateUniUserRequest extends FormRequest
         // emailt nem lehet módosítani, mert az minden felhasználónak egyedi az egyetem által kiadott email cím
         return [
             'username' => 'required|string|max:255',
-            'password' => 'required|min:4',
+            'password' => [
+                'required',
+                'string',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+            ],
             "password_confirmation" => ["required", "string", "same:password"],
         ];
     }
