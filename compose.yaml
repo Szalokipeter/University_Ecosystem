@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mysql:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: uni
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./backend_Uni
+      dockerfile: Dockerfile
+    container_name: laravel_backend
+    depends_on:
+      - mysql
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      DB_HOST: mysql
+      DB_DATABASE: uni
+      DB_USERNAME: laravel
+      DB_PASSWORD: laravel
+
+  frontend:
+    build:
+      context: ./frontend_Uni
+      dockerfile: Dockerfile
+    container_name: angular_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend 
+    environment:
+      BACKEND_URL: http://backend:8000
+
+volumes:
+  mysql_data:
