@@ -24,6 +24,26 @@
       >
         >Todos</a
       >
+      <a
+        *ngIf="loggedInUser?.roles_id === 1 || loggedInUser!.roles_id === 2"
+        class="portal-nav__link"
+        [class.active]="activeView === 'news'"
+        routerLink="/portal/news"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        >News</a
+      >
+      <a
+        *ngIf="loggedInUser?.roles_id === 1"
+        class="portal-nav__link"
+        [class.active]="activeView === 'users'"
+        routerLink="/portal/users"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        >Users</a
+      >
     </nav>
   </div>
 

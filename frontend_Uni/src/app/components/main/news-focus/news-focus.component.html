@@ -3,8 +3,8 @@
     <app-news-card
       *ngFor="let news of newsList"
       [news]="news"
-      [class.active]="isActiveNews(news)"
-      [class.small]="!isActiveNews(news)"
+      [isActive]="isActiveNews(news)"
+      [isSmall]="!isActiveNews(news)"
       (click)="!isActiveNews(news) && onCardClick(news)"
       (closed)="close()"
     >

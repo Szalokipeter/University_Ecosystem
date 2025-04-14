@@ -1,65 +1,80 @@
 import {
   Component,
-  EventEmitter,
-  HostListener,
   Input,
-  OnInit,
+  OnDestroy,
   Output,
-  Renderer2,
+  EventEmitter,
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { News } from '../../../models/news.model';
-import { NgFor, NgIf, NgClass } from '@angular/common';
+import { DataService } from '../../../services/data.service';
 import { NewsCardComponent } from '../news-card/news-card.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-news-grid',
-  imports: [NgFor, NewsCardComponent, NgIf],
   templateUrl: './news-grid.component.html',
-  styleUrl: './news-grid.component.css',
+  styleUrls: ['./news-grid.component.css'],
+  imports: [NewsCardComponent, CommonModule],
 })
-export class NewsGridComponent implements OnInit {
+export class NewsGridComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+  private _newsMap = new Map<string, News[]>();
+
   @Input() newsList: News[] = [];
   @Input() currentPage: number = 1;
   @Input() totalPages: number = 1;
+  @Input() isSmall: boolean = false;
+
+  @Output() pageChanged = new EventEmitter<number>();
   @Output() cardClicked = new EventEmitter<News>();
-  @Output() nextPage = new EventEmitter();
-  @Output() prevPage = new EventEmitter();
+  @Output() edit = new EventEmitter<{news: News, $event: Event}>();
+  @Output() delete = new EventEmitter<{news: News, $event: Event}>();
 
-  isSmall = false;
+  loading = false;
+  error: string | null = null;
 
-  constructor(private renderer: Renderer2) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.isSmall = window.innerWidth <= 1400;
+  // Pagination methods
+  notFirstPage(): boolean {
+    return this.currentPage > 1;
   }
 
+  notFinalPage(): boolean {
+    return this.currentPage < this.totalPages;
+  }
 
-
-  @HostListener('window:resize')
-  onResize() {
-    const newIsSmall = window.innerWidth <= 1400;
-
-    if (newIsSmall !== this.isSmall) {
-      this.isSmall = newIsSmall;
+  invokePrevPage() {
+    if (this.notFirstPage()) {
+      this.pageChanged.emit(this.currentPage - 1);
     }
+  }
+
+  invokeNextPage() {
+    if (this.notFinalPage()) {
+      this.pageChanged.emit(this.currentPage + 1);
+    }
+  }
+
+  // CRUD operations
+  onEdit(eventData: {news: News, $event: Event}) {
+    eventData.$event.stopPropagation();
+    this.edit.emit(eventData);
+  }
+
+  onDelete(eventData: {news: News, $event: Event}) {
+    eventData.$event.stopPropagation();
+    this.delete.emit(eventData);
   }
 
   onCardClick(news: News) {
     this.cardClicked.emit(news);
   }
 
-  notFinalPage() {
-    return this.currentPage < this.totalPages ? true : false;
-  }
-  notFirstPage() {
-    return this.currentPage > 1 ? true : false;
-  }
-
-  invokeNextPage() {
-    this.nextPage.emit();
-  }
-
-  invokePrevPage() {
-    this.prevPage.emit();
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,0 +1,31 @@
+<div class="section--wrapper">
+  <div class="section-header-container">
+    <h1 class="section__header">News Control</h1>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openAddNewsDialog()"
+      class="add-event-button"
+    >
+      <mat-icon>add</mat-icon>
+      Add News
+    </button>
+  </div>
+
+  <!-- Message display -->
+  <div
+    class="message-container"
+    [class.success]="messageType === 'success'"
+    [class.error]="messageType === 'error'"
+    *ngIf="message"
+  >
+    {{ message }}
+    <button mat-icon-button (click)="clearMessage()" class="message-close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="section--content">
+    <app-news></app-news>
+  </div>
+</div>

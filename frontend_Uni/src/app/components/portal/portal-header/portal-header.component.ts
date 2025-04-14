@@ -62,7 +62,7 @@ export class PortalHeaderComponent {
   username: string | null = null;
   usernameInitial: string = '';
   isDropdownOpen = false;
-  activeView: 'dashboard' | 'todos' = 'dashboard';
+  activeView: 'dashboard' | 'todos' | 'news' | 'users' = 'dashboard';
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -81,7 +81,7 @@ export class PortalHeaderComponent {
     this.router.navigate(['login']);
   }
 
-  navigateTo(view: 'dashboard' | 'todos') {
+  navigateTo(view: 'dashboard' | 'todos' | 'news' | 'users') {
     this.activeView = view;
     this.router.navigate([`/portal/${view}`]);
   }

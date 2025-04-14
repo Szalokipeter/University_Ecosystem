@@ -32,6 +32,21 @@ export class DataService implements OnInit {
   getNews(): Observable<News[]> {
     return this.http.get<News[]>(`${this.apiUrl}/news`);
   }
+  addNews(news: Omit<News, 'id'>): Observable<News> {
+    return this.http.post<News>(`${this.apiUrl}/news`, news, {
+      headers: this.getAuthHeaders()
+    });
+  }
+  updateNews(id: number, news: Partial<News>): Observable<News> {
+    return this.http.put<News>(`${this.apiUrl}/news/${id}`, news, {
+      headers: this.getAuthHeaders()
+    });
+  }  
+  deleteNews(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/news/${id}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
   
   //#region Calendar Events
   getPublicEvents(): Observable<CalendarEvent[]> {

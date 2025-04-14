@@ -2,30 +2,6 @@
   max-width: unset;
   width: 100%;
 }
-
-.section--wrapper {
-  width: calc(100% - 50px);
-  max-width: 1400px;
-  position: relative;
-  top: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 25px;
-  padding-bottom: 90px;
-}
-
-.section--content {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  position: relative;
-}
-
 .section--content__events {
   justify-content: center !important;
 }

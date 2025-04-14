@@ -1,15 +1,27 @@
 <div class="news-card">
-  <button *ngIf="showCloseButton"
-          mat-icon-button
-          class="close-button"
-          (click)="closeCard()"
-          aria-label="Close news card">
+  <button
+    *ngIf="isActive"
+    mat-icon-button
+    class="close-button"
+    (click)="closeCard($event)"
+    aria-label="Close news card"
+  >
     <mat-icon>close</mat-icon>
   </button>
 
   <h3 class="news-title">
     <span>{{ news.title }}</span>
   </h3>
-  <p class="news-body" *ngIf="!isSmallCard">{{ news.body }}</p>
-  <p class="news-date" *ngIf="!isSmallCard">Published: {{ formattedDate }}</p>
+  <p class="news-body" *ngIf="!isSmall">{{ news.body }}</p>
+  <p class="news-date" *ngIf="!isSmall">Published: {{ formattedDate }}</p>
+
+  <!-- Action Buttons -->
+  <div class="card-actions" *ngIf="isPortalView && !isSmall">
+    <button mat-icon-button (click)="onEdit($event)" aria-label="Edit news">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onDelete($event)" aria-label="Delete news">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
 </div>

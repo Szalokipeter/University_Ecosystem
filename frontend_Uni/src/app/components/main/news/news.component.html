@@ -5,8 +5,9 @@
     [currentPage]="currentPage"
     [totalPages]="totalPages"
     (cardClicked)="onCardClick($event)"
-    (nextPage)="nextPage()"
-    (prevPage)="prevPage()"
+    (pageChanged)="onPageChange($event)"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
   >
   </app-news-grid>
 
