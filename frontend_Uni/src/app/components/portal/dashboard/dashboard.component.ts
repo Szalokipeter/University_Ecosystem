@@ -79,22 +79,20 @@ export class DashboardComponent {
         next: ([personalEvents, publicEvents]) => {
           this.personalEvents = personalEvents;
           this.publicEvents = publicEvents;
-          this.events = [...personalEvents, ...publicEvents].sort(
-            (a, b) =>
-              new Date(a.dateofevent).getTime() -
-              new Date(b.dateofevent).getTime()
-          );
+          this.updateCombinedEvents();
           this.eventTypes = [
             ...new Set(this.events.map((event) => event.event_type)),
           ];
           this.updateEventsMap(this.events);
           this.applyFilters();
           this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error loading events:', err);
           this.error = 'Failed to load events';
           this.loading = false;
+          this.cdr.detectChanges();
         },
       });
   }
@@ -102,6 +100,13 @@ export class DashboardComponent {
   ngAfterViewInit() {
     this.initSwiper();
     this.loadEvents();
+  }
+
+  private updateCombinedEvents(): void {
+    this.events = [...this.personalEvents, ...this.publicEvents].sort(
+      (a, b) =>
+        new Date(a.dateofevent).getTime() - new Date(b.dateofevent).getTime()
+    );
   }
 
   private initSwiper(): void {
@@ -135,8 +140,7 @@ export class DashboardComponent {
   loadEvents() {
     this.loading = true;
     this.error = null;
-
-    this.loadRequest$.next(); // Trigger the load request
+    this.loadRequest$.next();
   }
 
   applyFilters() {
@@ -223,6 +227,7 @@ export class DashboardComponent {
       }
     }, 0);
   }
+
   private isSameDate(date1: Date, date2: Date): boolean {
     return (
       date1.getFullYear() === date2.getFullYear() &&
@@ -245,18 +250,15 @@ export class DashboardComponent {
         eventsToFilter = this.events;
     }
 
-    const newMap = new Map<string, CalendarEvent[]>();
-    eventsToFilter.forEach((event) => {
-      const dateStr = this.normalizeDate(event.dateofevent);
-      if (!newMap.has(dateStr)) {
-        newMap.set(dateStr, []);
-      }
-      newMap.get(dateStr)!.push(event);
-    });
+    if (this.calendarEventTypeFilter !== 'all') {
+      eventsToFilter = eventsToFilter.filter(
+        (event) => event.event_type === this.calendarEventTypeFilter
+      );
+    }
 
-    this.eventsByDate = newMap;
-    this.cdr.detectChanges();
+    this.updateEventsMap(eventsToFilter);
   }
+
   private updateEventsMap(events: CalendarEvent[]): void {
     const newMap = new Map<string, CalendarEvent[]>();
     events.forEach((event) => {
@@ -266,13 +268,13 @@ export class DashboardComponent {
       }
       newMap.get(dateStr)!.push(event);
     });
-    this.eventsByDate = newMap; // Replace entire Map
-    this.cdr.markForCheck(); // Trigger change detection
+    this.eventsByDate = newMap;
+    this.cdr.detectChanges();
   }
 
   private addToEventsMap(event: CalendarEvent): void {
     const dateStr = this.normalizeDate(event.dateofevent);
-    const newMap = new Map(this.eventsByDate); // Clone existing Map
+    const newMap = new Map(this.eventsByDate);
 
     if (!newMap.has(dateStr)) {
       newMap.set(dateStr, []);
@@ -280,7 +282,7 @@ export class DashboardComponent {
     newMap.get(dateStr)!.push(event);
 
     this.eventsByDate = newMap;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   private removeFromEventsMap(event: CalendarEvent): void {
@@ -294,17 +296,19 @@ export class DashboardComponent {
       if (filteredEvents.length > 0) {
         newMap.set(dateStr, filteredEvents);
       } else {
-        newMap.delete(dateStr); // Remove date key if no events left
+        newMap.delete(dateStr);
       }
     }
 
     this.eventsByDate = newMap;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
+
   private normalizeDate(date: Date | string): string {
     const dateObj = typeof date === 'string' ? new Date(date) : date;
     return dateObj.toISOString().split('T')[0];
   }
+
   private getTargetArray(isPublic: boolean): CalendarEvent[] {
     return isPublic ? this.publicEvents : this.personalEvents;
   }
@@ -336,11 +340,9 @@ export class DashboardComponent {
           .createCalendarEvent(result.event, result.isPublic)
           .subscribe({
             next: (newEvent) => {
-              // Update appropriate array
               const targetArray = this.getTargetArray(result.isPublic);
               targetArray.push(newEvent);
-
-              // Update Map and filtered views
+              this.updateCombinedEvents();
               this.addToEventsMap(newEvent);
               this.applyFilters();
               this.updateCalendar();
@@ -351,7 +353,6 @@ export class DashboardComponent {
       });
   }
 
-  // 1. handelCalendarEventActions() - Updated
   handleCalendarEventAction(actionData: {
     action: 'update' | 'delete';
     event: CalendarEvent;
@@ -369,7 +370,6 @@ export class DashboardComponent {
     }
   }
 
-  // 2. handleUpdateEvent() - Updated
   private handleUpdateEvent(event: CalendarEvent, isPublic: boolean): void {
     const dialogRef = this.dialog.open(EventFormComponent, {
       width: '500px',
@@ -392,43 +392,39 @@ export class DashboardComponent {
         const isNowPublic = updatedData.isPublic;
 
         if (wasPublic !== isNowPublic) {
-          // Publicity changed - need to move between arrays
           forkJoin([
             this.dataService.deleteCalendarEvent(event.id, wasPublic),
             this.dataService.createCalendarEvent(updatedEvent, isNowPublic),
           ]).subscribe({
             next: ([_, newEvent]) => {
-              // Remove from old array
               const oldArray = this.getTargetArray(wasPublic);
               const oldIndex = oldArray.findIndex((e) => e.id === event.id);
               if (oldIndex !== -1) oldArray.splice(oldIndex, 1);
 
-              // Add to new array and Map
               const newArray = this.getTargetArray(isNowPublic);
               newArray.push(newEvent);
 
+              this.updateCombinedEvents();
               this.updateEventInMap(event, newEvent);
-              this.updateCalendar();
               this.applyFilters();
+              this.updateCalendar();
               this.cdr.detectChanges();
             },
             error: (err) => console.error('Error moving event:', err),
           });
         } else {
-          // Publicity unchanged - simple update
           this.dataService
             .updateCalendarEvent(event.id, updatedEvent, isPublic)
             .subscribe({
-              next: () => {
-                // Update array
+              next: (updatedEvent) => {
                 const targetArray = this.getTargetArray(isPublic);
                 const index = targetArray.findIndex((e) => e.id === event.id);
                 if (index !== -1) targetArray[index] = updatedEvent;
 
-                // Update Map (remove old date if changed)
+                this.updateCombinedEvents();
                 this.updateEventInMap(event, updatedEvent);
-                this.updateCalendar();
                 this.applyFilters();
+                this.updateCalendar();
                 this.cdr.detectChanges();
               },
               error: (err) => console.error('Error updating event:', err),
@@ -437,19 +433,18 @@ export class DashboardComponent {
       });
   }
 
-  // 3. handleDeleteEvent() - Updated
   private handleDeleteEvent(event: CalendarEvent, isPublic: boolean): void {
     this.dataService.deleteCalendarEvent(event.id, isPublic).subscribe({
       next: () => {
-        // Remove from array
         const targetArray = this.getTargetArray(isPublic);
         const index = targetArray.findIndex((e) => e.id === event.id);
         if (index !== -1) targetArray.splice(index, 1);
 
-        // Remove from Map and update views
+        this.updateCombinedEvents();
         this.removeFromEventsMap(event);
         this.applyFilters();
         this.updateCalendar();
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Error deleting event:', err),
     });

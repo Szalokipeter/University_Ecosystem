@@ -42,7 +42,7 @@ export class CalendarComponent implements OnChanges {
     event: CalendarEvent;
     isPublic: boolean;
   }>();
-  @Output() retry = new EventEmitter<void>()
+  @Output() retry = new EventEmitter<void>();
 
   currentDate: Date = new Date();
   weeks: CalendarWeekDay[][] = [];
@@ -51,19 +51,20 @@ export class CalendarComponent implements OnChanges {
     private datePipe: DatePipe,
     private dialog: MatDialog,
     private authService: AuthService,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     // Always regenerate calendar when eventsMap changes
     if (changes['eventsMap']) {
-      console.log('eventsMap changed:');
+      // Create a new reference to force change detection
+      this.eventsMap = new Map(changes['eventsMap'].currentValue);
       this.generateCalendar();
+      this.cdr.detectChanges();
     }
-    
-    // Handle loading/error states
+
     if (changes['loading'] || changes['error']) {
-      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     }
   }
   private triggerViewUpdate() {
@@ -77,13 +78,12 @@ export class CalendarComponent implements OnChanges {
   trackByDay(index: number, day: CalendarWeekDay): string {
     return day.date.toISOString();
   }
-  
+
   trackByEvent(index: number, event: CalendarEvent): string {
     return event.id.toString();
   }
 
   generateCalendar() {
-    console.log('Generating calendar...');
     const year = this.currentDate.getFullYear();
     const month = this.currentDate.getMonth();
 

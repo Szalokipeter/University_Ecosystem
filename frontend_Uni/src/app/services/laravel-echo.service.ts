@@ -11,7 +11,7 @@ export class LaravelEchoService implements OnDestroy {
     this.echo = new Echo({
       broadcaster: 'reverb',
       key: 'zlzpfxhovyobija8w1il',
-      wsHost: '3.127.249.5',
+      wsHost: '54.93.100.173',
       wsPort: 8080,
       forceTLS: false,
       enabledTransports: ['ws'],

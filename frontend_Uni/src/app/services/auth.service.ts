@@ -45,7 +45,7 @@ export class AuthService {
   }
 
   logout() {
-    if (localStorage.getItem('loggedInUser') === null) {
+    if (localStorage.getItem('loggedInUser') !== null) {
       this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');    
       const headers = new HttpHeaders({
         Authorization: `Bearer ${this.loggedInUser?.token}`,

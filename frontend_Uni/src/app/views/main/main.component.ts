@@ -1,11 +1,11 @@
-import { Component,OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SlideCardListComponent } from '../../components/main/slide-card-list/slide-card-list.component';
 import { NewsComponent } from '../../components/main/news/news.component';
 import { CalendarComponent } from '../../components/main/calendar/calendar.component';
 import { CalendarEvent } from '../../models/calendar-event.model';
 import { DataService } from '../../services/data.service';
 import { EventCardComponent } from '../../components/main/event-card/event-card.component';
-import { NgFor } from '@angular/common';
+import { DatePipe, NgFor } from '@angular/common';
 import { CourseCardListComponent } from '../../components/main/course-card-list/course-card-list.component';
 import { HeaderComponent } from '../../components/main/header/header.component';
 
@@ -22,6 +22,7 @@ import { HeaderComponent } from '../../components/main/header/header.component';
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
+  providers: [DatePipe],
 })
 export class MainComponent implements OnInit {
   publicEventsMap = new Map<string, CalendarEvent[]>();
@@ -29,7 +30,11 @@ export class MainComponent implements OnInit {
   error: string | null = null;
   upcomingEvents: CalendarEvent[] = [];
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private cdr: ChangeDetectorRef,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit() {
     this.loadPublicEvents();
@@ -44,23 +49,34 @@ export class MainComponent implements OnInit {
       next: (events) => {
         this.updateEventsMap(events);
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error loading events:', err);
         this.error = 'Failed to load events';
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }
   private updateEventsMap(events: CalendarEvent[]): void {
-    this.publicEventsMap.clear();
+    const newMap = new Map<string, CalendarEvent[]>();
+
     events.forEach((event) => {
-      const dateStr = new Date(event.dateofevent).toISOString().split('T')[0];
-      if (!this.publicEventsMap.has(dateStr)) {
-        this.publicEventsMap.set(dateStr, []);
+      const dateStr = this.normalizeDate(event.dateofevent);
+      if (!newMap.has(dateStr)) {
+        newMap.set(dateStr, []);
       }
-      this.publicEventsMap.get(dateStr)!.push(event);
+      newMap.get(dateStr)!.push(event);
     });
+
+    this.publicEventsMap = new Map(newMap);
+    this.cdr.detectChanges();
+  }
+
+  private normalizeDate(date: Date | string): string {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    return this.datePipe.transform(dateObj, 'yyyy-MM-dd') || '';
   }
 
   loadUpcomingEvents() {
@@ -75,6 +91,7 @@ export class MainComponent implements OnInit {
               new Date(b.dateofevent).getTime()
           )
           .slice(0, 3);
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error loading upcoming events:', err);
