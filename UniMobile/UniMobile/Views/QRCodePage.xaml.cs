@@ -64,7 +64,7 @@ public partial class QRCodePage : ContentPage
 
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, "http://3.127.249.5:8000/api/qrcode/login")
+                var request = new HttpRequestMessage(HttpMethod.Post, "http://54.93.100.173:8000/api/qrcode/login")
                 {
                     Content = content
                 };

@@ -28,10 +28,12 @@ public partial class LoginPage : ContentPage
             if (string.IsNullOrEmpty(storedEmail) || string.IsNullOrEmpty(storedPwd))
             {
                 btnBiometric.IsEnabled = false;
+                btnBiometric.BackgroundColor = Color.FromRgb(83, 83, 83); 
             }
             else
             {
                 btnBiometric.IsEnabled = true;
+                btnBiometric.BackgroundColor = Color.FromRgb(0, 114, 100);
             }
         });
     }
@@ -47,7 +49,7 @@ public partial class LoginPage : ContentPage
             return;
         }
 
-        var loginUrl = "http://3.127.249.5:8000/api/login";
+        var loginUrl = "http://54.93.100.173:8000/api/login";
         var loginData = new { email = email, password = password };
         var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
 
@@ -100,7 +102,7 @@ public partial class LoginPage : ContentPage
         var authResult = await CrossFingerprint.Current.AuthenticateAsync(new AuthenticationRequestConfiguration("Authentication", "Scan your fingerprint"));
         if (authResult.Authenticated)
         {
-            var loginUrl = "http://3.127.249.5:8000/api/login";
+            var loginUrl = "http://54.93.100.173:8000/api/login";
             var loginData = new { email = storedEmail, password = storedPwd };
             var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
 
