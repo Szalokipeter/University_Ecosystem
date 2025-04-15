@@ -30,7 +30,7 @@ namespace UniMobile.Services
         public async Task<List<Todo>> GetTodosAsync()
         {
             await SetBearerTokenAsync();
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://54.93.100.173:8000/api/personalTodos");
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://52.28.154.228:8000/api/personalTodos");
             var response = await _httpClient.SendAsync(request);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
@@ -50,7 +50,7 @@ namespace UniMobile.Services
             };
             var json = JsonConvert.SerializeObject(requestBody);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://54.93.100.173:8000/api/personalTodos")
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://52.28.154.228:8000/api/personalTodos")
             {
                 Content = content
             };
@@ -70,7 +70,7 @@ namespace UniMobile.Services
             };
             var json = JsonConvert.SerializeObject(requestBody);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var request = new HttpRequestMessage(HttpMethod.Put, $"http://54.93.100.173:8000/api/personalTodos/{id}")
+            var request = new HttpRequestMessage(HttpMethod.Put, $"http://52.28.154.228:8000/api/personalTodos/{id}")
             {
                 Content = content
             };
@@ -82,7 +82,7 @@ namespace UniMobile.Services
         public async Task<bool> DeleteTodoAsync(int id)
         {
             await SetBearerTokenAsync();
-            var request = new HttpRequestMessage(HttpMethod.Delete, $"http://54.93.100.173:8000/api/personalTodos/{id}");
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"http://52.28.154.228:8000/api/personalTodos/{id}");
             var response = await _httpClient.SendAsync(request);
             var responseContent = await response.Content.ReadAsStringAsync();
             return response.IsSuccessStatusCode;

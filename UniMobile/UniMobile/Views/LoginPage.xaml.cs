@@ -49,7 +49,7 @@ public partial class LoginPage : ContentPage
             return;
         }
 
-        var loginUrl = "http://54.93.100.173:8000/api/login";
+        var loginUrl = "http://52.28.154.228:8000/api/login";
         var loginData = new { email = email, password = password };
         var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
 
@@ -102,7 +102,7 @@ public partial class LoginPage : ContentPage
         var authResult = await CrossFingerprint.Current.AuthenticateAsync(new AuthenticationRequestConfiguration("Authentication", "Scan your fingerprint"));
         if (authResult.Authenticated)
         {
-            var loginUrl = "http://54.93.100.173:8000/api/login";
+            var loginUrl = "http://52.28.154.228:8000/api/login";
             var loginData = new { email = storedEmail, password = storedPwd };
             var content = new StringContent(JsonConvert.SerializeObject(loginData), Encoding.UTF8, "application/json");
 
