@@ -188,6 +188,16 @@ app-portal .news-card:hover {
   }
 }
 
+.success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+.error-snackbar {
+  background-color: #f44336;
+  color: white;
+}
+
 @media (max-width: 768px) {
   .section__header {
     margin-left: 0;

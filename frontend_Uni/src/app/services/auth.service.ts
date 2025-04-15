@@ -29,6 +29,7 @@ export class AuthService {
             'loggedInUser',
             JSON.stringify(this.loggedInUser)
           );
+          console.log('logged toke:', this.loggedInUser)
           return true;
         })
       );

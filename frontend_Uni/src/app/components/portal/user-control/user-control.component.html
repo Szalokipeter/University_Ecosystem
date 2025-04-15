@@ -1,0 +1,23 @@
+<div class="section--wrapper">
+  <h1 class="section__header">User Control</h1>
+  <div
+    *ngIf="message"
+    class="feedback-message"
+    [class.success]="messageType === 'success'"
+    [class.error]="messageType === 'error'"
+  >
+    {{ message }}
+  </div>
+  <div class="section--content">
+    <app-user-search
+      (searchResults)="handleSearchResults($event)"
+      (onAddNew)="handleAddNew()"
+    ></app-user-search>
+  </div>
+  <div class="section--content">
+    <app-user-details
+      *ngIf="user"
+      [user]="user"
+    ></app-user-details>
+  </div>
+</div>

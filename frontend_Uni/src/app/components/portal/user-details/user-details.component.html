@@ -1,0 +1,29 @@
+<div class="user-card">
+  <div class="user-header">
+    <mat-icon>person</mat-icon>
+    <h2>{{ user?.username }}</h2>
+    <span class="user-role">{{ getRoleName(user?.roles_id || 0) }}</span>
+  </div>
+
+  <div class="user-details">
+    <div class="detail-row">
+      <mat-icon>email</mat-icon>
+      <span>{{ user?.email }}</span>
+    </div>
+    <div class="detail-row">
+      <mat-icon>calendar_today</mat-icon>
+      <span>Joined {{ user?.created_at | date }}</span>
+    </div>
+    <div class="detail-row">
+      <mat-icon>update</mat-icon>
+      <span>Last updated {{ user?.updated_at | date }}</span>
+    </div>
+  </div>
+
+  <div class="user-actions" *ngIf="isAdmin">
+    <button mat-raised-button color="primary" (click)="openEditDialog()">
+      <mat-icon>edit</mat-icon>
+      Edit Profile
+    </button>
+  </div>
+</div>

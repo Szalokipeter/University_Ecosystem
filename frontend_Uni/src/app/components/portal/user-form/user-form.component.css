@@ -1,0 +1,43 @@
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cancel-button {
+  color: var(--secondary-action-color);
+  border-color: var(--secondary-action-color);
+}
+
+.submit-button {
+  background-color: var(--primary-action-color);
+  color: #fff;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 500px) {
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+  }
+}

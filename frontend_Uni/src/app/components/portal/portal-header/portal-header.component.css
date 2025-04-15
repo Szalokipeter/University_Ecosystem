@@ -36,7 +36,7 @@ app-home-logo {
 
 .portal-nav {
   display: flex;
-  gap: 16px;
+  gap: 20px;
 }
 
 .portal-nav__link {

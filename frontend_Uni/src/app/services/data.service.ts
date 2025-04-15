@@ -5,7 +5,13 @@ import { Observable } from 'rxjs';
 import { News } from '../models/news.model';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { Todo } from '../models/todo.model';
-import { UserModel } from '../models/user.model';
+import {
+  AddUserPayload,
+  ApiErrorResponse,
+  ApiSuccessResponse,
+  EditUserPayload,
+  UserModel,
+} from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -34,20 +40,20 @@ export class DataService implements OnInit {
   }
   addNews(news: Omit<News, 'id'>): Observable<News> {
     return this.http.post<News>(`${this.apiUrl}/news`, news, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
     });
   }
   updateNews(id: number, news: Partial<News>): Observable<News> {
     return this.http.put<News>(`${this.apiUrl}/news/${id}`, news, {
-      headers: this.getAuthHeaders()
-    });
-  }  
-  deleteNews(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/news/${id}`, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
     });
   }
-  
+  deleteNews(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/news/${id}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
   //#region Calendar Events
   getPublicEvents(): Observable<CalendarEvent[]> {
     return this.http.get<CalendarEvent[]>(`${this.apiUrl}/uniCalendar`);
@@ -113,6 +119,45 @@ export class DataService implements OnInit {
     return this.http.delete<void>(`${this.apiUrl}/personalTodos/${id}`, {
       headers: this.getAuthHeaders(),
     });
+  }
+  //#endregion
+
+  //#region Users
+  searchUser(token: string): Observable<UserModel> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.get<UserModel>(`${this.apiUrl}/user`, {
+      headers,
+    });
+  }
+
+  editUser(
+    userId: number,
+    payload: EditUserPayload
+  ): Observable<ApiSuccessResponse | ApiErrorResponse> {
+    // Only include password fields if password is being changed
+    const requestPayload = !payload.password
+      ? { username: payload.username }
+      : payload;
+
+    return this.http.put<ApiSuccessResponse | ApiErrorResponse>(
+      `${this.apiUrl}/users/${userId}`,
+      requestPayload,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  addUser(
+    payload: AddUserPayload
+  ): Observable<ApiSuccessResponse | ApiErrorResponse> {
+    return this.http.post<ApiSuccessResponse | ApiErrorResponse>(
+      `${this.apiUrl}/admin/register`,
+      payload,
+      { headers: this.getAuthHeaders() }
+    );
   }
   //#endregion
 }
