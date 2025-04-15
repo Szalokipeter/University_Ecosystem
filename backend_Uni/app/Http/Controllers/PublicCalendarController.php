@@ -48,7 +48,7 @@ class PublicCalendarController extends Controller
     public function show(PublicCalendar $uniCalendar)
     {
         if (!$uniCalendar) {
-            return response()->json(['message' => 'Public Calendar Event not found'], 400);
+            return response()->json(['message' => 'Public Calendar Event not found.'], 400);
         }
         return response()->json($uniCalendar);
     }
@@ -91,13 +91,15 @@ class PublicCalendarController extends Controller
     }
     public function signUpForEvent(PublicCalendar $uniCalendar)
     {
-        /** @var UniUser $validateduser */
+        if(!$uniCalendar){
+            return response()->json(['message' => "Event not found.", 404]);
+        }
         $validateduser = Auth::user();
         try {
             $sub = Schoolevent_user::where("schoolevent_id", $uniCalendar->id)->where("uni_user_id", $validateduser->id)->get();
             if(count($sub) !== 0){
                 $sub[0]->delete();
-                return response()->json(["message" => "Unsubscribed from event."], 200);
+                return response()->json(["message" => "Unsubscribed from event."], 201);
             }
             else {
                 $data = new Schoolevent_user();
@@ -106,6 +108,27 @@ class PublicCalendarController extends Controller
                 $data->save(); // Tried doing it the usual way, only this worked.
                 return response()->json(["message" => "Subscribed to event."], 201);
             }
+        } catch (\Throwable $th) {
+            return response()->json(["message" => "Error with the Public calendar user relation."], 500);
+        }
+    }
+    public function checkSignUp(PublicCalendar $uniCalendar){
+        if(!$uniCalendar){
+            return response()->json(['message' => "Event not found.", 404]);
+        }
+        $validateduser = Auth::user();
+        try {
+            $sub = Schoolevent_user::where("schoolevent_id", $uniCalendar->id)->where("uni_user_id", $validateduser->id)->get();
+            if($sub != []){
+                return response()->json([
+                    "message" => "User is not subscribed to event.",
+                    "SubStatus" => false,
+            ], 200);
+            }
+            return response()->json([
+                "message" => "User is subscribed to event.",
+                "SubStatus" => true
+        ], 200);
         } catch (\Throwable $th) {
             return response()->json(["message" => "Error with the Public calendar user relation."], 500);
         }

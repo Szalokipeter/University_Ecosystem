@@ -145,4 +145,26 @@ class LoginController extends Controller
             return response()->json(['status' => 'Failed'], 500);
         }
     }
+    public function getUser(UniUser $user){
+        /** @var UniUser $Authuser */
+        $Authuser = Auth::user();
+        if (!$Authuser->isAdmin()) {
+            return response()->json(['message' => "You are not Authorized."], 403);
+        }
+        if(!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+        return response()->json([$user], 200);
+    }
+    public function getUsers(){
+        /** @var UniUser $Authuser */
+        $Authuser = Auth::user();
+        if (!$Authuser->isAdmin()) {
+            return response()->json(['message' => "You are not Authorized."], 403);
+        }
+        if(($users = UniUser::all())->isEmpty()) {
+            return response()->json(['message' => 'No users found.'], 404);
+        }
+        return response()->json([$users], 200);
+    }
 }
