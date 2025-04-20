@@ -18,7 +18,6 @@ set "PHPINI_PATH=%PHPINI_FOLDER%\php.ini"
 powershell -Command "(Get-Content -LiteralPath '%PHPINI_PATH%') -replace 'variables_order = \"EGPCS\"', 'variables_order = \"GPCS\"' | Set-Content -LiteralPath '%PHPINI_PATH%'"
 set "PATH=%PATH%;%PHPINI_FOLDER%"
 start "npm Install" cmd /c "npm i -g concurrently dotenv-cli && npm install"
-start "npm Install frontend" cmd /c "cd ../laravel-echo-angular && npm install"
 
 composer install
 php artisan migrate --seed

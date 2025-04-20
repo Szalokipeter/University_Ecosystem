@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PublicCalendar;
 use App\Http\Requests\StorePublicCalendarRequest;
 use App\Http\Requests\UpdatePublicCalendarRequest;
+use App\Http\Resources\EventUserResource;
 use App\Models\Schoolevent_user;
 use App\Models\UniUser;
 use Illuminate\Support\Facades\Auth;
@@ -105,7 +106,7 @@ class PublicCalendarController extends Controller
                 $data = new Schoolevent_user();
                 $data->schoolevent_id = $uniCalendar->id;
                 $data->uni_user_id = $validateduser->id;
-                $data->save(); // Tried doing it the usual way, only this worked.
+                $data->save();
                 return response()->json(["message" => "Subscribed to event."], 201);
             }
         } catch (\Throwable $th) {
@@ -132,5 +133,22 @@ class PublicCalendarController extends Controller
         } catch (\Throwable $th) {
             return response()->json(["message" => "Error with the Public calendar user relation."], 500);
         }
+    }
+    public function getAllSubscribedUsers(PublicCalendar $uniCalendar){
+        /** @var UniUser $validateduser */
+        $validateduser = Auth::user();
+        if (!$validateduser->isAdmin() && !$validateduser->isTeacher()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        if(!$uniCalendar){
+            return response()->json(["message" => "Event not found."], 404);
+        }
+        $allUsersSignUpForEvent = Schoolevent_user::where("schoolevent_id", $uniCalendar->id)->join("uni_users", "schoolevent_user.uni_user_id", "=", "uni_users.id")->get();
+        $i = 0;
+        foreach ($allUsersSignUpForEvent as $user) {
+            $allUsersSignUpForEvent[$i] = new EventUserResource($user);
+            $i++;
+        }
+        return response()->json(["users" => $allUsersSignUpForEvent], 200);
     }
 }
