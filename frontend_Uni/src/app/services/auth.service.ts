@@ -29,11 +29,38 @@ export class AuthService {
             'loggedInUser',
             JSON.stringify(this.loggedInUser)
           );
-          console.log('logged toke:', this.loggedInUser)
+          console.log('logged toke:', this.loggedInUser);
           return true;
         })
       );
   }
+
+  fetchUserWithToken(token: string): Observable<UserModel> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http
+      .get<UserModel>(`${this.config.apiUrl}/user`, { headers })
+      .pipe(
+        map((user: any) => {
+          this.loggedInUser = {
+            username: user.username,
+            email: user.email,
+            token: token,
+            roles_id: user.roles_id,
+          };
+
+          localStorage.setItem(
+            'loggedInUser',
+            JSON.stringify(this.loggedInUser)
+          );
+          return this.loggedInUser;
+        })
+      );
+  }
+
   generateQrCode(): Observable<any> {
     return this.http
       .post<UserModel>(`${this.config.apiUrl}/qrcode/generate`, {})
@@ -44,30 +71,61 @@ export class AuthService {
         })
       );
   }
+  storeToken(token: string): void {
+    localStorage.setItem('auth_token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('auth_token');
+  }
+
+  debugToken(): void {
+    const token = this.getToken();
+    console.log('Stored token:', token);
+    console.log('Is logged in:', this.isLoggedIn());
+  }
+
+  isLoggedIn(): boolean {
+    const user = localStorage.getItem('loggedInUser');
+    const token = localStorage.getItem('auth_token');
+    return !!user && !!token;
+  }
+  
+  getCurrentUser(): UserModel | null {
+    const user = localStorage.getItem('loggedInUser');
+    return user ? JSON.parse(user) : null;
+  }
 
   logout() {
     if (localStorage.getItem('loggedInUser') !== null) {
-      this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');    
+      this.loggedInUser = JSON.parse(
+        localStorage.getItem('loggedInUser') || ''
+      );
       const headers = new HttpHeaders({
         Authorization: `Bearer ${this.loggedInUser?.token}`,
       });
-  
-      this.http.post(`${this.config.apiUrl}/logout`, {}, { headers }).subscribe({
-        next: () => {
-          this.loggedInUser = undefined;
-          localStorage.removeItem('loggedInUser');
-          // Optional: Redirect to login page or handle post-logout logic
-        },
-        error: (err) => {
-          console.error('Logout failed:', err);
-          // Still clear local state even if server logout fails
-          this.loggedInUser = undefined;
-          localStorage.removeItem('loggedInUser');
-        },
-      });      
+
+      this.http
+        .post(`${this.config.apiUrl}/logout`, {}, { headers })
+        .subscribe({
+          next: () => {
+            this.loggedInUser = undefined;
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('auth_token');
+            // Optional: Redirect to login page or handle post-logout logic
+          },
+          error: (err) => {
+            console.error('Logout failed:', err);
+            // Still clear local state even if server logout fails
+            this.loggedInUser = undefined;
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('auth_token');
+          },
+        });
     } else {
       localStorage.removeItem('loggedInUser');
       this.loggedInUser = undefined;
+      localStorage.removeItem('auth_token');
     }
   }
 
@@ -82,7 +140,7 @@ export class AuthService {
 
   isAdminOrTeacher(): boolean {
     if (localStorage.getItem('loggedInUser') === null) {
-      return false;      
+      return false;
     }
     this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
     return (

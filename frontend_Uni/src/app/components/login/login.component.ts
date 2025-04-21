@@ -16,10 +16,16 @@ export class LoginComponent {
     email: '',
     password: '',
   };
-  qrtoken : string | undefined = undefined;
+  qrtoken: string | undefined = undefined;
   errorMessage = '';
-  private channel : any;
-  constructor(private authService: AuthService, private echoService: LaravelEchoService ,private router: Router) {}
+  isLoading = false;
+  private channel: any;
+
+  constructor(
+    private authService: AuthService,
+    private echoService: LaravelEchoService,
+    private router: Router
+  ) {}
 
   login() {
     if (!this.model.email || !this.model.password) {
@@ -28,49 +34,128 @@ export class LoginComponent {
     }
     this.authService.login(this.model.email, this.model.password).subscribe({
       next: (response) => {
+        this.isLoading = false;
         if (response) {
-          if (this.authService.loggedInUser?.roles_id == 1) {
-            this.router.navigate(['portal']);
-          } else {
-            this.router.navigate(['portal']);
-          }
+          this.router.navigate(['portal']);
         } else {
           this.errorMessage = 'Helytelen email cím vagy jelszó!';
         }
       },
       error: (error) => {
+        this.isLoading = false;
         this.errorMessage = error.error.message ?? error.message;
       },
     });
   }
-  showQrCode(){
+  showQrCode() {
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.qrtoken = undefined;
+
     this.authService.generateQrCode().subscribe({
       next: (response) => {
         if (response) {
           console.log(`qrcode-token: ${response}`);
-          let baseuri = `https://api.qrserver.com/v1/create-qr-code/?data=${response}&size=300x300`;
+          const baseuri = `https://api.qrserver.com/v1/create-qr-code/?data=${response}&size=300x300`;
           this.qrtoken = baseuri;
-          this.channel = this.echoService.getChannel(`qr-login.${response}`);
-          console.log(this.channel);
-          this.channel.listen('.qr-login-success', (data: any) => {
-            console.log('Üzenet érkezett:', data);
-            // marker for frontend
-          });
-          this.channel.error((error: any) => {
-            console.error('Channel error:', error);
-          });
+
+          // Initialize Echo channel
+          this.setupQrChannel(response);
+
+          // Set timeout for QR code expiration (5 minutes)
+          setTimeout(() => {
+            if (this.qrtoken) {
+              this.handleQrExpiration();
+            }
+          }, 300000);
         } else {
-          this.errorMessage = 'Hiba.';
+          this.handleQrError('Invalid QR code response from server');
         }
       },
       error: (error) => {
-        this.errorMessage = error.error.message ?? error.message;
+        this.handleQrError(
+          error.error?.message || error.message || 'Failed to generate QR code'
+        );
       },
     });
+  }
+
+  private setupQrChannel(token: string): void {
+    console.log('[QR] Setting up channel for token:', token);
+
+    this.channel = this.echoService.getChannel(`qr-login.${token}`);
+
+    // Listen for all events on the channel for debugging
+    this.channel.listen('.qr-login-success', (data: any) => {
+      console.log('[QR] Received success event:', data);
+      this.handleQrSuccess(data);
+    });
+
+    // Add wildcard listener to catch all events
+    this.channel.listen('*', (event: string, data: any) => {
+      console.log(`[QR] Received event '${event}':`, data);
+    });
+
+    this.channel.error((error: any) => {
+      console.error('[QR] Channel error:', error);
+      this.handleQrError('Channel error occurred');
+    });
+
+    // Add timeout to detect silent failures
+    setTimeout(() => {
+      if (this.qrtoken) {
+        console.warn('[QR] No event received within timeout period');
+        this.handleQrError('No response from server');
+      }
+    }, 30000); // 30 second timeout
+  }
+
+  private handleQrSuccess(data: any): void {
+    this.isLoading = false;
+  
+    if (data.Authtoken) {
+      // Store the token first
+      this.authService.storeToken(data.Authtoken);
+      
+      // Then fetch user details
+      this.authService.fetchUserWithToken(data.Authtoken).subscribe({
+        next: (user) => {
+          this.router.navigate(['portal']);
+        },
+        error: (error) => {
+          this.handleQrError('Failed to load user details');
+          console.error('User fetch error:', error);
+        }
+      });
+    } else {
+      this.handleQrError('Authentication token missing in response');
+    }
+  }
+
+  private handleQrError(message: string): void {
+    this.isLoading = false;
+    this.errorMessage = message;
+    this.qrtoken = undefined;
+    this.cleanupChannel();
+  }
+
+  private handleQrExpiration(): void {
+    this.isLoading = false;
+    this.errorMessage = 'QR code expired. Please generate a new one.';
+    this.qrtoken = undefined;
+    this.cleanupChannel();
+  }
+
+  private cleanupChannel(): void {
+    if (this.channel) {
+      this.channel.stopListening('.qr-login-success');
+      this.channel = null;
+    }
   }
   ngOnDestroy(): void {
     if (this.channel) {
       this.channel.stopListening('.qr-login-success');
+      this.channel = null;
     }
   }
 }

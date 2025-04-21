@@ -6,24 +6,47 @@ import Echo from 'laravel-echo';
 })
 export class LaravelEchoService implements OnDestroy {
   private echo: any;
+  private connectionEstablished = false;
 
   constructor() {
+    this.initializeEcho();
+  }
+
+  private initializeEcho() {
     this.echo = new Echo({
       broadcaster: 'reverb',
       key: 'zlzpfxhovyobija8w1il',
-      wsHost: '54.93.100.173',
+      wsHost: '52.28.154.228',
       wsPort: 8080,
       forceTLS: false,
       enabledTransports: ['ws'],
-      // disableStats: true,
+    });
+
+    this.echo.connector.pusher.connection.bind('connecting', () => {
+      console.log('[WebSocket] Connecting...');
+    });
+
+    this.echo.connector.pusher.connection.bind('connected', () => {
+      console.log('[WebSocket] Connected successfully');
+    });
+
+    this.echo.connector.pusher.connection.bind('error', (error: any) => {
+      console.error('[WebSocket] Connection error:', error);
     });
   }
 
-  ngOnDestroy(): void {
-    this.echo.disconnect();
+  getChannel(channelName: string) {
+    console.log(`[Echo] Creating channel: ${channelName}`);
+    const channel = this.echo.channel(channelName);
+
+    channel.subscribed(() => {
+      console.log(`[Echo] Subscribed to channel: ${channelName}`);
+    });
+
+    return channel;
   }
 
-  getChannel(channelName: string) {
-    return this.echo.channel(channelName);
+  ngOnDestroy() {
+    this.echo?.disconnect();
   }
 }
