@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -12,6 +18,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  @ViewChild('qrCodeContainer') qrCodeContainer!: ElementRef;
+
   model = {
     email: '',
     password: '',
@@ -61,6 +69,15 @@ export class LoginComponent {
 
           // Initialize Echo channel
           this.setupQrChannel(response);
+
+          setTimeout(() => {
+            if (this.qrCodeContainer) {
+              this.qrCodeContainer.nativeElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+              });
+            }
+          }, 100);
 
           // Set timeout for QR code expiration (5 minutes)
           setTimeout(() => {
@@ -112,11 +129,11 @@ export class LoginComponent {
 
   private handleQrSuccess(data: any): void {
     this.isLoading = false;
-  
+
     if (data.Authtoken) {
       // Store the token first
       this.authService.storeToken(data.Authtoken);
-      
+
       // Then fetch user details
       this.authService.fetchUserWithToken(data.Authtoken).subscribe({
         next: (user) => {
@@ -125,7 +142,7 @@ export class LoginComponent {
         error: (error) => {
           this.handleQrError('Failed to load user details');
           console.error('User fetch error:', error);
-        }
+        },
       });
     } else {
       this.handleQrError('Authentication token missing in response');

@@ -34,7 +34,7 @@
       <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     </div>
 
-    <div *ngIf="qrtoken" class="qr-container">
+    <div *ngIf="qrtoken" class="qr-container" #qrCodeContainer>
       <img [src]="qrtoken" alt="QR Code" />
       <p>Use the PanMobile app to sign in via QR code</p>
     </div>
