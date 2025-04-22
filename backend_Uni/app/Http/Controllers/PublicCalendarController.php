@@ -17,7 +17,7 @@ class PublicCalendarController extends Controller
      */
     public function index()
     {
-        if (($events = PublicCalendar::where("dateofevent", ">", now()->subDays(5))->get())->isEmpty()) {
+        if (($events = PublicCalendar::where("dateofevent", ">", now()->subDays(30))->get())->isEmpty()) {
             return response()->json(['message' => 'No Recent Events found.'], 404);
         }
 
@@ -93,7 +93,7 @@ class PublicCalendarController extends Controller
     public function signUpForEvent(PublicCalendar $uniCalendar)
     {
         if(!$uniCalendar){
-            return response()->json(['message' => "Event not found.", 404]);
+            return response()->json(['message' => "Event not found."], 404);
         }
         $validateduser = Auth::user();
         try {
@@ -144,11 +144,6 @@ class PublicCalendarController extends Controller
             return response()->json(["message" => "Event not found."], 404);
         }
         $allUsersSignUpForEvent = Schoolevent_user::where("schoolevent_id", $uniCalendar->id)->join("uni_users", "schoolevent_user.uni_user_id", "=", "uni_users.id")->get();
-        $i = 0;
-        foreach ($allUsersSignUpForEvent as $user) {
-            $allUsersSignUpForEvent[$i] = new EventUserResource($user);
-            $i++;
-        }
-        return response()->json(["users" => $allUsersSignUpForEvent], 200);
+        return response()->json(["users" => EventUserResource::collection($allUsersSignUpForEvent)], 200);
     }
 }
