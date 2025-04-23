@@ -6,6 +6,7 @@ export interface UserModel {
   token?: string;
   created_at?: string;
   updated_at?: string;
+  issuedAt?: number;
 }
 
 export interface EditUserPayload {

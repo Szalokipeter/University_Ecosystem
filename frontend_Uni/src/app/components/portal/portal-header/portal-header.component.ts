@@ -15,6 +15,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { ClickOutsideDirective } from '../../../directives/click-outside.directive';
+import { SessionTimerService } from '../../../services/session-timer.service';
 
 @Component({
   selector: 'app-portal-header',
@@ -25,7 +26,7 @@ import { ClickOutsideDirective } from '../../../directives/click-outside.directi
     MatIcon,
     MatDividerModule,
     ClickOutsideDirective,
-    RouterLinkActive
+    RouterLinkActive,
   ],
   templateUrl: './portal-header.component.html',
   styleUrl: './portal-header.component.css',
@@ -64,12 +65,30 @@ export class PortalHeaderComponent {
   isDropdownOpen = false;
   activeView: 'dashboard' | 'todos' | 'news' | 'users' = 'dashboard';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    public timerService: SessionTimerService
+  ) {}
 
   ngOnInit() {
     this.loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || '');
     this.username = this.loggedInUser?.username || null;
     this.usernameInitial = this.username?.charAt(0).toUpperCase() || '';
+
+    if (this.authService.isLoggedIn()) {
+      const remaining = this.authService.getRemainingTime();
+      if (remaining > 0) {
+        this.timerService.startTimer();
+      } else {
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.timerService.stopTimer();
   }
 
   toggleDropdown() {
@@ -77,6 +96,7 @@ export class PortalHeaderComponent {
   }
 
   logout() {
+    this.timerService.stopTimer();
     this.authService.logout();
     this.router.navigate(['login']);
   }

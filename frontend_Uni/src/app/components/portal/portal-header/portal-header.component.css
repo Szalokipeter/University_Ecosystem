@@ -138,13 +138,11 @@ button[mat-menu-item] mat-icon {
   color: var(--secondary-color) !important;
 }
 
-/* Chevron Animation */
 .dropdown-chevron {
   color: #555;
   opacity: 0.75;
 }
 
-/* Divider */
 mat-divider {
   margin: 0 !important;
   border-top-color: rgba(0, 0, 0, 0.1) !important;
@@ -152,7 +150,17 @@ mat-divider {
   transform-style: preserve-3d;
 }
 
-/* Responsive */
+.timer {
+  font-size: var(--font-size-small);
+  color: rgba(var(--primary-color-rgb), 0.7);
+  margin-top: 4px;
+}
+
+.timer.warning {
+  color: #d32f2f;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .portal-header {
     padding: 0 16px;

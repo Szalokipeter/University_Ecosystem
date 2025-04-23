@@ -23,13 +23,16 @@ export class AuthService {
             email: response.user.email,
             token: response.token,
             roles_id: response.user.roles_id,
+            issuedAt: Date.now(),
           };
 
           localStorage.setItem(
             'loggedInUser',
             JSON.stringify(this.loggedInUser)
           );
-          console.log('logged toke:', this.loggedInUser);
+
+          this.storeToken(response.token);
+
           return true;
         })
       );
@@ -90,7 +93,7 @@ export class AuthService {
     const token = localStorage.getItem('auth_token');
     return !!user && !!token;
   }
-  
+
   getCurrentUser(): UserModel | null {
     const user = localStorage.getItem('loggedInUser');
     return user ? JSON.parse(user) : null;
@@ -146,5 +149,28 @@ export class AuthService {
     return (
       this.loggedInUser?.roles_id === 1 || this.loggedInUser?.roles_id === 2
     );
+  }
+
+  getTokenExpiration(): number {
+    const user = this.getCurrentUser();
+    if (!user || !user.issuedAt) return 0;
+    return user.issuedAt + 12 * 60 * 1000; // 12 minutes
+  }
+
+  getRemainingTime(): number {
+    const user = this.getCurrentUser();
+    if (!user || !user.issuedAt) {
+      console.error('No user or issuedAt found!', user);
+      return 0;
+    }
+
+    const expirationTime = user.issuedAt + 12 * 60 * 1000; // 12 minutes
+    const remaining = expirationTime - Date.now();
+
+    return Math.max(0, remaining);
+  }
+
+  isTokenExpired(): boolean {
+    return this.getRemainingTime() <= 0;
   }
 }

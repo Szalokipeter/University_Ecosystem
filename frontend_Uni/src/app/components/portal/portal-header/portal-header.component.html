@@ -70,7 +70,12 @@
     >
       <div class="dropdown-item user-info">
         <span class="username">{{ username }}</span>
-        <!-- <span class="role"> - {{ loggedInUser?.roles_id }}</span> -->
+        <span
+          class="timer"
+          [class.warning]="timerService.remainingTime < 120000"
+        >
+          Session: {{ timerService.formatTime(timerService.remainingTime) }}
+        </span>
       </div>
       <mat-divider></mat-divider>
       <button mat-menu-item (click)="logout()">
