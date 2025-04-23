@@ -158,19 +158,28 @@ export class AuthService {
   }
 
   getRemainingTime(): number {
-    const user = this.getCurrentUser();
-    if (!user || !user.issuedAt) {
-      console.error('No user or issuedAt found!', user);
+    try {
+      const user = this.getCurrentUser();
+      if (!user?.issuedAt) throw new Error('No valid session');
+
+      const expirationTime = user.issuedAt + 12 * 60 * 1000;
+      return Math.max(0, expirationTime - Date.now());
+    } catch (error) {
+      console.error('Error calculating remaining time:', error);
+      this.logout();
       return 0;
     }
-
-    const expirationTime = user.issuedAt + 12 * 60 * 1000; // 12 minutes
-    const remaining = expirationTime - Date.now();
-
-    return Math.max(0, remaining);
   }
 
   isTokenExpired(): boolean {
-    return this.getRemainingTime() <= 0;
+    try {
+      const user = this.getCurrentUser();
+      if (!user?.issuedAt) return true;
+
+      return Date.now() > user.issuedAt + 12 * 60 * 1000;
+    } catch (error) {
+      console.error('Error checking token expiration:', error);
+      return true;
+    }
   }
 }
