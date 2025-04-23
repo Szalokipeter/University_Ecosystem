@@ -24,7 +24,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatSelectModule,
     MatFormFieldModule,
     MatDialogModule,
-    MatRadioModule
+    MatRadioModule,
   ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.css',
@@ -40,39 +40,47 @@ export class EventFormComponent {
   authService = inject(AuthService);
 
   event: Partial<CalendarEvent>;
-  eventTypes = [
+  publicEventTypes = [
     'Open to Public',
     'Family Affairs',
     'Student Affairs',
     'Registration Required',
   ];
+  personalEventTypes = ['Quiz', 'Exam', 'Temp 1', 'Temp 2'];
+  currentEventTypes: string[] = [];
   showPublicToggle: boolean;
   isPublicEvent: boolean;
 
   constructor() {
     this.showPublicToggle = this.data.canEditPublic;
     this.isPublicEvent = this.data.isPublic;
+    this.currentEventTypes = this.isPublicEvent
+      ? this.publicEventTypes
+      : this.personalEventTypes;
 
     this.event = this.data.event
       ? { ...this.data.event }
       : {
           title: '',
           body: '',
-          event_type: 'Student Affairs',
+          event_type: 'Exam',
           dateofevent: new Date().toISOString().split('T')[0],
         };
   }
 
   onPublicityChange(isPublic: boolean): void {
     this.isPublicEvent = isPublic;
+    this.currentEventTypes = isPublic
+      ? this.publicEventTypes
+      : this.personalEventTypes;
     // Reset event type when changing publicity
-    this.event.event_type = isPublic ? 'Open to Public' : 'Student Affairs';
+    this.event.event_type = isPublic ? 'Open to Public' : 'Exam';
   }
 
   onSubmit(): void {
     const result = {
       event: this.event,
-      isPublic: this.isPublicEvent
+      isPublic: this.isPublicEvent,
     };
     this.dialogRef.close(result);
   }
