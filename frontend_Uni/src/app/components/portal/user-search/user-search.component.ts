@@ -4,13 +4,11 @@ import {
   ReactiveFormsModule,
   FormBuilder,
   FormGroup,
-  Validators,
 } from '@angular/forms';
-import { DataService } from '../../../services/data.service';
 import { UserModel } from '../../../models/user.model';
 import { MatIcon } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-user-search',
@@ -18,7 +16,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     CommonModule,
     ReactiveFormsModule,
     MatIcon,
-    MatProgressSpinnerModule,
+    MatSelectModule,
   ],
   templateUrl: './user-search.component.html',
   styleUrl: './user-search.component.css',
@@ -29,36 +27,74 @@ export class UserSearchComponent {
   @Output() onAddNew = new EventEmitter<void>();
 
   searchForm: FormGroup;
+  roleOptions = [
+    { value: null, label: 'All Roles' },
+    { value: 1, label: 'Admin' },
+    { value: 2, label: 'Teacher' },
+    { value: 3, label: 'Student' }
+  ];
 
   constructor(private fb: FormBuilder) {
     this.searchForm = this.fb.group({
       searchTerm: [''],
+      roleFilter: [null],
+      sortOption: ['username-asc']
     });
 
     // Add debounce to search input
-    this.searchForm
-      .get('searchTerm')
-      ?.valueChanges.pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe(() => this.applySearch());
+    this.searchForm.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe(() => this.applyFilters());
   }
 
-  applySearch() {
-    const searchTerm = this.searchForm
-      .get('searchTerm')
-      ?.value?.toLowerCase()
-      .trim();
+  applyFilters() {
+    const searchTerm = this.searchForm.get('searchTerm')?.value?.toLowerCase().trim();
+    const roleFilter = this.searchForm.get('roleFilter')?.value;
+    const sortOption = this.searchForm.get('sortOption')?.value;
 
-    if (!searchTerm) {
-      this.filteredUsers.emit([...this.allUsers]);
-      return;
-    }
+    let filtered = [...this.allUsers];
 
-    const filtered = this.allUsers.filter(
-      (user) =>
+    // Apply search term filter
+    if (searchTerm) {
+      filtered = filtered.filter(user => 
         user.username.toLowerCase().includes(searchTerm) ||
         user.email.toLowerCase().includes(searchTerm)
-    );
+      );
+    }
+
+    // Apply role filter
+    if (roleFilter) {
+      filtered = filtered.filter(user => user.roles_id === roleFilter);
+    }
+
+    // Apply sorting
+    filtered = this.sortUsers(filtered, sortOption);
 
     this.filteredUsers.emit(filtered);
+  }
+
+  sortUsers(users: UserModel[], sortOption: string): UserModel[] {
+    const [field, direction] = sortOption.split('-');
+    
+    return [...users].sort((a, b) => {
+      // Handle nullable fields
+      const aValue = a[field as keyof UserModel] || '';
+      const bValue = b[field as keyof UserModel] || '';
+
+      if (aValue < bValue) return direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  clearFilters() {
+    this.searchForm.reset({
+      searchTerm: '',
+      roleFilter: null,
+      sortOption: 'username-asc'
+    });
   }
 }
