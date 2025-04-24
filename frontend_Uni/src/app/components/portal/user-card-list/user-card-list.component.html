@@ -1,0 +1,15 @@
+<div class="user-list-container">
+  <div class="user-grid">
+    <app-user-card
+      *ngFor="let user of getPaginatedUsers()"
+      [user]="user"
+      (click)="userSelected.emit(user)"
+    ></app-user-card>
+  </div>
+
+  <div class="pager--container">
+    <span *ngIf="notFirstPage()" (click)="invokePrevPage()">&lt;</span>
+    <span id="pageIndex">{{ currentPage }}</span>
+    <span *ngIf="notFinalPage()" (click)="invokeNextPage()">&gt;</span>
+  </div>
+</div>

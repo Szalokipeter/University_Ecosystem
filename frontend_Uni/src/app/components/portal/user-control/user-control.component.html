@@ -11,13 +11,20 @@
   <div class="section--content">
     <app-user-search
       (searchResults)="handleSearchResults($event)"
-      (onAddNew)="handleAddNew()"
     ></app-user-search>
   </div>
   <div class="section--content">
-    <app-user-details
-      *ngIf="user"
-      [user]="user"
-    ></app-user-details>
+    <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+    <app-user-card-list
+      *ngIf="!selectedUser && !isLoading"
+      [users]="filteredUsers"
+      (userSelected)="selectedUser = $event"
+    ></app-user-card-list>
+
+    <app-user-card
+      *ngIf="selectedUser"
+      [user]="selectedUser"
+      (backToList)="selectedUser = null"
+    ></app-user-card>
   </div>
 </div>

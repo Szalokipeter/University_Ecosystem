@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { ConfigService } from './config.service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { News } from '../models/news.model';
 import { CalendarEvent } from '../models/calendar-event.model';
 import { Todo } from '../models/todo.model';
@@ -123,6 +123,13 @@ export class DataService implements OnInit {
   //#endregion
 
   //#region Users
+  getAllUsers(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.apiUrl}/users`, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      map(response => Array.isArray(response) ? response : [response])
+    );
+  }
   searchUser(token: string): Observable<UserModel> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

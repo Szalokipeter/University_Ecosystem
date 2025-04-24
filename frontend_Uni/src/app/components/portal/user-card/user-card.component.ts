@@ -9,13 +9,13 @@ import { DataService } from '../../../services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-user-details',
+  selector: 'app-user-card',
   standalone: true,
   imports: [MatButtonModule, MatIconModule, DatePipe, NgIf],
-  templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.css'],
+  templateUrl: './user-card.component.html',
+  styleUrls: ['./user-card.component.css'],
 })
-export class UserDetailsComponent {
+export class UserCardComponent {
   @Input() user?: UserModel;
   @Output() onEdit = new EventEmitter<EditUserPayload>();
 
