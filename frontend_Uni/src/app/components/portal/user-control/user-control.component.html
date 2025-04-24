@@ -10,7 +10,9 @@
   </div>
   <div class="section--content">
     <app-user-search
-      (searchResults)="handleSearchResults($event)"
+      [allUsers]="allUsers"
+      (filteredUsers)="filteredUsers = $event"
+      (onAddNew)="handleAddNew()"
     ></app-user-search>
   </div>
   <div class="section--content">

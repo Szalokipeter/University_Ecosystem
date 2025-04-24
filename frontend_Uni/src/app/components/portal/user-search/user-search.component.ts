@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -10,48 +10,55 @@ import { DataService } from '../../../services/data.service';
 import { UserModel } from '../../../models/user.model';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-user-search',
-  imports: [CommonModule, ReactiveFormsModule, MatIcon, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatIcon,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './user-search.component.html',
   styleUrl: './user-search.component.css',
 })
 export class UserSearchComponent {
-  @Output() searchResults = new EventEmitter<UserModel>();
+  @Input() allUsers: UserModel[] = [];
+  @Output() filteredUsers = new EventEmitter<UserModel[]>();
   @Output() onAddNew = new EventEmitter<void>();
 
   searchForm: FormGroup;
-  isLoading = false;
-  errorMessage = '';
-  loggedInUser: UserModel = JSON.parse(localStorage.getItem('loggedInUser') || '');
 
-  constructor(private fb: FormBuilder, private dataService: DataService) {
+  constructor(private fb: FormBuilder) {
     this.searchForm = this.fb.group({
-      searchTerm: ['', Validators.required],      
+      searchTerm: [''],
     });
+
+    // Add debounce to search input
+    this.searchForm
+      .get('searchTerm')
+      ?.valueChanges.pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe(() => this.applySearch());
   }
 
-  onSearch() {
-    if (this.searchForm.invalid) return;
+  applySearch() {
+    const searchTerm = this.searchForm
+      .get('searchTerm')
+      ?.value?.toLowerCase()
+      .trim();
 
-    this.isLoading = true;
-    this.errorMessage = '';
+    if (!searchTerm) {
+      this.filteredUsers.emit([...this.allUsers]);
+      return;
+    }
 
-    const authToken = this.searchForm.get('searchTerm')?.value.trim();
+    const filtered = this.allUsers.filter(
+      (user) =>
+        user.username.toLowerCase().includes(searchTerm) ||
+        user.email.toLowerCase().includes(searchTerm)
+    );
 
-    this.dataService.searchUser(authToken).subscribe({
-      next: (user) => {
-        console.log('Search results:', user);
-        this.isLoading = false;
-        this.searchResults.emit(user);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage =
-          err.message || 'Failed to search users. Please try again.';
-        console.error('Search error:', err);
-      },
-    });
+    this.filteredUsers.emit(filtered);
   }
 }

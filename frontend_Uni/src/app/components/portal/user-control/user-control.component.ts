@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { UserSearchComponent } from '../user-search/user-search.component';
-import { UserModel } from '../../../models/user.model';
+import { AddUserPayload, UserModel } from '../../../models/user.model';
 import { NgIf } from '@angular/common';
 import { DataService } from '../../../services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserCardListComponent } from '../user-card-list/user-card-list.component';
 import { UserCardComponent } from '../user-card/user-card.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
   selector: 'app-user-control',
@@ -30,7 +32,8 @@ export class UserControlComponent {
 
   constructor(
     private dataService: DataService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -56,33 +59,33 @@ export class UserControlComponent {
     this.selectedUser = user;
   }
 
-  // handleAddNew() {
-  //   const dialogRef = this.dialog.open(UserFormComponent, {
-  //     width: '500px',
-  //     data: {}, // Empty data for add mode
-  //   });
+  handleAddNew() {
+    const dialogRef = this.dialog.open(UserFormComponent, {
+      width: '500px',
+      data: {}, // Empty data for add mode
+    });
 
-  //   dialogRef.afterClosed().subscribe((result: AddUserPayload) => {
-  //     if (result) {
-  //       this.addUser(result);
-  //     }
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe((result: AddUserPayload) => {
+      if (result) {
+        this.addUser(result);
+      }
+    });
+  }
 
-  // private addUser(payload: AddUserPayload) {
-  //   this.dataService.addUser(payload).subscribe({
-  //     next: (response) => {
-  //       if ('user' in response) {
-  //         this.user = response.user;
-  //         this.showMessage('User added successfully', 'success');
-  //       }
-  //     },
-  //     error: (err) => {
-  //       const errorMsg = err.error?.message || 'Failed to add user';
-  //       this.showMessage(errorMsg, 'error');
-  //     },
-  //   });
-  // }
+  private addUser(payload: AddUserPayload) {
+    this.dataService.addUser(payload).subscribe({
+      next: (response) => {
+        if ('user' in response && response.user) {
+          this.selectedUser = response.user;
+          this.showMessage('User added successfully', 'success');
+        }
+      },
+      error: (err) => {
+        const errorMsg = err.error?.message || 'Failed to add user';
+        this.showMessage(errorMsg, 'error');
+      },
+    });
+  }
 
   updateUserList(updatedUser: UserModel) {
     const index = this.allUsers.findIndex((u) => u.id === updatedUser.id);

@@ -1,28 +1,13 @@
 <div class="search-container">
-  <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form">
+  <form [formGroup]="searchForm" class="search-form">
     <div class="input-group">
       <input
         type="text"
         formControlName="searchTerm"
-        placeholder="Search users by token..."
+        placeholder="Search by username or email..."
         class="search-input"
       />
-      <button
-        mat-raised-button
-        type="submit"
-        [disabled]="searchForm.invalid || isLoading"
-        class="search-button"
-      >
-        <span *ngIf="!isLoading">
-          <mat-icon>search</mat-icon>
-          Search
-        </span>
-        <mat-progress-spinner
-          *ngIf="isLoading"
-          diameter="20"
-          mode="indeterminate"
-        ></mat-progress-spinner>
-      </button>
+      <mat-icon class="search-icon">search</mat-icon>
     </div>
 
     <button
