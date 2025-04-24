@@ -53,6 +53,7 @@ export class AuthService {
             email: user.email,
             token: token,
             roles_id: user.roles_id,
+            issuedAt: Date.now(),
           };
 
           localStorage.setItem(
