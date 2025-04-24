@@ -11,6 +11,7 @@
 
     <TabBar>
         <ShellContent Title="Todos" Icon="todos.png" ContentTemplate="{DataTemplate views:TodosPage}" />
+        <ShellContent Title="Events" Icon="calendar.png" ContentTemplate="{DataTemplate views:EventsPage}" />
         <ShellContent Title="QR Login" Icon="qr.png" ContentTemplate="{DataTemplate views:QRCodePage}" />
         <ShellContent Title="Profile" Icon="profilepng.png" ContentTemplate="{DataTemplate views:ProfilePage}" />
 

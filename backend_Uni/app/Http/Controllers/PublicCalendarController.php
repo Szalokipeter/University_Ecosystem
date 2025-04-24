@@ -147,18 +147,18 @@ class PublicCalendarController extends Controller
         return response()->json(["users" => EventUserResource::collection($allUsersSignUpForEvent)], 200);
     }
     public function getAllEventsWithSubscriptionStatus()
-{
-    $userId = Auth::id();
-    $events = PublicCalendar::where('dateofevent', '>', now()->subDays(30))
-        ->withCount(['uniUsers as subscribed' => function($q) use ($userId) {
-            $q->where('uni_user_id', $userId);
-        }])
-        ->get();
+    {
+        $userId = Auth::id();
+        $events = PublicCalendar::where('dateofevent', '>', now()->subDays(30))
+            ->withCount(['uniUsers as subscribed' => function($q) use ($userId) {
+                $q->where('uni_user_id', $userId);
+            }])
+            ->get();
 
-    if ($events->isEmpty()) {
-        return response()->json(['message' => 'No Recent Events found.'], 404);
+        if ($events->isEmpty()) {
+            return response()->json(['message' => 'No Recent Events found.'], 404);
+        }
+
+        return response()->json($events);
     }
-
-    return response()->json($events);
-}
 }
