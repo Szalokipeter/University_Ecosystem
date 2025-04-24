@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('users/{user}', [LoginController::class, 'getUser']);
     Route::get("uniCalendar/{uniCalendar}/signup", [PublicCalendarController::class, "checkSignUp"]);
     Route::get("uniCalendar/{uniCalendar}/allUsers", [PublicCalendarController::class, "getAllSubscribedUsers"]);
+    Route::get("uniCalendar/withSubs", [PublicCalendarController::class, "getAllEventsWithSubscriptionStatus"]);
 
     Route::get('admin/users/{user}/personalTodos', [TodoController::class, 'admin_index']);
     Route::get('admin/users/{user}/personalTodos/{personalTodo}', [TodoController::class, 'admin_show']);

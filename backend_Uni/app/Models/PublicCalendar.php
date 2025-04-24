@@ -15,6 +15,9 @@ class PublicCalendar extends Model
         'event_type',
         'dateofevent',
     ];
+    protected $casts = [
+        'subscribed' => 'boolean',
+    ];
     public function uniUsers(){
         return $this->belongsToMany(UniUser::class, "schoolevent_user", "schoolevent_id", "uni_user_id");
     }
