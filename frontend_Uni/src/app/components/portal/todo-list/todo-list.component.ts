@@ -69,24 +69,24 @@ export class TodoListComponent implements OnInit {
   }
 
   private updateStatusOptions(): void {
-    const uniqueStatuses = [...new Set(this.todos.map(t => t.status))];
-    
+    const uniqueStatuses = [...new Set(this.todos.map((t) => t.status))];
+
     const options = [{ value: 'all', label: 'All Statuses' }];
-    
-    uniqueStatuses.forEach(status => {
+
+    uniqueStatuses.forEach((status) => {
       options.push({
         value: status,
-        label: this.formatStatusLabel(status)
+        label: this.formatStatusLabel(status),
       });
     });
-    
+
     this.statusOptions = options;
   }
 
   private formatStatusLabel(status: string): string {
     return status
       .split('_')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
 
@@ -136,10 +136,10 @@ export class TodoListComponent implements OnInit {
   }
 
   onAddTodo(): void {
-    const existingStatuses = [...new Set(this.todos.map((t) => t.status))];
+    const existingStatuses = ['Todo', 'In Progress', 'Done'];
     const dialogRef = this.dialog.open(TodoFormComponent, {
       width: '500px',
-      data: { isEdit: false, existingStatuses }
+      data: { isEdit: false, existingStatuses },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -162,7 +162,7 @@ export class TodoListComponent implements OnInit {
     const existingStatuses = [...new Set(this.todos.map((t) => t.status))];
     const dialogRef = this.dialog.open(TodoFormComponent, {
       width: '500px',
-      data: { todo, isEdit: true, existingStatuses }
+      data: { todo, isEdit: true, existingStatuses },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
