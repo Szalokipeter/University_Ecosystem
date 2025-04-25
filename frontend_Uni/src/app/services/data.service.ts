@@ -166,5 +166,34 @@ export class DataService implements OnInit {
       { headers: this.getAuthHeaders() }
     );
   }
+
+  getPersonalEventsForUser(userId: number): Observable<CalendarEvent[]> {
+    return this.http.get<CalendarEvent[]>(
+      `${this.apiUrl}/admin/users/${userId}/personalCalendar`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  getPersonalTodosForUser(userId: number): Observable<Todo[]> {
+    return this.http.get<Todo[]>(
+      `${this.apiUrl}/admin/users/${userId}/personalTodos`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  checkEventSignup(eventId: number): Observable<{ signedUp: boolean }> {
+    return this.http.get<{ signedUp: boolean }>(
+      `${this.apiUrl}/uniCalendar/${eventId}/signup`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+  
+  signUpForEvent(eventId: number): Observable<void> {
+    return this.http.post<void>(
+      `${this.apiUrl}/uniCalendar/${eventId}/signup`,
+      {},
+      { headers: this.getAuthHeaders() }
+    );
+  }
   //#endregion
 }
