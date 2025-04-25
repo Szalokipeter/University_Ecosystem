@@ -8,25 +8,27 @@
   >
     {{ message }}
   </div>
-  <div class="section--content">
+  <div class="section--content" *ngIf="!selectedUser">
     <app-user-search
       [allUsers]="allUsers"
       (filteredUsers)="filteredUsers = $event"
       (onAddNew)="handleAddNew()"
     ></app-user-search>
   </div>
+
   <div class="section--content">
     <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+
     <app-user-card-list
       *ngIf="!selectedUser && !isLoading"
       [users]="filteredUsers"
       (userSelected)="selectedUser = $event"
     ></app-user-card-list>
 
-    <app-user-card
-      *ngIf="selectedUser"
+    <app-user-details
+      *ngIf="selectedUser && !isLoading"
       [user]="selectedUser"
       (backToList)="selectedUser = null"
-    ></app-user-card>
+    ></app-user-details>
   </div>
 </div>

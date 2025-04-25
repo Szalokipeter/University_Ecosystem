@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class UserCardComponent {
   @Input() user?: UserModel;
   @Output() onEdit = new EventEmitter<EditUserPayload>();
+  @Output() onDetails = new EventEmitter<UserModel>();
 
   isEditing = false;
   private dialog = inject(MatDialog);
@@ -76,5 +77,11 @@ export class UserCardComponent {
 
   isAdmin(): boolean {
     return this.user?.roles_id === 1;
+  }
+
+  showDetails() {
+    if (this.user) {
+      this.onDetails.emit(this.user);
+    }
   }
 }

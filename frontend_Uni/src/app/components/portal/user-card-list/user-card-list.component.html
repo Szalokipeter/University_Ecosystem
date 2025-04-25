@@ -3,7 +3,7 @@
     <app-user-card
       *ngFor="let user of getPaginatedUsers()"
       [user]="user"
-      (click)="userSelected.emit(user)"
+      (onDetails)="userSelected.emit($event)"
     ></app-user-card>
   </div>
 

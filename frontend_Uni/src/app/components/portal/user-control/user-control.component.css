@@ -67,3 +67,7 @@ mat-spinner {
 app-user-card-list {
   width: calc(100% - 40px);
 }
+
+app-user-details {
+  width: 100%;
+}

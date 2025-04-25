@@ -23,7 +23,11 @@
   <div class="user-actions" *ngIf="isAdmin">
     <button mat-raised-button color="primary" (click)="openEditDialog()">
       <mat-icon>edit</mat-icon>
-      Edit Profile
+      Edit
+    </button>
+    <button mat-raised-button color="primary" (click)="showDetails()">
+      <mat-icon>info</mat-icon>
+      Details
     </button>
   </div>
 </div>

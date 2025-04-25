@@ -1,0 +1,15 @@
+<div class="event-list-container">
+  <mat-spinner *ngIf="isLoading" diameter="30"></mat-spinner>
+
+  <div *ngIf="!isLoading" class="event-list">
+    <app-user-event-card
+      *ngFor="let event of events"
+      [event]="event"
+    ></app-user-event-card>
+
+    <div *ngIf="events.length === 0" class="no-events">
+      <mat-icon>event_busy</mat-icon>
+      <p>No personal events found</p>
+    </div>
+  </div>
+</div>

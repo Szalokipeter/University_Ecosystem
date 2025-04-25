@@ -64,6 +64,7 @@
           <app-todo-card
             *ngFor="let todo of filteredTodos"
             [todo]="todo"
+            [showActions]="true"
             (edit)="onEditTodo($event)"
             (delete)="onDeleteTodo($event)"
           >

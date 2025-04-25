@@ -1,9 +1,9 @@
 <div class="todo-card">
   <div class="todo-actions">
-    <button mat-icon-button (click)="onEdit()" aria-label="Edit todo">
+    <button mat-icon-button (click)="onEdit()" aria-label="Edit todo" *ngIf="showActions">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button (click)="onDelete()" aria-label="Delete todo">
+    <button mat-icon-button (click)="onDelete()" aria-label="Delete todo" *ngIf="showActions">
       <mat-icon>delete</mat-icon>
     </button>
   </div>

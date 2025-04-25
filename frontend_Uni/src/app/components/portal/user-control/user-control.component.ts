@@ -5,10 +5,10 @@ import { NgIf } from '@angular/common';
 import { DataService } from '../../../services/data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserCardListComponent } from '../user-card-list/user-card-list.component';
-import { UserCardComponent } from '../user-card/user-card.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { UserFormComponent } from '../user-form/user-form.component';
+import { UserDetailsComponent } from '../user-details/user-details.component';
 
 @Component({
   selector: 'app-user-control',
@@ -16,8 +16,8 @@ import { UserFormComponent } from '../user-form/user-form.component';
     UserSearchComponent,
     NgIf,
     UserCardListComponent,
-    UserCardComponent,
     MatProgressSpinner,
+    UserDetailsComponent,
   ],
   templateUrl: './user-control.component.html',
   styleUrl: './user-control.component.css',
