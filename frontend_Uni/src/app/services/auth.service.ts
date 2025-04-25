@@ -32,6 +32,7 @@ export class AuthService {
           );
 
           this.storeToken(response.token);
+          console.log('Logged in user:', this.loggedInUser.token);
 
           return true;
         })

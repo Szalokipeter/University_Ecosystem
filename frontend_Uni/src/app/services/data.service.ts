@@ -181,19 +181,25 @@ export class DataService implements OnInit {
     );
   }
 
-  checkEventSignup(eventId: number): Observable<{ signedUp: boolean }> {
-    return this.http.get<{ signedUp: boolean }>(
+  checkEventSignup(eventId: number): Observable<{ message: string; SubStatus: boolean }> {
+    return this.http.get<{ message: string; SubStatus: boolean }>(
       `${this.apiUrl}/uniCalendar/${eventId}/signup`,
       { headers: this.getAuthHeaders() }
     );
   }
   
-  signUpForEvent(eventId: number): Observable<void> {
-    return this.http.post<void>(
+  signUpForEvent(eventId: number): Observable<{ message: string; }> {
+    return this.http.post<{ message: string; }>(
       `${this.apiUrl}/uniCalendar/${eventId}/signup`,
       {},
       { headers: this.getAuthHeaders() }
     );
+  }
+
+  getEventsWithSubscriptions(): Observable<CalendarEvent[]> {
+    return this.http.get<CalendarEvent[]>(`${this.apiUrl}/uniCalendar/withSubs`, {
+      headers: this.getAuthHeaders()
+    });
   }
   //#endregion
 }

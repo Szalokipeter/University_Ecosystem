@@ -7,4 +7,5 @@ export interface CalendarEvent {
   dateofevent: string;
   created_at: string;
   updated_at: string;
+  subscribed?: boolean;
 }

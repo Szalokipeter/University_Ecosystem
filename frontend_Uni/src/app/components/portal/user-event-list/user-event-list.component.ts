@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { DataService } from '../../../services/data.service';
 import { CommonModule } from '@angular/common';
@@ -13,14 +13,17 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './user-event-list.component.css',
 })
 export class UserEventListComponent {
-  @Input() userId?: number;
-  events: CalendarEvent[] = [];
-  isLoading = true;
+  @Input() userId?: number; // For personal events
+  @Input() events?: CalendarEvent[]; // For subscribed events (passed directly)
+  @Input() isLoading = false;
+  @Input() showUnsubscribe = false; // Only true in dashboard
+  @Output() unsubscribe = new EventEmitter<number>();
 
   constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    if (this.userId) {
+    // Only load events if userId is provided (personal events case)
+    if (this.userId && !this.events) {
       this.loadEvents();
     }
   }
@@ -37,5 +40,9 @@ export class UserEventListComponent {
         this.isLoading = false;
       },
     });
+  }
+
+  onUnsubscribe(eventId: number) {
+    this.unsubscribe.emit(eventId);
   }
 }

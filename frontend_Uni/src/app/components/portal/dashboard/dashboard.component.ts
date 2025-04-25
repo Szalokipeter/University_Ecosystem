@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { EventCardComponent } from '../../main/event-card/event-card.component';
 import { CommonModule, NgFor } from '@angular/common';
 import Swiper from 'swiper';
@@ -18,6 +18,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth.service';
 import { EventFormComponent } from '../event-form/event-form.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { UserEventListComponent } from '../user-event-list/user-event-list.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,6 +29,8 @@ import { EventFormComponent } from '../event-form/event-form.component';
     FormsModule,
     MatIcon,
     CommonModule,
+    MatProgressSpinner,
+    UserEventListComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
@@ -50,15 +54,19 @@ export class DashboardComponent {
   calendarEventTypeFilter: string = 'all';
   eventsByDate = new Map<string, CalendarEvent[]>();
 
+  showSubscribedEvents = false;
+  loadingSubscribedEvents = false;
+  subscribedEvents: CalendarEvent[] = [];
+
   private swiper?: Swiper;
   private destroy$ = new Subject<void>();
   private loadRequest$ = new Subject<void>();
+  public authService = inject(AuthService);
 
   constructor(
     private dataService: DataService,
     private cdr: ChangeDetectorRef,
-    private dialog: MatDialog,
-    private authService: AuthService
+    private dialog: MatDialog
   ) {
     this.loadRequest$
       .pipe(
@@ -368,6 +376,19 @@ export class DashboardComponent {
       default:
         console.warn(`Unhandled calendar action: ${actionData.action}`);
     }
+
+    if (actionData.isPublic && this.showSubscribedEvents) {
+      const index = this.subscribedEvents.findIndex(
+        (e) => e.id === actionData.event.id
+      );
+      if (index !== -1) {
+        if (actionData.action === 'delete') {
+          this.subscribedEvents.splice(index, 1);
+        } else {
+          this.subscribedEvents[index] = actionData.event;
+        }
+      }
+    }
   }
 
   private handleUpdateEvent(event: CalendarEvent, isPublic: boolean): void {
@@ -447,6 +468,47 @@ export class DashboardComponent {
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Error deleting event:', err),
+    });
+  }
+
+  toggleSubscribedEvents(): void {
+    this.showSubscribedEvents = !this.showSubscribedEvents;
+    if (this.showSubscribedEvents && this.subscribedEvents.length === 0) {
+      this.loadSubscribedEvents();
+    }
+  }
+
+  loadSubscribedEvents(): void {
+    this.loadingSubscribedEvents = true;
+    this.dataService.getEventsWithSubscriptions().subscribe({
+      next: (events) => {
+        this.subscribedEvents = events.filter((event) => event.subscribed);
+        this.loadingSubscribedEvents = false;
+      },
+      error: (err) => {
+        console.error('Error loading subscribed events:', err);
+        this.loadingSubscribedEvents = false;
+      },
+    });
+  }
+
+  onUnsubscribeEvent(eventId: number): void {
+    this.dataService.signUpForEvent(eventId).subscribe({
+      next: () => {
+        // Remove from subscribed events
+        this.subscribedEvents = this.subscribedEvents.filter(
+          (e) => e.id !== eventId
+        );
+
+        // Also update the public events list if the event exists there
+        const publicEvent = this.publicEvents.find((e) => e.id === eventId);
+        if (publicEvent) {
+          publicEvent.subscribed = false;
+        }
+      },
+      error: (err) => {
+        console.error('Error unsubscribing from event:', err);
+      },
     });
   }
 

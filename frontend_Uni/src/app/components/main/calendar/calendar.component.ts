@@ -161,10 +161,6 @@ export class CalendarComponent implements OnChanges {
     const canEdit =
       this.isInPortal && (canEditPublic || event.uni_user_id !== undefined);
 
-    console.log('Can isInPortal: ', this.isInPortal);
-    console.log('Can canEditPublic: ', canEditPublic);
-    console.log('Can isEventPrivate:', event.uni_user_id !== undefined);
-    console.log('Can canEdit: ', canEdit);
     const dialogRef = this.dialog.open(EventDetailModalComponent, {
       width: '500px',
       data: {

@@ -65,7 +65,7 @@
 
       <div class="swiper-pagination"></div>
       <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>      
+      <div class="swiper-button-next"></div>
     </div>
   </div>
 
@@ -123,6 +123,24 @@
         (retry)="loadEvents()"
       >
       </app-calendar>
+    </div>
+  </div>
+
+  <div class="dashboard-section" *ngIf="authService.isAdminOrTeacher()">
+    <div class="section-header" (click)="toggleSubscribedEvents()">
+      <h1 class="dashboard-section__title">Your Subscribed Events</h1>
+      <mat-icon class="toggle-icon">
+        {{ showSubscribedEvents ? "expand_less" : "expand_more" }}
+      </mat-icon>
+    </div>
+
+    <div class="section-content" *ngIf="showSubscribedEvents">
+      <app-user-event-list
+        [events]="subscribedEvents"
+        [isLoading]="loadingSubscribedEvents"
+        [showUnsubscribe]="true"
+        (unsubscribe)="onUnsubscribeEvent($event)"
+      ></app-user-event-list>
     </div>
   </div>
 </div>

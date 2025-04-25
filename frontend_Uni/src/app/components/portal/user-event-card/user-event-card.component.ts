@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarEvent } from '../../../models/calendar-event.model';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -12,4 +12,6 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class UserEventCardComponent {
   @Input() event?: CalendarEvent;
+  @Input() showUnsubscribe = false;
+  @Output() unsubscribe = new EventEmitter<number>();
 }

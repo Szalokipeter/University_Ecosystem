@@ -1,6 +1,6 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { CalendarEvent } from '../../../models/calendar-event.model';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -8,7 +8,10 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { AuthService } from '../../../services/auth.service';
+import { DataService } from '../../../services/data.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-event-detail-modal',
@@ -18,14 +21,18 @@ import { AuthService } from '../../../services/auth.service';
     MatDialogModule,
     MatIconModule,
     DatePipe,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
   ],
   templateUrl: './event-detail-modal.component.html',
   styleUrl: './event-detail-modal.component.css',
   providers: [DatePipe],
 })
-export class EventDetailModalComponent {
+export class EventDetailModalComponent implements OnInit {
   @Output() closed = new EventEmitter<void>();
   event: CalendarEvent;
+  isSignupLoading = false;
+  isSignedUp: boolean | null = null;
 
   dialogRef = inject(MatDialogRef<EventDetailModalComponent>);
   data = inject<{
@@ -34,15 +41,22 @@ export class EventDetailModalComponent {
     canEdit: boolean;
   }>(MAT_DIALOG_DATA);
 
-  constructor() {
+  constructor(private dataService: DataService) {
     this.event = this.data.event;
+  }
+
+  ngOnInit(): void {
+    this.checkSignupStatus();
   }
 
   get canEdit(): boolean {
     return this.data.canEdit;
   }
+  get isPublic(): boolean {
+    return this.data.isPublic;
+  }
 
-  onUpdate(): void {    
+  onUpdate(): void {
     this.dialogRef.close({
       action: 'update',
       event: this.data.event,
@@ -73,5 +87,49 @@ export class EventDetailModalComponent {
     };
     const normalizedType = eventType.toLowerCase().trim();
     return colorMap[normalizedType] || '#9C27B0';
+  }
+
+  private checkSignupStatus(): void {
+    this.isSignupLoading = true;
+    this.dataService
+      .checkEventSignup(this.event.id)
+      .pipe(finalize(() => (this.isSignupLoading = false)))
+      .subscribe({
+        next: (response) => {
+          this.isSignedUp = response.SubStatus;
+          console.log('Signup status:', response);
+        },
+        error: (err) => {
+          console.error('Error checking signup status:', err);
+          this.isSignedUp = false;
+        },
+      });
+  }
+
+  onSignup(): void {
+    if (!this.isPublic) return;
+
+    this.isSignupLoading = true;
+    this.dataService
+      .signUpForEvent(this.event.id)
+      .pipe(finalize(() => (this.isSignupLoading = false)))
+      .subscribe({
+        next: (response) => {
+          console.log('Signup response:', response);
+          this.checkSignupStatus();
+        },
+        error: (err) => {
+          console.error('Error signing up for event:', err);
+        },
+      });
+  }
+
+  getSignupTooltip(): string {
+    if (this.isSignedUp === null) return '';
+    return this.isSignedUp ? 'Click to unsubscribe' : 'Click to sign up';
+  }
+
+  getSignupIcon(): string {
+    return this.isSignedUp ? 'event_busy' : 'event_available';
   }
 }

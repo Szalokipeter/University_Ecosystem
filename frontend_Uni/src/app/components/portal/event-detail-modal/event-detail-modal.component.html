@@ -24,9 +24,28 @@
     <div class="modal-event-description">
       {{ event.body }}
     </div>
-    <div class="modal-actions" *ngIf="canEdit">
-      <button mat-raised-button color="warn" (click)="onDelete()">Delete</button>
-      <button mat-raised-button color="primary" (click)="onUpdate()">Update</button>
+
+    <div class="modal-actions">
+      <ng-container *ngIf="isPublic">
+        <button
+          mat-icon-button
+          (click)="onSignup()"
+          [disabled]="isSignupLoading"
+          [matTooltip]="getSignupTooltip()"
+        >
+          <mat-icon *ngIf="!isSignupLoading">{{ getSignupIcon() }}</mat-icon>
+          <mat-spinner *ngIf="isSignupLoading" diameter="24"></mat-spinner>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="canEdit">
+        <button mat-raised-button color="warn" (click)="onDelete()">
+          Delete
+        </button>
+        <button mat-raised-button color="primary" (click)="onUpdate()">
+          Update
+        </button>
+      </ng-container>
     </div>
   </div>
 </div>

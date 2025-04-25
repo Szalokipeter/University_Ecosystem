@@ -5,11 +5,13 @@
     <app-user-event-card
       *ngFor="let event of events"
       [event]="event"
+      [showUnsubscribe]="showUnsubscribe"
+      (unsubscribe)="onUnsubscribe($event)"
     ></app-user-event-card>
 
-    <div *ngIf="events.length === 0" class="no-events">
+    <div *ngIf="events?.length === 0" class="no-events">
       <mat-icon>event_busy</mat-icon>
-      <p>No personal events found</p>
+      <p>No events found</p>
     </div>
   </div>
 </div>
