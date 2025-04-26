@@ -121,6 +121,7 @@
         [isInPortal]="true"
         (eventAction)="handleCalendarEventAction($event)"
         (retry)="loadEvents()"
+        (subscriptionChange)="onSubscriptionChange($event)"
       >
       </app-calendar>
     </div>

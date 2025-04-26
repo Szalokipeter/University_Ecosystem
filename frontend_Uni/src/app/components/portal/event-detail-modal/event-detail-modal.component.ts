@@ -30,6 +30,11 @@ import { finalize } from 'rxjs';
 })
 export class EventDetailModalComponent implements OnInit {
   @Output() closed = new EventEmitter<void>();
+  @Output() subscriptionChange = new EventEmitter<{
+    eventId: number;
+    isSubscribed: boolean;
+  }>();
+
   event: CalendarEvent;
   isSignupLoading = false;
   isSignedUp: boolean | null = null;
@@ -115,8 +120,11 @@ export class EventDetailModalComponent implements OnInit {
       .pipe(finalize(() => (this.isSignupLoading = false)))
       .subscribe({
         next: (response) => {
-          console.log('Signup response:', response);
           this.checkSignupStatus();
+          this.subscriptionChange.emit({
+            eventId: this.event.id,
+            isSubscribed: !this.isSignedUp,
+          });
         },
         error: (err) => {
           console.error('Error signing up for event:', err);

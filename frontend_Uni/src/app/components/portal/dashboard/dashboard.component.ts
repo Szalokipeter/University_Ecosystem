@@ -369,9 +369,11 @@ export class DashboardComponent {
     switch (actionData.action) {
       case 'update':
         this.handleUpdateEvent(actionData.event, actionData.isPublic);
+        this.updateSubscribedEvent(actionData.event);
         break;
       case 'delete':
         this.handleDeleteEvent(actionData.event, actionData.isPublic);
+        this.removeSubscribedEvent(actionData.event.id);
         break;
       default:
         console.warn(`Unhandled calendar action: ${actionData.action}`);
@@ -471,6 +473,23 @@ export class DashboardComponent {
     });
   }
 
+  private updateSubscribedEvent(updatedEvent: CalendarEvent): void {
+    const index = this.subscribedEvents.findIndex(e => e.id === updatedEvent.id);
+    console.log('Updating subscribed event:', updatedEvent, index);
+    if (index !== -1) {
+      // this.subscribedEvents[index] = {
+      //   ...updatedEvent,
+      //   subscribed: true
+      // };
+      this.subscribedEvents[index] = updatedEvent;
+      this.subscribedEvents[index].subscribed = true;
+    }
+  }
+  
+  private removeSubscribedEvent(eventId: number): void {
+    this.subscribedEvents = this.subscribedEvents.filter(e => e.id !== eventId);
+  }
+
   toggleSubscribedEvents(): void {
     this.showSubscribedEvents = !this.showSubscribedEvents;
     if (this.showSubscribedEvents && this.subscribedEvents.length === 0) {
@@ -510,6 +529,23 @@ export class DashboardComponent {
         console.error('Error unsubscribing from event:', err);
       },
     });
+  }
+
+  onSubscriptionChange(change: { eventId: number, isSubscribed: boolean }): void {
+    const event = this.findEventById(change.eventId);
+    
+    if (change.isSubscribed && event) {
+      this.subscribedEvents.push({
+        ...event,
+        subscribed: true
+      });
+    } else {
+      this.removeSubscribedEvent(change.eventId);
+    }
+  }
+  
+  private findEventById(id: number): CalendarEvent | undefined {
+    return [...this.publicEvents, ...this.personalEvents].find(e => e.id === id);
   }
 
   ngOnDestroy() {

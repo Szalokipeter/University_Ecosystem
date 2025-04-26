@@ -43,6 +43,11 @@ export class CalendarComponent implements OnChanges {
     isPublic: boolean;
   }>();
   @Output() retry = new EventEmitter<void>();
+  @Output() subscriptionChange = new EventEmitter<{
+    eventId: number;
+    isSubscribed: boolean;
+  }>();
+  
 
   currentDate: Date = new Date();
   weeks: CalendarWeekDay[][] = [];
@@ -168,6 +173,10 @@ export class CalendarComponent implements OnChanges {
         isPublic: event.uni_user_id == null,
         canEdit: canEdit,
       },
+    });
+
+    dialogRef.componentInstance.subscriptionChange.subscribe(change => {
+      this.subscriptionChange.emit(change);
     });
 
     dialogRef.afterClosed().subscribe((result) => {
