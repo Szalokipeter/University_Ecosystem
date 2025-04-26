@@ -65,6 +65,8 @@ export class PortalHeaderComponent {
   isDropdownOpen = false;
   activeView: 'dashboard' | 'todos' | 'news' | 'users' = 'dashboard';
 
+  isMobileMenuOpen = false;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -89,6 +91,17 @@ export class PortalHeaderComponent {
 
   ngOnDestroy(): void {
     this.timerService.stopTimer();
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    if (this.isMobileMenuOpen) {
+      this.isDropdownOpen = false;
+    }
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
   }
 
   toggleDropdown() {

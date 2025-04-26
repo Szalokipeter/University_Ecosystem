@@ -1,10 +1,10 @@
 <header class="portal-header">
-  <!-- Left Section (Logo + Nav) -->
   <div class="portal-header__left">
     <app-home-logo
       [routerLink]="['/']"
       routerLinkActive="router-link-active"
     ></app-home-logo>
+
     <nav class="portal-nav">
       <a
         class="portal-nav__link"
@@ -47,8 +47,14 @@
     </nav>
   </div>
 
-  <!-- Right Section (User Dropdown) -->
   <div class="portal-header__right">
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger-menu" (click)="toggleMobileMenu()">
+      <mat-icon class="hamburger-menu__icon">
+        {{ isMobileMenuOpen ? "close" : "menu" }}
+      </mat-icon>
+    </button>
+
     <div class="user-badge-container" (click)="toggleDropdown()">
       <div class="user-badge" [title]="username">
         {{ usernameInitial }}
@@ -61,7 +67,53 @@
       </mat-icon>
     </div>
 
-    <!-- Dropdown Menu -->
+    <div class="mobile-menu" [class.open]="isMobileMenuOpen">
+      <nav class="mobile-nav">
+        <a
+          class="mobile-nav__link"
+          [class.active]="activeView === 'dashboard'"
+          routerLink="/portal/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+        >
+          >Dashboard</a
+        >
+        <a
+          class="mobile-nav__link"
+          [class.active]="activeView === 'todos'"
+          routerLink="/portal/todos"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+        >
+          >Todos</a
+        >
+        <a
+          *ngIf="loggedInUser?.roles_id === 1 || loggedInUser!.roles_id === 2"
+          class="mobile-nav__link"
+          [class.active]="activeView === 'news'"
+          routerLink="/portal/news"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+        >
+          >News</a
+        >
+        <a
+          *ngIf="loggedInUser?.roles_id === 1"
+          class="mobile-nav__link"
+          [class.active]="activeView === 'users'"
+          routerLink="/portal/users"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+        >
+          >User Control</a
+        >
+      </nav>
+    </div>
+
     <div
       *ngIf="isDropdownOpen"
       @fadeInDropdown
