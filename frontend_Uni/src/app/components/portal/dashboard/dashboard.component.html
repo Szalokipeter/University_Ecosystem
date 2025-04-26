@@ -156,8 +156,7 @@
     <div class="section-content" *ngIf="showAdminEvents">
       <app-admin-events-list
         [events]="publicEvents"
-        [currentPage]="adminEventsPage"
-        [totalPages]="adminEventsTotalPages"
+        [itemsPerPage]="itemsPerPage"
         (pageChanged)="onAdminEventsPageChange($event)"
       >
       </app-admin-events-list>

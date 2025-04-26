@@ -62,8 +62,7 @@ export class DashboardComponent {
 
   showAdminEvents = false;
   adminEventsPage = 1;
-  adminEventsTotalPages = 1;
-  itemsPerPage = 10;
+  itemsPerPage = 5;
 
   private swiper?: Swiper;
   private destroy$ = new Subject<void>();
@@ -562,15 +561,6 @@ export class DashboardComponent {
 
   toggleAdminEvents() {
     this.showAdminEvents = !this.showAdminEvents;
-    if (this.showAdminEvents) {
-      this.calculateAdminEventsPages();
-    }
-  }
-
-  calculateAdminEventsPages() {
-    this.adminEventsTotalPages = Math.ceil(
-      this.publicEvents.length / this.itemsPerPage
-    );
   }
 
   onAdminEventsPageChange(page: number) {

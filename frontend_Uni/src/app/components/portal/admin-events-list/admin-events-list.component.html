@@ -1,7 +1,7 @@
 <div class="admin-events-container">
   <div class="admin-events-list">
     <app-admin-event-card
-      *ngFor="let event of events"
+      *ngFor="let event of paginatedEvents()"
       [event]="event"
       [isExpanded]="expandedEventId === event.id"
       (toggleExpand)="toggleEventExpand(event.id)"
@@ -11,7 +11,7 @@
 
   <div class="pagination-controls">
     <span *ngIf="notFirstPage()" (click)="goToPrevPage()">&lt;</span>
-    <span class="page-number">{{ currentPage }}</span>
+    <span class="page-number">{{ currentPage() }} / {{ totalPages() }}</span>
     <span *ngIf="notFinalPage()" (click)="goToNextPage()">&gt;</span>
   </div>
 </div>
