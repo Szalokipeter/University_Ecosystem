@@ -1,5 +1,4 @@
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="edit-form">
-  <!-- Username field remains the same -->
   <mat-form-field appearance="outline">
     <mat-label>Username</mat-label>
     <input matInput formControlName="username" required />
@@ -8,7 +7,6 @@
     </mat-error>
   </mat-form-field>
 
-  <!-- Email field (only for add mode) -->
   <mat-form-field appearance="outline" *ngIf="!isEditMode">
     <mat-label>Email</mat-label>
     <input matInput type="email" formControlName="email" required />
@@ -24,12 +22,11 @@
     <mat-label>{{ isEditMode ? "New Password" : "Password" }}</mat-label>
     <input matInput type="password" formControlName="password" required />
     <mat-hint *ngIf="isEditMode">Password is required for updates</mat-hint>
-    <mat-error *ngFor="let error of getPasswordErrors()">
-      {{ error }}
+    <mat-error *ngIf="editForm.get('password')?.invalid">
+      {{ getPasswordErrors() }}
     </mat-error>
   </mat-form-field>
 
-  <!-- Password confirmation field -->
   <mat-form-field appearance="outline">
     <mat-label>Confirm Password</mat-label>
     <input

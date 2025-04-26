@@ -6,7 +6,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { UserModel, EditUserPayload } from '../../../models/user.model';
+import { UserModel } from '../../../models/user.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -60,7 +60,6 @@ export class UserFormComponent {
     this.isEditMode = !!this.data?.user;
 
     if (this.isEditMode) {
-      // Edit mode form - password is now required
       this.editForm = this.fb.group({
         username: ['', [Validators.required, Validators.minLength(3)]],
         password: [
@@ -80,7 +79,6 @@ export class UserFormComponent {
         password_confirmation: '',
       });
     } else {
-      // Add mode form
       this.editForm = this.fb.group({
         username: ['', [Validators.required, Validators.minLength(3)]],
         email: ['', [Validators.required, Validators.email]],
@@ -96,7 +94,6 @@ export class UserFormComponent {
       });
     }
 
-    // Add cross-field validation for password confirmation
     this.editForm.get('password_confirmation')?.setValidators([
       Validators.required,
       (control: AbstractControl) => {
@@ -117,21 +114,22 @@ export class UserFormComponent {
     this.dialogRef.close();
   }
 
-  getPasswordErrors(): string[] {
+  getPasswordErrors(): string {
     const errors = this.editForm.get('password')?.errors;
-    if (!errors) return [];
-
-    const messages: string[] = [];
-    if (errors['required']) messages.push('Password is required');
-    if (errors['minlength'])
-      messages.push('Password must be at least 6 characters');
-    if (errors['missingNumber'])
-      messages.push('Password must contain at least 1 number');
-    if (errors['missingCapital'])
-      messages.push('Password must contain at least 1 capital letter');
-    if (errors['missingSpecial'])
-      messages.push('Password must contain at least 1 special character');
-
-    return messages;
+    if (!errors) return '';
+  
+    if (errors['required']) return 'Password is required';
+    if (errors['minlength']) return 'Password must be at least 6 characters';
+    
+    const missingRequirements: string[] = [];
+    if (errors['missingNumber']) missingRequirements.push('number');
+    if (errors['missingCapital']) missingRequirements.push('capital letter');
+    if (errors['missingSpecial']) missingRequirements.push('special character');
+  
+    if (missingRequirements.length > 0) {
+      return `Missing: ${missingRequirements.join(', ')}`;
+    }
+  
+    return '';
   }
 }
