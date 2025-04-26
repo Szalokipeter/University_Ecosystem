@@ -44,6 +44,7 @@ export class EventDetailModalComponent implements OnInit {
     event: CalendarEvent;
     isPublic: boolean;
     canEdit: boolean;
+    isInPortal: boolean;
   }>(MAT_DIALOG_DATA);
 
   constructor(private dataService: DataService) {
@@ -60,6 +61,10 @@ export class EventDetailModalComponent implements OnInit {
   get isPublic(): boolean {
     return this.data.isPublic;
   }
+  get isInPortal(): boolean {
+    return this.data.isInPortal;
+  }
+
 
   onUpdate(): void {
     this.dialogRef.close({

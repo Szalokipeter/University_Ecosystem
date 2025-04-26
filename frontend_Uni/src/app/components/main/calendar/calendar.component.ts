@@ -172,6 +172,7 @@ export class CalendarComponent implements OnChanges {
         event,
         isPublic: event.uni_user_id == null,
         canEdit: canEdit,
+        isInPortal: this.isInPortal,
       },
     });
 

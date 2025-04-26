@@ -26,7 +26,7 @@
     </div>
 
     <div class="modal-actions">
-      <ng-container *ngIf="isPublic">
+      <ng-container *ngIf="isPublic && isInPortal">
         <button
           mat-icon-button
           (click)="onSignup()"
