@@ -10,14 +10,16 @@
     <textarea matInput [(ngModel)]="todo.body" rows="4"></textarea>
   </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field *ngIf="data.isEdit" appearance="outline" class="full-width">
     <mat-label>Status</mat-label>
     <mat-select [(ngModel)]="todo.status">
-      <mat-option *ngFor="let status of data.existingStatuses" [value]="status">
-        {{ status.replace("_", " ") | titlecase }}
+      <mat-option *ngFor="let status of statusOptions" [value]="status">
+        {{ status }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+
+  <input type="hidden" [(ngModel)]="todo.status" *ngIf="!data.isEdit" />
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancel</button>

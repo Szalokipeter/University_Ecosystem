@@ -28,13 +28,13 @@ import { Todo } from '../../../models/todo.model';
 })
 export class TodoFormComponent {
   dialogRef = inject(MatDialogRef<TodoFormComponent>);
-  data = inject<{ 
-    todo?: Todo; 
+  data = inject<{
+    todo?: Todo;
     isEdit: boolean;
-    existingStatuses?: string[];
   }>(MAT_DIALOG_DATA);
 
   todo: Partial<Todo>;
+  statusOptions = ['Todo', 'In-Progress', 'Done'];
 
   constructor() {
     this.todo = this.data.todo
@@ -42,7 +42,7 @@ export class TodoFormComponent {
       : {
           title: '',
           body: '',
-          status: this.data.existingStatuses?.[0] || 'Todo',
+          status: 'Todo',
         };
   }
 

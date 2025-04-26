@@ -111,6 +111,7 @@ export class DataService implements OnInit {
     });
   }
   updateTodo(id: number, todo: Partial<Todo>): Observable<Todo> {
+    todo.status = todo.status?.toLowerCase();
     return this.http.put<Todo>(`${this.apiUrl}/personalTodos/${id}`, todo, {
       headers: this.getAuthHeaders(),
     });
