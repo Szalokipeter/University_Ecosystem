@@ -120,7 +120,7 @@ class PublicCalendarController extends Controller
         $validateduser = Auth::user();
         try {
             $sub = Schoolevent_user::where("schoolevent_id", $uniCalendar->id)->where("uni_user_id", $validateduser->id)->get();
-            if(count($sub) !== 0){
+            if(count($sub) == 0){
                 return response()->json([
                     "message" => "User is not subscribed to event.",
                     "SubStatus" => false,
