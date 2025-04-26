@@ -1,7 +1,6 @@
 <h2 mat-dialog-title>{{ data.isEdit ? "Edit" : "Add" }} Event</h2>
 
 <div mat-dialog-content>
-  <!-- Public/Private Toggle -->
   <div *ngIf="showPublicToggle" class="public-toggle">
     <mat-radio-group
       [(ngModel)]="isPublicEvent"
@@ -33,13 +32,27 @@
     />
   </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field *ngIf="isPublicEvent" appearance="outline" class="full-width">
     <mat-label>Event Type</mat-label>
     <mat-select [(ngModel)]="event.event_type" name="event_type">
-      <mat-option *ngFor="let type of currentEventTypes" [value]="type">
+      <mat-option *ngFor="let type of publicEventTypes" [value]="type">
         {{ type }}
       </mat-option>
     </mat-select>
+  </mat-form-field>
+
+  <mat-form-field
+    *ngIf="!isPublicEvent"
+    appearance="outline"
+    class="full-width"
+  >
+    <mat-label>Event Type</mat-label>
+    <input
+      matInput
+      [(ngModel)]="event.event_type"
+      name="event_type"
+      placeholder="Enter event type"
+    />
   </mat-form-field>
 </div>
 

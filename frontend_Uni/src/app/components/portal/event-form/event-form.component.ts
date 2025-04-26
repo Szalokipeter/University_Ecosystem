@@ -46,34 +46,25 @@ export class EventFormComponent {
     'Student Affairs',
     'Registration Required',
   ];
-  personalEventTypes = ['Quiz', 'Exam', 'Temp 1', 'Temp 2'];
-  currentEventTypes: string[] = [];
   showPublicToggle: boolean;
   isPublicEvent: boolean;
 
   constructor() {
     this.showPublicToggle = this.data.canEditPublic;
     this.isPublicEvent = this.data.isPublic;
-    this.currentEventTypes = this.isPublicEvent
-      ? this.publicEventTypes
-      : this.personalEventTypes;
 
     this.event = this.data.event
       ? { ...this.data.event }
       : {
           title: '',
           body: '',
-          event_type: 'Exam',
+          event_type: this.data.isPublic ? 'Open to Public' : '',
           dateofevent: new Date().toISOString().split('T')[0],
         };
   }
 
   onPublicityChange(isPublic: boolean): void {
     this.isPublicEvent = isPublic;
-    this.currentEventTypes = isPublic
-      ? this.publicEventTypes
-      : this.personalEventTypes;
-    // Reset event type when changing publicity
     this.event.event_type = isPublic ? 'Open to Public' : 'Exam';
   }
 
