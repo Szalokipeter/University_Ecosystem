@@ -144,4 +144,23 @@
       ></app-user-event-list>
     </div>
   </div>
+
+  <div class="dashboard-section" *ngIf="authService.isAdminOrTeacher()">
+    <div class="section-header" (click)="toggleAdminEvents()">
+      <h1 class="dashboard-section__title">Event Subscriptions</h1>
+      <mat-icon class="toggle-icon">
+        {{ showAdminEvents ? "expand_less" : "expand_more" }}
+      </mat-icon>
+    </div>
+
+    <div class="section-content" *ngIf="showAdminEvents">
+      <app-admin-events-list
+        [events]="publicEvents"
+        [currentPage]="adminEventsPage"
+        [totalPages]="adminEventsTotalPages"
+        (pageChanged)="onAdminEventsPageChange($event)"
+      >
+      </app-admin-events-list>
+    </div>
+  </div>
 </div>

@@ -20,6 +20,7 @@ import { AuthService } from '../../../services/auth.service';
 import { EventFormComponent } from '../event-form/event-form.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { UserEventListComponent } from '../user-event-list/user-event-list.component';
+import { AdminEventsListComponent } from '../admin-events-list/admin-events-list.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,6 +32,7 @@ import { UserEventListComponent } from '../user-event-list/user-event-list.compo
     CommonModule,
     MatProgressSpinner,
     UserEventListComponent,
+    AdminEventsListComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
@@ -57,6 +59,11 @@ export class DashboardComponent {
   showSubscribedEvents = false;
   loadingSubscribedEvents = false;
   subscribedEvents: CalendarEvent[] = [];
+
+  showAdminEvents = false;
+  adminEventsPage = 1;
+  adminEventsTotalPages = 1;
+  itemsPerPage = 10;
 
   private swiper?: Swiper;
   private destroy$ = new Subject<void>();
@@ -474,20 +481,20 @@ export class DashboardComponent {
   }
 
   private updateSubscribedEvent(updatedEvent: CalendarEvent): void {
-    const index = this.subscribedEvents.findIndex(e => e.id === updatedEvent.id);
+    const index = this.subscribedEvents.findIndex(
+      (e) => e.id === updatedEvent.id
+    );
     console.log('Updating subscribed event:', updatedEvent, index);
     if (index !== -1) {
-      // this.subscribedEvents[index] = {
-      //   ...updatedEvent,
-      //   subscribed: true
-      // };
       this.subscribedEvents[index] = updatedEvent;
       this.subscribedEvents[index].subscribed = true;
     }
   }
-  
+
   private removeSubscribedEvent(eventId: number): void {
-    this.subscribedEvents = this.subscribedEvents.filter(e => e.id !== eventId);
+    this.subscribedEvents = this.subscribedEvents.filter(
+      (e) => e.id !== eventId
+    );
   }
 
   toggleSubscribedEvents(): void {
@@ -531,21 +538,43 @@ export class DashboardComponent {
     });
   }
 
-  onSubscriptionChange(change: { eventId: number, isSubscribed: boolean }): void {
+  onSubscriptionChange(change: {
+    eventId: number;
+    isSubscribed: boolean;
+  }): void {
     const event = this.findEventById(change.eventId);
-    
+
     if (change.isSubscribed && event) {
       this.subscribedEvents.push({
         ...event,
-        subscribed: true
+        subscribed: true,
       });
     } else {
       this.removeSubscribedEvent(change.eventId);
     }
   }
-  
+
   private findEventById(id: number): CalendarEvent | undefined {
-    return [...this.publicEvents, ...this.personalEvents].find(e => e.id === id);
+    return [...this.publicEvents, ...this.personalEvents].find(
+      (e) => e.id === id
+    );
+  }
+
+  toggleAdminEvents() {
+    this.showAdminEvents = !this.showAdminEvents;
+    if (this.showAdminEvents) {
+      this.calculateAdminEventsPages();
+    }
+  }
+
+  calculateAdminEventsPages() {
+    this.adminEventsTotalPages = Math.ceil(
+      this.publicEvents.length / this.itemsPerPage
+    );
+  }
+
+  onAdminEventsPageChange(page: number) {
+    this.adminEventsPage = page;
   }
 
   ngOnDestroy() {

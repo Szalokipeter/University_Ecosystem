@@ -13,6 +13,10 @@
   margin: 24px 24px 0;
 }
 
+.dashboard-section:last-of-type {
+  margin-bottom: 24px;
+}
+
 .dashboard-section__title {
   font-family: "Poppins", sans-serif;
   font-size: var(--font-size-semi-large);
@@ -157,6 +161,13 @@
 
 .add-event-button mat-icon {
   font-size: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
 }
 
 /* Responsive adjustments */

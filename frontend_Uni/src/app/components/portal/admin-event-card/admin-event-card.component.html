@@ -1,0 +1,40 @@
+<div
+  class="admin-event-card"
+  [class.expanded]="isExpanded"
+  (click)="onCardClick()"
+>
+  <app-user-event-card [event]="event"></app-user-event-card>
+
+  <div class="subscriber-dropdown" *ngIf="isExpanded">
+    <div class="subscriber-list">
+      <div *ngIf="isLoadingSubscribers" class="loading-state">
+        <mat-spinner diameter="24"></mat-spinner>
+      </div>
+
+      <div *ngIf="errorLoadingSubscribers" class="error-state">
+        Failed to load subscribers
+      </div>
+
+      <div *ngIf="!isLoadingSubscribers && !errorLoadingSubscribers">
+        <div *ngIf="subscribers.length > 0; else noSubscribers">
+          <div class="subscriber-item" *ngFor="let user of subscribers">
+            <div class="user-info">
+              <span class="username">{{ user.username }}</span>
+              <span class="email">{{ user.email }}</span>
+            </div>
+            <mat-icon class="role-icon" [class.teacher]="user.roles_id === 2"
+              >account_circle</mat-icon
+            >
+          </div>
+        </div>
+
+        <ng-template #noSubscribers>
+          <div class="no-subscribers">
+            <mat-icon>people_outline</mat-icon>
+            <p>No users have subscribed to this event yet</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

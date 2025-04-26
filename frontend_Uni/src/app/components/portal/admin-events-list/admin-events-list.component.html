@@ -1,0 +1,17 @@
+<div class="admin-events-container">
+  <div class="admin-events-list">
+    <app-admin-event-card
+      *ngFor="let event of events"
+      [event]="event"
+      [isExpanded]="expandedEventId === event.id"
+      (toggleExpand)="toggleEventExpand(event.id)"
+    >
+    </app-admin-event-card>
+  </div>
+
+  <div class="pagination-controls">
+    <span *ngIf="notFirstPage()" (click)="goToPrevPage()">&lt;</span>
+    <span class="page-number">{{ currentPage }}</span>
+    <span *ngIf="notFinalPage()" (click)="goToNextPage()">&gt;</span>
+  </div>
+</div>

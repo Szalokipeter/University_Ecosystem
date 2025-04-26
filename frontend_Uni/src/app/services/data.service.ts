@@ -122,13 +122,14 @@ export class DataService implements OnInit {
   }
   //#endregion
 
-  //#region Users
   getAllUsers(): Observable<UserModel[]> {
-    return this.http.get<UserModel[]>(`${this.apiUrl}/users`, {
-      headers: this.getAuthHeaders()
-    }).pipe(
-      map(response => Array.isArray(response) ? response : [response])
-    );
+    return this.http
+      .get<UserModel[]>(`${this.apiUrl}/users`, {
+        headers: this.getAuthHeaders(),
+      })
+      .pipe(
+        map((response) => (Array.isArray(response) ? response : [response]))
+      );
   }
   searchUser(token: string): Observable<UserModel> {
     const headers = new HttpHeaders({
@@ -181,15 +182,17 @@ export class DataService implements OnInit {
     );
   }
 
-  checkEventSignup(eventId: number): Observable<{ message: string; SubStatus: boolean }> {
+  checkEventSignup(
+    eventId: number
+  ): Observable<{ message: string; SubStatus: boolean }> {
     return this.http.get<{ message: string; SubStatus: boolean }>(
       `${this.apiUrl}/uniCalendar/${eventId}/signup`,
       { headers: this.getAuthHeaders() }
     );
   }
-  
-  signUpForEvent(eventId: number): Observable<{ message: string; }> {
-    return this.http.post<{ message: string; }>(
+
+  signUpForEvent(eventId: number): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
       `${this.apiUrl}/uniCalendar/${eventId}/signup`,
       {},
       { headers: this.getAuthHeaders() }
@@ -197,9 +200,20 @@ export class DataService implements OnInit {
   }
 
   getEventsWithSubscriptions(): Observable<CalendarEvent[]> {
-    return this.http.get<CalendarEvent[]>(`${this.apiUrl}/uniCalendar/withSubs`, {
-      headers: this.getAuthHeaders()
-    });
+    return this.http.get<CalendarEvent[]>(
+      `${this.apiUrl}/uniCalendar/withSubs`,
+      {
+        headers: this.getAuthHeaders(),
+      }
+    );
   }
-  //#endregion
+
+  getEventSubscribers(eventId: number): Observable<UserModel[]> {
+    return this.http
+      .get<{ users: UserModel[] }>(
+        `${this.apiUrl}/uniCalendar/${eventId}/allUsers`,
+        { headers: this.getAuthHeaders() }
+      )
+      .pipe(map((response) => response.users));
+  }
 }
