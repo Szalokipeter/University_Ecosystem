@@ -21,22 +21,21 @@
         <li
           class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
         >
-          <a class="nav__menu-link" href="#news">News</a>
+          <a class="nav__menu-link" (click)="scrollTo('news')">News</a>
         </li>
         <li
           class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
         >
-          <a class="nav__menu-link" href="#about">About us</a>
+          <a class="nav__menu-link" (click)="scrollTo('about')">About us</a>
         </li>
         <li
           class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
         >
-          <a class="nav__menu-link" href="#courses">Courses</a>
+          <a class="nav__menu-link" (click)="scrollTo('courses')">Courses</a>
         </li>
         <li
           class="nav__menu-item nav__menu-item--level-0 nav__menu-item--children"
         >
-          <!-- Updated login/portal link with dropdown -->
           <div class="user-menu-container" *ngIf="loggedInUser; else loginLink">
             <div class="user-badge-container" (click)="toggleDropdown()">
               <div class="user-badge" [title]="loggedInUser!.username">

@@ -64,6 +64,23 @@ export class HeaderComponent implements OnInit {
     };
   }
 
+  scrollTo(section: string) {
+    const toggleButton = document.querySelector('.header__toggle-btn');
+    if (toggleButton?.classList.contains('header__toggle-menu--active')) {
+      toggleButton.classList.remove('header__toggle-menu--active');
+      this.renderer.removeClass(document.body, 'menu-opened');
+    }
+
+    const headerHeight = document.querySelector('.header')?.clientHeight || 77;
+    
+    const element = document.getElementById(section);
+    if (element) {
+      const yOffset = -headerHeight;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
+
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }

@@ -1,3 +1,7 @@
+.section--wrapper {
+  scroll-margin-top: 145px;
+}
+
 .view__main--wrapper {
   max-width: unset;
   width: 100%;
@@ -109,14 +113,20 @@
   max-height: 350px;
 }
 
-#courses__section {
+#courses {
   max-width: unset;
 }
-#courses__section .section__header {
+#courses .section__header {
   max-width: 1400px;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+}
+
+@media (max-width: 399px) {
+  .section--wrapper {
+    scroll-margin-top: 77px;
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -124,6 +134,12 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+  }
+}
+
+@media (max-width: 1023px) {
+  .section--wrapper {
+    scroll-margin-top: 93px;
   }
 }
 
