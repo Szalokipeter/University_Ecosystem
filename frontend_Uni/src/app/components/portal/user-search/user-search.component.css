@@ -1,0 +1,117 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.search-container {
+  padding: 1rem;
+  width: calc(100% - 48px);
+  padding: 24px;
+  position: relative;
+}
+
+.search-container::after {
+  content: "";
+  display: block;
+  width: calc(100% - 48px);
+  height: 1px;
+  background-color: #dfdfdf;
+  position: absolute;
+  bottom: -24px;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Top Row Styles */
+.search-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.search-input-container {
+  position: relative;
+  flex-grow: 1;
+  max-width: 385px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+.add-button {
+  background-color: var(--secondary-action-color);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+/* Bottom Row Styles */
+.filter-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.role-filter,
+.sort-option {
+  min-width: 180px;
+}
+
+.clear-button {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .search-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .search-input-container {
+    width: 100%;
+  }
+
+  .add-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filter-row {
+    flex-wrap: wrap;
+  }
+
+  .role-filter,
+  .sort-option {
+    width: 100%;
+  }
+
+  .clear-button {
+    margin-left: 0;
+    width: 100%;
+  }
+}

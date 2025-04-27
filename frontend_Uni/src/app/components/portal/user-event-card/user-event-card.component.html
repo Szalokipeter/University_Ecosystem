@@ -1,0 +1,36 @@
+<mat-card class="event-card">
+  <mat-card-header>
+    <mat-card-title>{{ event?.title }}</mat-card-title>
+    <mat-card-subtitle>
+      <mat-icon>event</mat-icon>
+      {{ event?.dateofevent | date : "mediumDate" }}
+      <span *ngIf="event?.event_type" class="event-type">
+        • {{ event?.event_type }}
+      </span>
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p class="event-body">{{ event?.body }}</p>
+    <div class="event-meta">
+      <span class="event-date">
+        <mat-icon>schedule</mat-icon>
+        Created: {{ event?.created_at | date : "shortDate" }}
+      </span>
+      <span *ngIf="event?.updated_at !== event?.created_at" class="event-date">
+        <mat-icon>update</mat-icon>
+        Updated: {{ event?.updated_at | date : "shortDate" }}
+      </span>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions *ngIf="showUnsubscribe">
+    <button
+      mat-icon-button
+      (click)="unsubscribe.emit(event?.id)"
+      matTooltip="Unsubscribe"
+    >
+      <mat-icon>event_busy</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

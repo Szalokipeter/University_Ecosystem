@@ -1,0 +1,25 @@
+<div class="list-wrapper">
+    <div class="slider-container">
+        <div
+          class="slider"
+          [style.transform]="'translateX(' + (-activeIndex * 100 / 3) + '%)'"
+        >
+          <div class="slide" *ngFor="let card of cards">
+            <app-slide-card
+              [title]="card.title"
+              [topic]="card.topic"
+              [background]="card.background"
+            ></app-slide-card>
+          </div>
+        </div>
+      </div>
+      
+      <div class="nav-dots">
+        <span
+          *ngFor="let card of cards; let i = index"
+          [class.active]="i === activeIndex"
+          (click)="setActive(i)"
+        >
+        </span>
+      </div>
+</div>

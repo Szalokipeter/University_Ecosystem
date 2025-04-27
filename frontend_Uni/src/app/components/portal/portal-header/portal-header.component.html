@@ -1,0 +1,139 @@
+<header class="portal-header">
+  <div class="portal-header__left">
+    <app-home-logo
+      [routerLink]="['/']"
+      routerLinkActive="router-link-active"
+    ></app-home-logo>
+
+    <nav class="portal-nav">
+      <a
+        class="portal-nav__link"
+        [class.active]="activeView === 'dashboard'"
+        routerLink="/portal/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        >Dashboard</a
+      >
+      <a
+        class="portal-nav__link"
+        [class.active]="activeView === 'todos'"
+        routerLink="/portal/todos"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        >Todos</a
+      >
+      <a
+        *ngIf="loggedInUser?.roles_id === 1 || loggedInUser!.roles_id === 2"
+        class="portal-nav__link"
+        [class.active]="activeView === 'news'"
+        routerLink="/portal/news"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        >News</a
+      >
+      <a
+        *ngIf="loggedInUser?.roles_id === 1"
+        class="portal-nav__link"
+        [class.active]="activeView === 'users'"
+        routerLink="/portal/users"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        >User Control</a
+      >
+    </nav>
+  </div>
+
+  <div class="portal-header__right">
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger-menu" (click)="toggleMobileMenu()">
+      <mat-icon class="hamburger-menu__icon">
+        {{ isMobileMenuOpen ? "close" : "menu" }}
+      </mat-icon>
+    </button>
+
+    <div class="user-badge-container" (click)="toggleDropdown()">
+      <div class="user-badge" [title]="username">
+        {{ usernameInitial }}
+      </div>
+      <mat-icon
+        [@rotateChevron]="isDropdownOpen ? 'open' : 'closed'"
+        class="dropdown-chevron"
+      >
+        expand_more
+      </mat-icon>
+    </div>
+
+    <div class="mobile-menu" [class.open]="isMobileMenuOpen">
+      <nav class="mobile-nav">
+        <a
+          class="mobile-nav__link"
+          [class.active]="activeView === 'dashboard'"
+          routerLink="/portal/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+        >
+          >Dashboard</a
+        >
+        <a
+          class="mobile-nav__link"
+          [class.active]="activeView === 'todos'"
+          routerLink="/portal/todos"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+        >
+          >Todos</a
+        >
+        <a
+          *ngIf="loggedInUser?.roles_id === 1 || loggedInUser!.roles_id === 2"
+          class="mobile-nav__link"
+          [class.active]="activeView === 'news'"
+          routerLink="/portal/news"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+        >
+          >News</a
+        >
+        <a
+          *ngIf="loggedInUser?.roles_id === 1"
+          class="mobile-nav__link"
+          [class.active]="activeView === 'users'"
+          routerLink="/portal/users"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+        >
+          >User Control</a
+        >
+      </nav>
+    </div>
+
+    <div
+      *ngIf="isDropdownOpen"
+      @fadeInDropdown
+      class="dropdown-menu"
+      (clickOutside)="isDropdownOpen = false"
+    >
+      <div class="dropdown-item user-info">
+        <span class="username">{{ username }}</span>
+        <span
+          class="timer"
+          [class.warning]="timerService.remainingTime < 120000"
+        >
+          Session: {{ timerService.formatTime(timerService.remainingTime) }}
+        </span>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Log Out</span>
+      </button>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,138 @@
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f4f4f4;
+  overflow-y: scroll;
+}
+
+h2 {
+  font-family: "Lora", sans-serif;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+label,
+input {
+  font-family: "Poppins", sans-serif;
+}
+
+.login-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  padding-top: 5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  min-height: 368px;
+  overflow-y: auto;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+  text-align: left;
+  width: 275px;
+}
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.input-group input {
+  width: calc(100% - 24px);
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.btn-primary,
+.btn-secondary {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-transform: none;
+  letter-spacing: 1.5px;
+  transition: background-color 0.3s ease-in-out;
+}
+.btn-primary {
+  background: var(--primary-action-color);
+  color: white;
+}
+.btn-primary:hover {
+  filter: brightness(90%);
+}
+.btn-secondary {
+  background: var(--secondary-action-color);
+  color: white;
+}
+.btn-secondary:hover {
+  filter: brightness(90%);
+}
+.error-message {
+  color: red;
+  margin-top: 1rem;
+}
+.qr-container {
+  margin: auto 0;
+  margin-left: 25px;
+}
+
+.qr-container img {
+  height: 250px;
+  width: 250px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.qr-container p {
+  max-width: 250px;
+  margin: 0 auto;
+  font-size: var(--font-size-small);
+}
+.close__img-wrapper {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  z-index: 2;
+  cursor: pointer;
+}
+.close__img-wrapper .close__img {
+  color: var(--primary-action-color);
+  height: 25px;
+  width: 25px;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 350px;
+    min-height: 0;
+    height: auto;
+    overflow: visible;
+  }
+  .qr-container {
+    margin: 0;
+  }
+  .login-wrapper {
+    align-items: flex-start;
+    padding: 20px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}

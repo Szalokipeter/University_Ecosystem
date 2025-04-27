@@ -1,0 +1,64 @@
+<div class="calendar-container">
+  <!-- Loading and error states -->
+  <div *ngIf="loading" class="loading-spinner">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }} <button (click)="retry.emit()">Retry</button>
+  </div>
+
+  <!-- Calendar Header -->
+  <div class="calendar-header" *ngIf="!loading && !error">
+    <button mat-icon-button (click)="changeMonth(-1)">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <h2>{{ currentDate | date : "MMMM yyyy" }}</h2>
+
+    <button mat-icon-button (click)="changeMonth(1)">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <!-- Calendar Grid -->
+  <div class="calendar-grid" *ngIf="!loading && !error">
+    <!-- Weekday Headers -->
+    <div class="calendar-week-header">
+      <div
+        *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']"
+        class="calendar-day-header"
+      >
+        {{ day }}
+      </div>
+    </div>
+
+    <!-- Calendar Weeks -->
+    <div *ngFor="let week of weeks; trackBy: trackByWeek" class="calendar-week">
+      <!-- Calendar Days -->
+      <div
+        *ngFor="let day of week; trackBy: trackByDay"
+        class="calendar-day"
+        [class.current-month]="day.isCurrentMonth"
+        [class.other-month]="!day.isCurrentMonth"
+        [class.today]="day.isToday"
+      >
+        <div class="day-number">{{ day.date | date : "d" }}</div>
+
+        <!-- Events -->
+        <div
+          *ngFor="let event of day.events; trackBy: trackByEvent"
+          class="calendar-event"
+          [style.backgroundColor]="getEventColor(event.event_type)"
+          [matTooltip]="event.title + '\n' + event.body"
+          (click)="openEventDetails(event)"
+        >
+          {{ event.title }}
+          <span *ngIf="event.uni_user_id" class="event-user"
+            >User: {{ event.uni_user_id }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="dashboard-container">
+  <h1 class="section__header">Dashboard</h1>
+
+  <div class="dashboard-section">
+    <div class="timeline-header">
+      <h1 class="dashboard-section__title">Your Timeline</h1>
+      <div class="timeline-filters">
+        <!-- Search -->
+        <div class="filter-group search-group">
+          <label>Search</label>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (input)="applyFilters()"
+            placeholder="Search events..."
+          />
+        </div>
+        <!-- Duration Filter -->
+        <div class="filter--groups">
+          <div class="filter-group">
+            <label>Duration</label>
+            <select [(ngModel)]="durationFilter" (change)="applyFilters()">
+              <option value="today">Today</option>
+              <option value="tomorrow">Tomorrow</option>
+              <option value="7days" selected>Next 7 Days</option>
+              <option value="month">This Month</option>
+              <option value="30days">Next 30 Days</option>
+              <option value="nextMonth">Next Month</option>
+            </select>
+          </div>
+
+          <!-- Publicity Filter -->
+          <div class="filter-group">
+            <label>Event Type</label>
+            <select [(ngModel)]="publicityFilter" (change)="applyFilters()">
+              <option value="all">All Events</option>
+              <option value="public">Public Only</option>
+              <option value="personal">Personal Only</option>
+            </select>
+          </div>
+
+          <!-- Event Type Filter -->
+          <div class="filter-group">
+            <label>Category</label>
+            <select [(ngModel)]="eventTypeFilter" (change)="applyFilters()">
+              <option value="all">All Categories</option>
+              <option *ngFor="let type of eventTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="events-swiper swiper">
+      <div *ngIf="filteredEvents.length === 0" class="no-events-msg">
+        No events match your filters.
+      </div>
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let event of filteredEvents">
+          <app-event-card [event]="event"></app-event-card>
+        </div>
+      </div>
+
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+
+  <div class="dashboard-section">
+    <div class="calendar-header">
+      <h1 class="dashboard-section__title">Calendar</h1>
+      <div class="calendar-filters">
+        <!-- Event Type Filter -->
+        <div class="filter-group">
+          <label>Event Type</label>
+          <select
+            [(ngModel)]="calendarPublicityFilter"
+            (change)="updateCalendar()"
+          >
+            <option value="all">All Events</option>
+            <option value="public">Public Only</option>
+            <option value="personal">Personal Only</option>
+          </select>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <label>Category</label>
+          <select
+            [(ngModel)]="calendarEventTypeFilter"
+            (change)="updateCalendar()"
+          >
+            <option value="all">All Categories</option>
+            <option *ngFor="let type of eventTypes" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Add new -->
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="addEvent()"
+          class="add-event-button"
+        >
+          <mat-icon>add</mat-icon>
+          Add Event
+        </button>
+      </div>
+    </div>
+
+    <div class="section--content">
+      <app-calendar
+        [eventsMap]="eventsByDate"
+        [loading]="loading"
+        [error]="error"
+        [isInPortal]="true"
+        (eventAction)="handleCalendarEventAction($event)"
+        (retry)="loadEvents()"
+        (subscriptionChange)="onSubscriptionChange($event)"
+      >
+      </app-calendar>
+    </div>
+  </div>
+
+  <div class="dashboard-section" *ngIf="authService.isAdminOrTeacher()">
+    <div class="section-header" (click)="toggleSubscribedEvents()">
+      <h1 class="dashboard-section__title">Your Subscribed Events</h1>
+      <mat-icon class="toggle-icon">
+        {{ showSubscribedEvents ? "expand_less" : "expand_more" }}
+      </mat-icon>
+    </div>
+
+    <div class="section-content" *ngIf="showSubscribedEvents">
+      <app-user-event-list
+        [events]="subscribedEvents"
+        [isLoading]="loadingSubscribedEvents"
+        [showUnsubscribe]="true"
+        (unsubscribe)="onUnsubscribeEvent($event)"
+      ></app-user-event-list>
+    </div>
+  </div>
+
+  <div class="dashboard-section" *ngIf="authService.isAdminOrTeacher()">
+    <div class="section-header" (click)="toggleAdminEvents()">
+      <h1 class="dashboard-section__title">Event Subscriptions</h1>
+      <mat-icon class="toggle-icon">
+        {{ showAdminEvents ? "expand_less" : "expand_more" }}
+      </mat-icon>
+    </div>
+
+    <div class="section-content" *ngIf="showAdminEvents">
+      <app-admin-events-list
+        [events]="publicEvents"
+        [itemsPerPage]="itemsPerPage"
+        (pageChanged)="onAdminEventsPageChange($event)"
+      >
+      </app-admin-events-list>
+    </div>
+  </div>
+</div>

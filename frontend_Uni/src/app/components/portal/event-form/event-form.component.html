@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>{{ data.isEdit ? "Edit" : "Add" }} Event</h2>
+
+<div mat-dialog-content>
+  <div *ngIf="showPublicToggle" class="public-toggle">
+    <mat-radio-group
+      [(ngModel)]="isPublicEvent"
+      (change)="onPublicityChange(isPublicEvent)"
+    >
+      <mat-radio-button [value]="true">Public Event</mat-radio-button>
+      <mat-radio-button [value]="false">Personal Event</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Title</mat-label>
+    <input matInput [(ngModel)]="event.title" name="title" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="event.body" name="body" rows="4"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Date</mat-label>
+    <input
+      matInput
+      type="date"
+      [(ngModel)]="event.dateofevent"
+      name="dateofevent"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field *ngIf="isPublicEvent" appearance="outline" class="full-width">
+    <mat-label>Event Type</mat-label>
+    <mat-select [(ngModel)]="event.event_type" name="event_type">
+      <mat-option *ngFor="let type of publicEventTypes" [value]="type">
+        {{ type }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field
+    *ngIf="!isPublicEvent"
+    appearance="outline"
+    class="full-width"
+  >
+    <mat-label>Event Type</mat-label>
+    <input
+      matInput
+      [(ngModel)]="event.event_type"
+      name="event_type"
+      placeholder="Enter event type"
+    />
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    {{ data.isEdit ? "Update" : "Create" }}
+  </button>
+</div>

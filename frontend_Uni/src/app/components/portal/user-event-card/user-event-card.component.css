@@ -1,0 +1,47 @@
+.event-card {
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
+}
+
+.event-card mat-card-header {
+  padding-bottom: 0.5rem;
+}
+
+.event-card mat-card-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.event-card mat-card-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.event-type {
+  font-style: italic;
+}
+
+.event-card mat-card-content {
+  padding-top: 0.5rem;
+}
+
+.event-body {
+  white-space: pre-line;
+  margin-bottom: 0.5rem;
+}
+
+.event-meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.event-date {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}

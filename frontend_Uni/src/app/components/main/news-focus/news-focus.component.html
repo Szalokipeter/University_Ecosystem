@@ -1,0 +1,13 @@
+<div class="focused__container--wrapper">
+  <div class="focused__container">
+    <app-news-card
+      *ngFor="let news of newsList"
+      [news]="news"
+      [isActive]="isActiveNews(news)"
+      [isSmall]="!isActiveNews(news)"
+      (click)="!isActiveNews(news) && onCardClick(news)"
+      (closed)="close()"
+    >
+    </app-news-card>
+  </div>
+</div>

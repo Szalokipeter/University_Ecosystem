@@ -1,0 +1,239 @@
+.portal-header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  padding-right: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-bottom: 1px solid #dfdfdf;
+  z-index: 100;
+  height: 80px;
+}
+
+.portal-header__left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+}
+.portal-header__right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+}
+
+app-home-logo {
+  scale: 0.8;
+}
+
+.portal-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.portal-nav__link {
+  position: relative;
+  font-family: "Poppins", sans-serif;
+  font-size: var(--font-size-medium);
+  color: #555;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 16px 0;
+  /* Removed transition property */
+}
+.portal-nav__link.active {
+  position: relative;
+}
+
+.portal-nav__link.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: calc(-25% + 1px);
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary-action-color);
+  z-index: 1;
+}
+
+.user-badge-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-action-color);
+  color: var(--secondary-color);
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px); /* Position below the user badge */
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  z-index: 1000;
+  overflow: hidden;  
+  border: 1px solid #eee;
+}
+
+.user-info {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.username {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.role {
+  font-size: var(--font-size-small);
+  color: rgba(var(--primary-color-rgb), 0.7);
+}
+
+/* Logout Button */
+button[mat-menu-item] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #d32f2f !important; /* Red color */
+  color: var(--secondary-color) !important;
+  transition: background-color 0.2s ease;
+}
+
+button[mat-menu-item]:hover {
+  background-color: #b71c1c !important; /* Darker red on hover */
+}
+
+button[mat-menu-item] mat-icon {
+  color: var(--secondary-color) !important;
+}
+
+.dropdown-chevron {
+  color: #555;
+  opacity: 0.75;
+}
+
+mat-divider {
+  margin: 0 !important;
+  border-top-color: rgba(0, 0, 0, 0.1) !important;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.timer {
+  font-size: var(--font-size-small);
+  color: rgba(var(--primary-color-rgb), 0.7);
+  margin-top: 4px;
+}
+
+.timer.warning {
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+.hamburger-menu {
+  display: none;
+  cursor: pointer;
+  padding: 8px;
+  margin-left: 16px;
+}
+
+.hamburger-menu__icon {
+  width: 24px;
+  height: 24px;
+  color: #555;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  z-index: 99;
+  overflow-y: auto;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-menu.open {
+  display: block;
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mobile-nav__link {
+  font-family: "Poppins", sans-serif;
+  font-size: var(--font-size-large);
+  color: #555;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-nav__link.active {
+  color: var(--primary-action-color);
+  border-bottom: 3px solid var(--primary-action-color);
+}
+
+@media (max-width: 768px) {
+  .portal-header {
+    padding: 0 16px;
+  }
+  .portal-header__left {
+    gap: 16px;
+  }
+  .portal-nav {
+    display: none;
+  }
+  .portal-nav__link {
+    font-size: var(--font-size-small);
+  }
+  .hamburger-menu {
+    display: block;
+  }
+  
+  .user-badge-container {
+    margin-left: auto;
+  }
+  .portal-nav__link.active::after {
+    width: fit-content;
+  }
+}

@@ -1,0 +1,84 @@
+.admin-event-card {
+  position: relative;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.admin-event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.subscriber-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background-color: #f9f9f9;
+  border-radius: 0 0 8px 8px;
+}
+
+.admin-event-card.expanded .subscriber-dropdown {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.subscriber-list {
+  padding: 16px;
+}
+
+.subscriber-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-weight: 500;
+}
+
+.email {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.role-icon {
+  color: #666;
+}
+
+.role-icon.teacher {
+  color: #3f51b5;
+}
+
+.no-subscribers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  color: #666;
+}
+
+.no-subscribers mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
+}
+
+.loading-state,
+.error-state {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.error-state {
+  color: #f44336;
+}

@@ -1,0 +1,51 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h2>{{ data.event.title }}</h2>
+    <button mat-icon-button (click)="closeModal()" aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-content">
+    <div class="modal-event-meta">
+      <span
+        class="modal-event-type"
+        [style.backgroundColor]="getEventColor(event.event_type)"
+      >
+        {{ event.event_type }}
+      </span>
+      <span *ngIf="event.uni_user_id">User ID: {{ event.uni_user_id }}</span>
+    </div>
+
+    <p class="modal-event-date">
+      {{ event.dateofevent | date : "fullDate" }}
+    </p>
+
+    <div class="modal-event-description">
+      {{ event.body }}
+    </div>
+
+    <div class="modal-actions">
+      <ng-container *ngIf="isPublic && isInPortal">
+        <button
+          mat-icon-button
+          (click)="onSignup()"
+          [disabled]="isSignupLoading"
+          [matTooltip]="getSignupTooltip()"
+        >
+          <mat-icon *ngIf="!isSignupLoading">{{ getSignupIcon() }}</mat-icon>
+          <mat-spinner *ngIf="isSignupLoading" diameter="24"></mat-spinner>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="canEdit">
+        <button mat-raised-button color="warn" (click)="onDelete()">
+          Delete
+        </button>
+        <button mat-raised-button color="primary" (click)="onUpdate()">
+          Update
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</div>

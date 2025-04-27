@@ -1,0 +1,55 @@
+<div class="search-container">
+  <form [formGroup]="searchForm" class="search-form">
+    <div class="search-row">
+      <div class="search-input-container">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input
+          type="text"
+          formControlName="searchTerm"
+          placeholder="Search by username or email..."
+          class="search-input"
+        />
+      </div>
+
+      <button
+        mat-raised-button
+        type="button"
+        (click)="onAddNew.emit()"
+        class="add-button"
+      >
+        <mat-icon>add</mat-icon>
+        Add New User
+      </button>
+    </div>
+
+    <div class="filter-row">
+      <mat-form-field class="role-filter">
+        <mat-label>Filter by Role</mat-label>
+        <mat-select formControlName="roleFilter">
+          <mat-option *ngFor="let role of roleOptions" [value]="role.value">
+            {{ role.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="sort-option">
+        <mat-label>Sort by</mat-label>
+        <mat-select formControlName="sortOption">
+          <mat-option value="username-asc">Username (A-Z)</mat-option>
+          <mat-option value="username-desc">Username (Z-A)</mat-option>
+          <mat-option value="created_at-asc">Join Date (Oldest)</mat-option>
+          <mat-option value="created_at-desc">Join Date (Newest)</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button
+        type="button"
+        class="clear-button"
+        (click)="clearFilters()"
+        mat-stroked-button
+      >
+        Clear Filters
+      </button>
+    </div>
+  </form>
+</div>

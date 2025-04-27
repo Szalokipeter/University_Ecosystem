@@ -1,0 +1,70 @@
+.news-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-left: 1px solid #dfdfdf;
+  border-right: 1px solid #dfdfdf;
+  max-width: calc(369px + 368px);
+  margin: 0;
+  margin-left: 24px;
+}
+
+.pager--container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 25px;
+  padding: 25px;
+  position: relative;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  color: var(--primary-action-color);
+  font-size: var(--font-size-large);
+  font-weight: 500;
+}
+
+.pager--container span {
+  cursor: pointer;
+}
+
+.pager--container span#pageIndex {
+  font-size: var(--font-size-semi-large);
+  font-weight: normal;
+  color: black;
+  cursor: default;
+}
+
+.pager--container::after {
+  width: calc(100% - 48px);
+  left: 20px;
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  height: 1px;
+  background: #dfdfdf;
+}
+
+@media screen and (max-width: 768px) {
+  .news-grid {
+    justify-content: flex-start;
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: 769px) {
+}
+
+@media screen and (min-width: 1024px) {
+}
+
+@media screen and (min-width: 1400px) {
+}
+
+@media screen and (min-width: 1640px) {
+}

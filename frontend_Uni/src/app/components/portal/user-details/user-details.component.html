@@ -1,0 +1,42 @@
+<div class="user-details-container">
+  <button mat-stroked-button (click)="backToList.emit()" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Back to List
+  </button>
+
+  <app-user-card [user]="user"></app-user-card>
+
+  <div class="section-header">
+    <h3>Personal Calendar Events</h3>
+  </div>
+  <app-user-event-list *ngIf="user" [userId]="user.id"></app-user-event-list>
+
+  <div class="section-header">
+    <h3>Personal Todos</h3>
+  </div>
+  <div class="user-todos-section">
+    <ng-container *ngIf="loadingTodos; else todosContent">
+      <div class="loading">Loading todos...</div>
+    </ng-container>
+
+    <ng-template #todosContent>
+      <ng-container *ngIf="todoError; else todosList">
+        <div class="error">{{ todoError }}</div>
+      </ng-container>
+
+      <ng-template #todosList>
+        <ng-container *ngIf="userTodos.length > 0; else noTodos">
+          <app-todo-card
+            *ngFor="let todo of userTodos"
+            [todo]="todo"
+            [showActions]="false"
+          ></app-todo-card>
+        </ng-container>
+
+        <ng-template #noTodos>
+          <div class="empty">No todos found for this user</div>
+        </ng-template>
+      </ng-template>
+    </ng-template>
+  </div>
+</div>

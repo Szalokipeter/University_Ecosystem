@@ -1,0 +1,23 @@
+<div class="news-container">
+  <app-news-grid
+    *ngIf="!activeNews"
+    [newsList]="newsList"
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (cardClicked)="onCardClick($event)"
+    (pageChanged)="onPageChange($event)"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+  >
+  </app-news-grid>
+
+  <app-news-focus
+    *ngIf="activeNews"
+    [newsList]="newsList"
+    class="focus-news"
+    [activeNews]="activeNews"
+    (closeFocus)="closeFocus()"
+    (cardClicked)="onCardClick($event)"
+  >
+  </app-news-focus>
+</div>

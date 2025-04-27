@@ -1,0 +1,84 @@
+.user-list-container {
+  padding: 20px;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.user-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  padding: 0 16px;
+  margin-bottom: 24px;
+}
+
+/* Custom Pagination Styles */
+.pager--container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 25px;
+  padding: 25px 0;
+  position: relative;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  color: var(--primary-action-color);
+  font-size: var(--font-size-large);
+  font-weight: 500;
+}
+
+.pager--container span {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.pager--container span:hover {
+  color: var(--primary-action-hover-color);
+}
+
+.pager--container span#pageIndex {
+  font-size: var(--font-size-semi-large);
+  font-weight: normal;
+  color: black;
+  cursor: default;
+}
+
+.pager--container::before {
+  width: calc(100% - 8px);
+  left: 20px;
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  height: 1px;
+  background: #dfdfdf;
+}
+
+.pager--container::after {
+  width: calc(100% - 8px);
+  left: 20px;
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  height: 1px;
+  background: #dfdfdf;
+}
+
+@media (max-width: 768px) {
+  .user-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pager--container {
+    padding: 16px;
+    column-gap: 16px;
+  }
+}

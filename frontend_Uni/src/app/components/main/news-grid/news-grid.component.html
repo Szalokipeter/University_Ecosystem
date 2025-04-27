@@ -1,0 +1,16 @@
+<div class="news-grid">
+  <app-news-card
+    *ngFor="let news of newsList"
+    [news]="news"
+    [isSmall]="isSmall"
+    (clicked)="onCardClick(news)"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+  >
+  </app-news-card>
+  <div class="pager--container">
+    <span *ngIf="notFirstPage()" (click)="invokePrevPage()">&lt;</span>
+    <span id="pageIndex">{{ currentPage }}</span>
+    <span *ngIf="notFinalPage()" (click)="invokeNextPage()">&gt;</span>
+  </div>
+</div>

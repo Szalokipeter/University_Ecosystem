@@ -1,0 +1,55 @@
+.focused__container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  padding-top: 369px;
+  overflow-x: hidden;
+  min-height: 430px;
+  height: fit-content;
+  overflow-y: hidden;
+}
+
+:host ::ng-deep app-news-card.small {
+  transition: transform 0.2s ease;
+}
+:host ::ng-deep app-news-card {
+  contain: layout;
+  will-change: transform;
+}
+
+/* .focused__container::before {
+  content: '';
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 369px;
+  width: 1px;
+  height: 100%;
+  background: #dfdfdf;
+  z-index: 1;
+}
+.focused__container::after {
+  content: '';
+  position: absolute;
+  display: block;
+  right: 0;
+  top: 369px;
+  width: 1px;
+  height: fit-content;
+  background: #dfdfdf;
+} */
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 1024px) {
+
+}
+
+@media screen and (min-width: 1400px) {
+}
+
+@media screen and (min-width: 1640px) {
+
+}

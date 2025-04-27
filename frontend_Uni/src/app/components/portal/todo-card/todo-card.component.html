@@ -1,0 +1,19 @@
+<div class="todo-card">
+  <div class="todo-actions">
+    <button mat-icon-button (click)="onEdit()" aria-label="Edit todo" *ngIf="showActions">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onDelete()" aria-label="Delete todo" *ngIf="showActions">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <div class="todo-content">
+    <h3 class="todo-title">{{ todo.title }}</h3>
+    <p class="todo-body">{{ todo.body }}</p>
+    <div class="todo-meta">
+      <span class="todo-status">{{ todo.status }}</span>
+      <span class="todo-date">Created: {{ todo.created_at | date }}</span>
+      <span class="todo-date">Updated: {{ todo.updated_at | date }}</span>
+    </div>
+  </div>
+</div>

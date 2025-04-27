@@ -1,0 +1,74 @@
+<div class="login-wrapper">
+  <div class="login-container">
+    <div>
+      <h2>Login</h2>
+      <form (ngSubmit)="login()">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Enter your email address"
+            [(ngModel)]="model.email"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter your password"
+            [(ngModel)]="model.password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+      <button (click)="showQrCode()" class="btn btn-secondary">
+        Show QR Code
+      </button>
+
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    </div>
+
+    <div *ngIf="qrtoken" class="qr-container" #qrCodeContainer>
+      <img [src]="qrtoken" alt="QR Code" />
+      <p>Use the PanMobile app to sign in via QR code</p>
+    </div>
+
+    <div class="close__img-wrapper">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="close__img"
+        [routerLink]="['']"
+        routerLinkActive="router-link-active"
+      >
+        <line
+          x1="5"
+          y1="5"
+          x2="19"
+          y2="19"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <line
+          x1="19"
+          y1="5"
+          x2="5"
+          y2="19"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </div>
+  </div>
+</div>

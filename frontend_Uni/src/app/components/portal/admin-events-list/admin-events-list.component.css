@@ -1,0 +1,30 @@
+.admin-events-container {
+  margin-top: 24px;
+}
+
+.admin-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+  margin-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.pagination-controls span {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #3f51b5;
+}
+
+.pagination-controls .page-number {
+  color: #333;
+  cursor: default;
+}

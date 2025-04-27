@@ -1,0 +1,73 @@
+{
+  "name": "frontend-uni",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "nodemon --exec jest",
+    "test:watch": "nodemon --exec jest --watch"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^19.1.0",
+    "@angular/cdk": "~19.2.7",
+    "@angular/common": "^19.1.0",
+    "@angular/compiler": "^19.1.0",
+    "@angular/core": "^19.1.0",
+    "@angular/forms": "^19.1.0",
+    "@angular/material": "~19.2.7",
+    "@angular/platform-browser": "^19.1.0",
+    "@angular/platform-browser-dynamic": "^19.1.0",
+    "@angular/router": "^19.1.0",
+    "@babel/runtime": "^7.26.10",
+    "laravel-echo": "^2.0.2",
+    "pusher-js": "^8.4.0",
+    "rxjs": "~7.8.0",
+    "swiper": "^11.2.6",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.2.0",
+    "@angular/cli": "^19.1.8",
+    "@angular/compiler-cli": "^19.2.0",
+    "@cypress/webpack-preprocessor": "^6.0.2",
+    "@types/babel__core": "^7.20.5",
+    "@types/babel__generator": "^7.6.8",
+    "@types/babel__template": "^7.4.4",
+    "@types/babel__traverse": "^7.20.6",
+    "@types/cypress": "^1.1.6",
+    "@types/graceful-fs": "^4.1.9",
+    "@types/istanbul-lib-coverage": "^2.0.6",
+    "@types/istanbul-lib-report": "^3.0.3",
+    "@types/istanbul-reports": "^3.0.4",
+    "@types/jasmine": "~5.1.0",
+    "@types/jest": "^29.5.14",
+    "@types/jsdom": "^21.1.7",
+    "@types/stack-utils": "^2.0.3",
+    "esbuild": "^0.25.0",
+    "jasmine-core": "~5.5.0",
+    "jest": "^29.7.0",
+    "jest-preset-angular": "^14.5.3",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "nodemon": "^3.1.9",
+    "ts-loader": "^9.5.2",
+    "typescript": "~5.7.2"
+  },
+  "overrides": {
+    "esbuild": "^0.25.0",
+    "@babel/runtime": "^7.26.10"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setup-jest.ts"
+    ]
+  }
+}
