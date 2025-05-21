@@ -1,6 +1,16 @@
 :host {
-    display: block; /* Important for nth-child to work */
-  }
+  display: block; /* Important for nth-child to work */
+}
+
+:host-context(.swiper-slide) .event-card {
+  margin: 0 auto;
+  max-width: 380px;
+  width: 100%;
+}
+
+.swiper-slide {
+  width: auto !important;
+}
 
 .event-card {
   position: relative;
@@ -94,7 +104,6 @@
   margin-bottom: 40px;
   line-height: 1.6;
   color: var(--secondary-action-color);
-
 }
 
 .event-card__category::after {
