@@ -1,81 +1,83 @@
 <div class="view--wrapper view__main--wrapper">
   <app-header></app-header>
   <app-slide-card-list></app-slide-card-list>
-  <div class="section--wrapper" id="news">
-    <h1 class="section__header">News</h1>
-    <div class="section--content">
-      <app-news></app-news>
-      <app-calendar
-        [eventsMap]="publicEventsMap"
-        [loading]="loading"
-        [error]="error"
-        [isInPortal]="false"
-      ></app-calendar>
-    </div>
-  </div>
-  <div class="section--wrapper">
-    <div class="color--separator"></div>
-    <h1 class="section__header">Upcoming Events</h1>
-    <div class="section--content section--content__events">
-      <div class="upcoming-events__grid">
-        <app-event-card
-          *ngFor="let event of upcomingEvents"
-          [event]="event"
-        ></app-event-card>
+  <main>
+    <div class="section--wrapper" id="news">
+      <h1 class="section__header">News</h1>
+      <div class="section--content">
+        <app-news></app-news>
+        <app-calendar
+          [eventsMap]="publicEventsMap"
+          [loading]="loading"
+          [error]="error"
+          [isInPortal]="false"
+        ></app-calendar>
       </div>
     </div>
-  </div>
-  <div class="section--wrapper">
-    <div class="section--content featured__card--grid">
-      <div class="card--wrapper">
-        <div class="card--content">
-          <h3 class="card__title">Featured Card Title</h3>
-          <p class="card__body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in
-            dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed
-            auctor neque eu tellus rhoncus ut eleifend nibh porttitor.
-          </p>
-          <a href="" class="btn card__btn">Action</a>
-        </div>
-      </div>
-      <div class="card--wrapper">
-        <div class="card--content">
-          <h3 class="card__title">Featured Card Title</h3>
-          <p class="card__body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in
-            dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed
-            auctor neque eu tellus rhoncus ut eleifend nibh porttitor.
-          </p>
-          <a href="" class="btn card__btn">Action</a>
+    <div class="section--wrapper">
+      <div class="color--separator"></div>
+      <h1 class="section__header">Upcoming Events</h1>
+      <div class="section--content section--content__events">
+        <div class="upcoming-events__grid">
+          <app-event-card
+            *ngFor="let event of upcomingEvents"
+            [event]="event"
+          ></app-event-card>
         </div>
       </div>
     </div>
-  </div>
-  <div class="section--wrapper" id="about">
-    <h1 class="section__header">About Us</h1>
-    <div class="section--content section--content__about">
-      <div class="color--separator gradeient--separator"></div>
-      <div class="about-section__text">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui
-          mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor
-          neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim.
-          Phasellus molestie magna non est bibendum non venenatis nisl tempor.
-          Suspendisse dictum feugiat nisl ut dapibus. Mauris iaculis porttitor
-          posuere.
-        </p>
-      </div>
-      <div class="about-section__image">
-        <img
-          src="/about/constantine_xi.png"
-          alt="About our university"
-          class="about-image"
-        />
+    <div class="section--wrapper">
+      <div class="section--content featured__card--grid">
+        <div class="card--wrapper">
+          <div class="card--content">
+            <h3 class="card__title">Featured Card Title</h3>
+            <p class="card__body">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in
+              dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed
+              auctor neque eu tellus rhoncus ut eleifend nibh porttitor.
+            </p>
+            <a href="" class="btn card__btn">Action</a>
+          </div>
+        </div>
+        <div class="card--wrapper">
+          <div class="card--content">
+            <h3 class="card__title">Featured Card Title</h3>
+            <p class="card__body">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in
+              dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed
+              auctor neque eu tellus rhoncus ut eleifend nibh porttitor.
+            </p>
+            <a href="" class="btn card__btn">Action</a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div id="courses" class="section--wrapper">
-    <h1 class="section__header">Courses</h1>
-    <app-course-card-list></app-course-card-list>
-  </div>
+    <div class="section--wrapper" id="about">
+      <h1 class="section__header">About Us</h1>
+      <div class="section--content section--content__about">
+        <div class="color--separator gradeient--separator"></div>
+        <div class="about-section__text">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui
+            mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor
+            neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim.
+            Phasellus molestie magna non est bibendum non venenatis nisl tempor.
+            Suspendisse dictum feugiat nisl ut dapibus. Mauris iaculis porttitor
+            posuere.
+          </p>
+        </div>
+        <div class="about-section__image">
+          <img
+            src="/about/constantine_xi.png"
+            alt="About our university"
+            class="about-image"
+          />
+        </div>
+      </div>
+    </div>
+    <div id="courses" class="section--wrapper">
+      <h1 class="section__header">Courses</h1>
+      <app-course-card-list></app-course-card-list>
+    </div>
+  </main>
 </div>

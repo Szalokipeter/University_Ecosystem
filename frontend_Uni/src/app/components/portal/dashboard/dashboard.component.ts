@@ -18,7 +18,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth.service';
 import { EventFormComponent } from '../event-form/event-form.component';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { UserEventListComponent } from '../user-event-list/user-event-list.component';
 import { AdminEventsListComponent } from '../admin-events-list/admin-events-list.component';
 
@@ -30,7 +29,6 @@ import { AdminEventsListComponent } from '../admin-events-list/admin-events-list
     FormsModule,
     MatIcon,
     CommonModule,
-    MatProgressSpinner,
     UserEventListComponent,
     AdminEventsListComponent,
   ],
