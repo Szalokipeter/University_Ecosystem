@@ -83,6 +83,7 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  flex-wrap: wrap;
   gap: 15px;
   margin-top: 10px;
 }
@@ -112,7 +113,7 @@
 .search-group {
   flex-grow: 1;
   width: fit-content;
-  width: calc(800px - 48px);
+  width: calc(100% - 48px);
 }
 
 .calendar-header {
@@ -169,6 +170,18 @@
   gap: 1rem;
 }
 
+app-calendar {
+  width: 100%;
+}
+
+app-calendar > .calendar-container {
+  width: calc(100% - 48px);
+}
+
+app-user-form {
+  overflow-y: auto;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .timeline-filters {
@@ -186,5 +199,11 @@
 
   .calendar-filters .filter-group {
     width: 100%;
+  }
+
+  .add-event-button {
+    top: -15%;
+    right: 5px;
+    scale: 0.85;
   }
 }

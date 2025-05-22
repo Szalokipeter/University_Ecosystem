@@ -34,7 +34,7 @@
 /* Mobile adaptation */
 @media (max-width: 768px) {
   .modal-container {
-    width: 100vw;
+    width: calc(100% - 48px);
     height: 100vh;
     border-radius: 0;
   }

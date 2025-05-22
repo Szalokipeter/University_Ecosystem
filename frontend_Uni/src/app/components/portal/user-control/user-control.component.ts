@@ -62,7 +62,11 @@ export class UserControlComponent {
   handleAddNew() {
     const dialogRef = this.dialog.open(UserFormComponent, {
       width: '500px',
-      data: {}, // Empty data for add mode
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      panelClass: 'scrollable-dialog',
+      autoFocus: false,
+      data: {},
     });
 
     dialogRef.afterClosed().subscribe((result: AddUserPayload) => {
