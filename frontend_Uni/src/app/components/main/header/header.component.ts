@@ -5,7 +5,6 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { UserModel } from '../../../models/user.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { ClickOutsideDirective } from '../../../directives/click-outside.directive';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -16,7 +15,6 @@ import { NgIf } from '@angular/common';
     RouterLink,
     MatIconModule,
     MatDividerModule,
-    ClickOutsideDirective,
     NgIf,
   ],
   templateUrl: './header.component.html',

@@ -1,10 +1,10 @@
 .header {
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 100;
   background: transparent;
-  height: 77px;
+  height: fit-content;
 }
 
 .header.headroom--not-top {
@@ -205,12 +205,6 @@ button[mat-menu-item]:hover {
   }
 }
 
-@media (min-width: 768px) {
-  .header {
-    height: 93px;
-  }
-}
-
 @media (max-width: 1023px) {
   .header > .contain {
     border-bottom: 1px solid rgba(223, 223, 223, 0.7);
@@ -231,9 +225,6 @@ button[mat-menu-item]:hover {
 }
 
 @media (min-width: 1024px) {
-  .header {
-    height: 145px;
-  }
   .header__logo {
     margin: 0;
   }
@@ -349,9 +340,6 @@ button[mat-menu-item]:hover {
 }
 
 @media (min-width: 1400px) {
-  .header {
-    height: 130px;
-  }
   .header .header__logo {
     width: 310px;
   }

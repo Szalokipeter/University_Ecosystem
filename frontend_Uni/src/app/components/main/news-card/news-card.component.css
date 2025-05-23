@@ -270,16 +270,6 @@
   :host:not(.focus-news) .news-card {
     border-right: none;
   }
-
-  :host:not(.focus-new).small .news-card {
-    width: calc(100% - 48px);
-
-    height: 125px;
-  }
-
-  :host:not(.focus-new).small .news-card .news-title::before {
-    left: 20px;
-  }
 }
 
 @media screen and (min-width: 1024px) {

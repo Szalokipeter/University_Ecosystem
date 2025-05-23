@@ -14,7 +14,6 @@ import {
 } from '@angular/animations';
 import { MatIcon } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { ClickOutsideDirective } from '../../../directives/click-outside.directive';
 import { SessionTimerService } from '../../../services/session-timer.service';
 
 @Component({
@@ -25,7 +24,6 @@ import { SessionTimerService } from '../../../services/session-timer.service';
     RouterLink,
     MatIcon,
     MatDividerModule,
-    ClickOutsideDirective,
     RouterLinkActive,
   ],
   templateUrl: './portal-header.component.html',
