@@ -46,10 +46,13 @@
   background-color: var(--primary-color);
   height: 200px;
   position: absolute;
-  width: 200vw;
+  width: 100vw;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.section--content__about > .color--separator {
+  left: calc(50% - 24px) !important;
 }
 
 .card--wrapper {
@@ -100,7 +103,7 @@
 .card__btn {
   border: 1px solid rgba(var(--secondary-color-rgb), 0.65);
   transition: background-color 0.3s ease, color 0.3s ease,
-    border-color 0.3s ease;
+    border-color 0.3s ease;    
 }
 .card__btn:hover {
   background-color: var(--secondary-color);
@@ -130,6 +133,7 @@
   bottom: 50%;
   right: 50%;
   transform: translate(50%, calc(50% - 50px));
+  z-index: 0;
 }
 .about-image {
   max-height: 350px;
@@ -148,6 +152,10 @@
 @media (max-width: 399px) {
   .section--wrapper {
     scroll-margin-top: 77px;
+  }
+  .card__btn {
+    max-width: 125px;
+    padding: 25px 5px;
   }
 }
 

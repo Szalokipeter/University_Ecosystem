@@ -45,6 +45,7 @@ h1 {
   font-weight: 500;
   color: var(--secondary-action-color);
   margin-left: 24px;
+  z-index: 2;
 }
 .section__header::after {
   content: "";
