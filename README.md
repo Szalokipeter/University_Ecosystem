@@ -1,9 +1,4 @@
 # University_Ecosystem
 
-## Quick Setup  
-
-To set up and start the project, run the following commands in the **root** directory:  
-
-```sh
-npm run install-all
-npm run start-all
+## Read the Documentation for further information
+You can find the docs as Pandidacterion_University.pdf in the root directory.
